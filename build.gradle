@@ -5,7 +5,7 @@ version = getDate()
 
 def getDate() {
     def date = new Date()
-    def formattedDate = date.format('yyyyMMddHHmm')
+    def formattedDate = date.format('yyyyMMdd')
     return formattedDate
 }
 
