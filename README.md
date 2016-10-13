@@ -4,18 +4,22 @@ Format Source Code written in Java.
 
 ## Yet another code formatter!
 
-Needs:
-* Code formatting independent from IDE, Editors etc.
-* Not configurable but implementable to whatever needs you have
-* Not only formatting but code changing (if you want to)<br>
-  E.g. kill all inline documentation or @author or @Override
-* Priceless
+Whys:
+* Code formatting independent from IDE, editors or whatever
+* Not configurable but (with Java knowledge easy) implementable to whatever needs you have
+* Code changing action (if you want to).<br>
+  For example if you want to kill all inline documentation or just the `@author` or `@Override` annotations
+* automatable and priceless
 
 ## How to implement a formatter
 
-Check out project, let CodeActionDeciderSimpleFactory return your own implementation and compile
+1. Check out this project
+2. let CodeActionDeciderSimpleFactory return your own implementation of CodeActionDecider
+3. compile and run
 
 ## What it is not (yet)
 
 * Ready to use!
-* A Tool formatting you good looking code from Character Chaos. (However, it is up to you writing a good pre-processing method).
+* Able to produce good looking code from Chaos.<br>
+  (However, it is up to you writing a good pre-processing method).
+* Only debugging output to sysout yet
