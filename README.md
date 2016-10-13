@@ -23,3 +23,7 @@ Whys:
 * Able to produce good looking code from Chaos.<br>
   (However, it is up to you writing a good pre-processing method).
 * Only debugging output to sysout yet
+
+## Usage
+
+`java -jar java-formatter.jar /absolute/path/to/directory/to/scan`

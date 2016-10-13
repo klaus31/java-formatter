@@ -5,15 +5,14 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javaformatter.CodeActionDeciderJavaUtil.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-
-import static javaformatter.CodeActionDeciderJavaUtil.*;
 
 public class CodeActionDeciderJavaUtilTest {
 
     @Test
-    public void isFirstAnnotationOfMethodShouldDo() throws Exception {
+    public void isFirstAnnotationOfMethodShouldDo() {
         // given
         List<String> lines = new ArrayList<>();
         lines.add("@Override");
@@ -27,36 +26,47 @@ public class CodeActionDeciderJavaUtilTest {
     }
 
     @Test
-    public void isMethodDeclarationShouldDo() throws Exception {
+    public void isMethodDeclarationShouldDo() {
         // given
         List<String> lines = new ArrayList<>();
-        lines.add("@Override");
         lines.add("@Bean");
         lines.add("public Mongo mongo() throws Exception {");
+        lines.add("System.out.print(\"public Mongo mongo() throws Exception {\"");
         lines.add("    return new MongoClient(\"127.0.0.1\");");
         lines.add("}");
         // when ... then
-        assertThat(isMethodDeclaration(lines, 2), is(true));
+        assertThat(isMethodDeclaration(lines, 0), is(false));
+        assertThat(isMethodDeclaration(lines, 1), is(true));
+        assertThat(isMethodDeclaration(lines, 2), is(false));
+        assertThat(isMethodDeclaration(lines, 3), is(false));
+        assertThat(isMethodDeclaration(lines, 4), is(false));
     }
 
     @Test
-    public void isClassDeclarationShouldDo() throws Exception {
+    public void isClassDeclarationShouldDo() {
         // given
         List<String> lines = new ArrayList<>();
         lines.add("import com.mongodb.MongoClient;");
         lines.add("@Configuration");
         lines.add("class SpringMongoConfig extends AbstractMongoConfig {");
+        lines.add("   public static class SpringMongoConfig extends AbstractMongoConfig { // hihi");
+        lines.add("}");
         lines.add("}");
         // when ... then
+        assertThat(isClassDeclaration(lines, 0), is(false));
+        assertThat(isClassDeclaration(lines, 1), is(false));
         assertThat(isClassDeclaration(lines, 2), is(true));
+        assertThat(isClassDeclaration(lines, 3), is(true));
+        assertThat(isClassDeclaration(lines, 4), is(false));
+        assertThat(isClassDeclaration(lines, 5), is(false));
     }
 
     @Test
-    public void isAnnotationShouldDo() throws Exception {
+    public void isAnnotationShouldDo() {
         // given
         List<String> lines = new ArrayList<>();
-        lines.add("import com.mongodb.MongoClient;");
-        lines.add("@Configuration");
+        lines.add(" import com.mongodb.MongoClient;");
+        lines.add("  @Configuration");
         lines.add("class SpringMongoConfig extends AbstractMongoConfig {");
         lines.add("}");
         // when ... then
@@ -64,7 +74,7 @@ public class CodeActionDeciderJavaUtilTest {
     }
 
     @Test
-    public void hasAnnotationShouldDo() throws Exception {
+    public void hasAnnotationShouldDo() {
         // given
         List<String> lines = new ArrayList<>();
         lines.add("import com.mongodb.MongoClient;");
@@ -81,7 +91,39 @@ public class CodeActionDeciderJavaUtilTest {
     }
 
     @Test
-    public void isFirstAnnotationOfClassEnumOrInterfaceShouldDo() throws Exception {
+    public void isImportShouldDo() {
+        // given
+        List<String> lines = new ArrayList<>();
+        lines.add("import com.mongodb.MongoClient;");
+        lines.add("import static a.b.c.*;");
+        lines.add("  import com.mongodb.MongoClient; // lala");
+        lines.add("  import static a.b.c.*; // huhu");
+        lines.add("  /* mean */    import static a.b.c.*; // huhu");
+        lines.add("  /* mean */import static a.b.c.*;// huhu");
+        lines.add("/**/import static a.b.c.*;/**/");
+        // when ... then
+        assertThat(isImport(lines, 0), is(true));
+        assertThat(isImport(lines, 1), is(true));
+        assertThat(isImport(lines, 2), is(true));
+        assertThat(isImport(lines, 3), is(true));
+        assertThat(isImport(lines, 4), is(true));
+        assertThat(isImport(lines, 5), is(true));
+        assertThat(isImport(lines, 6), is(true));
+    }
+
+    @Test
+    public void isStaticImportShouldDo() {
+        // given
+        List<String> lines = new ArrayList<>();
+        lines.add("import com.mongodb.MongoClient;");
+        lines.add("import static a.b.c.*;");
+        // when ... then
+        assertThat(isStaticImport(lines, 0), is(false));
+        assertThat(isStaticImport(lines, 1), is(true));
+    }
+
+    @Test
+    public void isFirstAnnotationOfClassEnumOrInterfaceShouldDo() {
         // given
         List<String> lines = new ArrayList<>();
         lines.add("import com.mongodb.MongoClient;");
