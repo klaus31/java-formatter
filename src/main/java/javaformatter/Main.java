@@ -13,16 +13,16 @@ public class Main {
             System.exit(1610121904);
         }
         Path inputDirectory = Paths.get(args[0]);
-        new SourceCodeFiles(inputDirectory, "java").forEach(process(new CodeActionDeciderJava()));
+        new SourceCodeFiles(inputDirectory, "java").forEach(process());
     }
 
-    private static Consumer<SourceCodeFile> process(CodeActionDecider decider) {
+    private static Consumer<SourceCodeFile> process() {
         return (source) -> {
             System.out.println("\n\n---------------------------------------------------");
             System.out.println(source.getPath().getFileName());
             System.out.println("---------------------------------------------------\n\n");
 
-            SourceCodeFormatter formatter = new SourceCodeFormatter(source, decider);
+            SourceCodeFormatter formatter = new SourceCodeFormatter(source);
             try {
                 formatter.format();
             } catch (IOException e) {

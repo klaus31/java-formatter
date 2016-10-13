@@ -13,19 +13,28 @@ class SourceCodeFormatter {
     private final SourceCodeFile sourceCodeFile;
     private final CodeActionDecider codeActionDecider;
 
-    SourceCodeFormatter(SourceCodeFile sourceCodeFile, CodeActionDecider codeActionDecider) {
+    SourceCodeFormatter(SourceCodeFile sourceCodeFile) {
         this.sourceCodeFile = sourceCodeFile;
-        this.codeActionDecider = codeActionDecider;
+        this.codeActionDecider = CodeActionDeciderSimpleFactory.create(sourceCodeFile.getSuffix());
     }
 
     void format() throws IOException {
-        List<String> lines = sourceCodeFile.readContentLines().stream()
-                .map(String::trim)
-                .filter(str -> !str.isEmpty())
-                .collect(Collectors.toList());
+        List<String> lines = sourceCodeFile.readContentLines();
+        lines = prepare(lines);
         lines = addBlankLines(lines);
         lines = addTabs(lines);
+        lines = codeActionDecider.postProcessFormattedLines(lines);
         sourceCodeFile.setFormattedLines(lines);
+    }
+
+    private List<String> prepare(List<String> lines) {
+        List<String> resultLines = new ArrayList<>();
+        for(int lineNumber=0; lineNumber< lines.size(); lineNumber++) {
+            if(!codeActionDecider.killLine(lines, lineNumber)) {
+                resultLines.addAll(codeActionDecider.preProcessSingleLine(lines, lineNumber));
+            }
+        }
+        return resultLines;
     }
 
     private List<String> addTabs(List<String> lines) {
@@ -45,8 +54,7 @@ class SourceCodeFormatter {
             String line = lines.get(i);
             if(line.isEmpty()) continue;
             // add blank lines
-            String prevLine = i == 0 ? null : lines.get(i-1);
-            int blankLinesBefore = codeActionDecider.blankLinesBefore(line, prevLine);
+            int blankLinesBefore = codeActionDecider.blankLinesBefore(lines, i);
             int bi = 0;
             while(bi++ < blankLinesBefore) resultLines.add("");
             resultLines.add(line);

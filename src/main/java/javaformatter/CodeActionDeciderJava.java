@@ -1,56 +1,31 @@
 package javaformatter;
 
+import java.util.List;
+
+import static javaformatter.CodeActionDeciderJavaUtil.*;
+
 class CodeActionDeciderJava implements CodeActionDecider {
 
-    @Override
-    public String getEol() {
-        return "\n";
-    }
-
-    @Override
-    public String getIndent() {
-        return "  ";
-    }
-
-    @Override
     public int tabChangeNextLine(String line) {
-        if(line.matches("^.+\\{$")) {
-            return 1;
-        }
-        return 0;
+        return isBlockStart(line) ? 1 : 0;
     }
 
-    @Override
     public int tabChangeThisLine(String line) {
-        if(line.matches(".*\\}$")) {
-            return -1;
-        }
-        return 0;
+        return isBlockClose(line) ? -1 : 0;
     }
 
-    public int blankLinesBefore(String line, String prevLine) {
-        if(line.matches("^public.*") && !prevLine.matches("^@.*")) {
-            return 1;
-        }
-        if(line.matches("^protected.*") && !prevLine.matches("^@.*")) {
-            return 1;
-        }
-        if(line.matches("^private.*") && !prevLine.matches("^@.*")) {
-            return 1;
-        }
-        if(line.matches("^@.*") && !prevLine.matches("^@.*")) {
-            return 1;
-        }
-        if(line.matches("^class .*") && !prevLine.matches("^@.*")) {
-            return 1;
-        }
+    public int blankLinesBefore(final List<String> lines, final int lineNumber) {
+        if(isFirstAnnotationOfMethod(lines, lineNumber)) return 1;
+        if(isFirstAnnotationOfClassEnumOrInterface(lines, lineNumber)) return 1;
+        boolean hasAnnotation = hasAnnotation(lines, lineNumber);
+        if(isMethodDeclaration(lines, lineNumber) && !hasAnnotation) return 1;
+        if(isClassDeclaration(lines, lineNumber) && !hasAnnotation) return 1;
+        if(isEnumDeclaration(lines, lineNumber) && !hasAnnotation) return 1;
+        if(isInterfaceDeclaration(lines, lineNumber) && !hasAnnotation) return 1;
         return 0;
     }
 
     public int blankLinesAfter(String line) {
-        if(line.matches("^package.*")) {
-            return 1;
-        }
-        return 0;
+        return isPackageDeclaration(line) ? 1 : 0;
     }
 }

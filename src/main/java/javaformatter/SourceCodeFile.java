@@ -26,7 +26,11 @@ class SourceCodeFile {
         this.formattedLines = formattedLines;
     }
 
-    public List<String> getFormattedLines() {
+    List<String> getFormattedLines() {
         return formattedLines;
+    }
+
+    String getSuffix() {
+        return path.toString().replaceAll(".*\\.", "");
     }
 }
