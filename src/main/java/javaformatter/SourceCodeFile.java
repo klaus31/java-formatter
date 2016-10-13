@@ -5,13 +5,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Collectors;
 
-class JavaSource {
+class SourceCodeFile {
     private final Path path;
     private List<String> formattedLines;
 
-    JavaSource(Path path) {
+    SourceCodeFile(Path path) {
         this.path = path;
     }
 

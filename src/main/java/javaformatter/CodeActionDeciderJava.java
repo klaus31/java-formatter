@@ -1,22 +1,27 @@
 package javaformatter;
 
-class SourceConfig {
-    String getEol() {
+class CodeActionDeciderJava implements CodeActionDecider {
+
+    @Override
+    public String getEol() {
         return "\n";
     }
 
-    String getTab() {
+    @Override
+    public String getIndent() {
         return "  ";
     }
 
-    int tabChangeNextLine(String line) {
+    @Override
+    public int tabChangeNextLine(String line) {
         if(line.matches("^.+\\{$")) {
             return 1;
         }
         return 0;
     }
 
-    int tabChangeThisLine(String line) {
+    @Override
+    public int tabChangeThisLine(String line) {
         if(line.matches(".*\\}$")) {
             return -1;
         }
