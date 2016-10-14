@@ -7,7 +7,9 @@ import java.util.List;
 
 import static javaformatter.CodeActionDeciderJavaUtil.*;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class CodeActionDeciderJavaUtilTest {
 
@@ -139,4 +141,13 @@ public class CodeActionDeciderJavaUtilTest {
         assertThat(isFirstAnnotationOfClassEnumOrInterface(lines, 4), is(false));
     }
 
+    @Test
+    public void isStartOfIfShouldDo() {
+        assertTrue(isStartOfIf("if(bla)"));
+        assertTrue(isStartOfIf("if (bla)"));
+        assertTrue(isStartOfIf("if (this.foo() != 23 + 'D')"));
+        assertTrue(isStartOfIf("if (this.foo()){"));
+        assertFalse(isStartOfIf("void swift (this.foo()){"));
+        assertFalse(isStartOfIf("void swif(true)"));
+    }
 }

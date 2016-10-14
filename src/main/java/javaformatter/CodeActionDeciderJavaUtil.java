@@ -91,4 +91,8 @@ class CodeActionDeciderJavaUtil {
         }
         return false;
     }
+
+    public static boolean isStartOfIf(String line) {
+        return matches(line, "if\\s*\\(.+\\).*");
+    }
 }

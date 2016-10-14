@@ -2,6 +2,7 @@ package javaformatter;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 interface CodeActionDecider {
     int tabChangeThisLine(String line);
@@ -34,8 +35,8 @@ interface CodeActionDecider {
      * <p>
      * default: trim given line and let it unchanged
      */
-    default List<String> preProcessSingleLine(List<String> lines, int lineNumber) {
-        return Collections.singletonList(lines.get(lineNumber).trim());
+    default List<String> preProcessLines(List<String> lines) {
+        return lines.stream().map(String::trim).collect(Collectors.toList());
     }
 
     /**

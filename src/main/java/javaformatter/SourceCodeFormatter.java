@@ -31,10 +31,10 @@ class SourceCodeFormatter {
         List<String> resultLines = new ArrayList<>();
         for(int lineNumber=0; lineNumber< lines.size(); lineNumber++) {
             if(!codeActionDecider.killLine(lines, lineNumber)) {
-                resultLines.addAll(codeActionDecider.preProcessSingleLine(lines, lineNumber));
+                resultLines.add(lines.get(lineNumber));
             }
         }
-        return resultLines;
+        return codeActionDecider.preProcessLines(lines);
     }
 
     private List<String> addTabs(List<String> lines) {
