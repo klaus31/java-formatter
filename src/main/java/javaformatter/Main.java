@@ -1,5 +1,7 @@
 package javaformatter;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,19 +19,20 @@ public class Main {
     }
 
     private static Consumer<SourceCodeFile> process() {
-        return (source) -> {
-            System.out.println("\n\n---------------------------------------------------");
-            System.out.println(source.getPath().getFileName());
-            System.out.println("---------------------------------------------------\n\n");
-
-            SourceCodeFormatter formatter = new SourceCodeFormatter(source);
+        return (sourceCodeFile) -> {
+            SourceCodeFormatter formatter = new SourceCodeFormatter(sourceCodeFile);
             try {
                 formatter.format();
+                formatter.withSource(formattedSource -> {
+                    try {
+                        FileUtils.writeStringToFile(sourceCodeFile.getPath().toFile(), formattedSource);
+                    } catch (IOException e) {
+                        System.exit(1610142042);
+                    }
+                });
             } catch (IOException e) {
                 System.exit(1610122032);
             }
-            formatter.withSource(System.out::println);
-            System.out.println("\n\n---------------------------------------------------\n\n");
         };
     }
 
