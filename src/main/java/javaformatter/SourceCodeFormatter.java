@@ -1,7 +1,6 @@
 package javaformatter;
 
 import org.apache.commons.lang3.StringUtils;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,15 +8,13 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 class SourceCodeFormatter {
-
     private final SourceCodeFile sourceCodeFile;
     private final CodeActionDecider codeActionDecider;
-
     SourceCodeFormatter(SourceCodeFile sourceCodeFile) {
         this.sourceCodeFile = sourceCodeFile;
         this.codeActionDecider = CodeActionDeciderSimpleFactory.create(sourceCodeFile.getSuffix());
     }
-
+    
     void format() throws IOException {
         List<String> lines = sourceCodeFile.readContentLines();
         lines = prepare(lines);
@@ -26,17 +23,18 @@ class SourceCodeFormatter {
         lines = codeActionDecider.postProcessFormattedLines(lines);
         sourceCodeFile.setFormattedLines(lines);
     }
-
+    
     private List<String> prepare(List<String> lines) {
         List<String> resultLines = new ArrayList<>();
+        
         for(int lineNumber=0; lineNumber< lines.size(); lineNumber++) {
-            if(!codeActionDecider.killLine(lines, lineNumber)) {
+            if (!codeActionDecider.killLine(lines, lineNumber)) {
                 resultLines.add(lines.get(lineNumber));
             }
         }
         return codeActionDecider.preProcessLines(lines);
     }
-
+    
     private List<String> addTabs(List<String> lines) {
         List<String> resultLines = new ArrayList<>();
         int tabLevel = 0;
@@ -47,12 +45,12 @@ class SourceCodeFormatter {
         }
         return resultLines;
     }
-
+    
     private List<String> addBlankLines(List<String> lines) {
         List<String> resultLines = new ArrayList<>();
         for(int i=0; i< lines.size(); i++) {
             String line = lines.get(i);
-            if(line.isEmpty()) continue;
+            if (line.isEmpty()) continue;
             // add blank lines
             int blankLinesBefore = codeActionDecider.blankLinesBefore(lines, i);
             int bi = 0;
@@ -65,7 +63,7 @@ class SourceCodeFormatter {
         }
         return resultLines;
     }
-
+    
     void withSource(Consumer<String> consumer) {
         consumer.accept(sourceCodeFile.getFormattedLines().stream().collect(Collectors.joining(codeActionDecider.getEol())));
     }

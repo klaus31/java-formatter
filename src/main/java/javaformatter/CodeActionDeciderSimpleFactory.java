@@ -1,16 +1,16 @@
 package javaformatter;
 
-class CodeActionDeciderSimpleFactory {
 
+class CodeActionDeciderSimpleFactory {
     private CodeActionDeciderSimpleFactory() {
     }
-
+    
     static CodeActionDecider create(String suffix) {
         switch (suffix) {
             case "java":
-                return new CodeActionDeciderJava();
+            return new CodeActionDeciderJava();
             default:
-                throw new AssertionError(suffix + " not implemented yet");
+            throw new AssertionError(suffix + " not implemented yet");
         }
     }
 }
