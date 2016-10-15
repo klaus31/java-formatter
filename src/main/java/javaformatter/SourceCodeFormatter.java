@@ -2,7 +2,9 @@ package javaformatter;
 
 import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -66,5 +68,14 @@ class SourceCodeFormatter {
     
     void withSource(Consumer<String> consumer) {
         consumer.accept(sourceCodeFile.getFormattedLines().stream().collect(Collectors.joining(codeActionDecider.getEol())));
+    }
+    public static boolean isProcessable(Path file) {
+        String suffix = file.toString().replaceAll(".*\\.", "");
+        System.out.println("date: " + file.toString());
+        System.out.println("is java file: " + Arrays.asList("java").contains(suffix));
+        System.out.println("exist: " + file.toFile().exists());
+        System.out.println("can write: " + file.toFile().canWrite());
+        System.out.println("can read: " + file.toFile().canRead());
+        return Arrays.asList("java").contains(suffix) && file.toFile().canWrite() && file.toFile().canRead();
     }
 }

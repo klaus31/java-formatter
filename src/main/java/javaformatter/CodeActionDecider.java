@@ -1,13 +1,6 @@
 package javaformatter;
-
-
-
-
-
-
 import java.util.List;
 import java.util.stream.Collectors;
-
 interface CodeActionDecider {
     int tabChangeThisLine(String line);
     

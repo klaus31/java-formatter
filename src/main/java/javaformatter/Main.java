@@ -33,14 +33,20 @@ public class Main {
                 });
                 while (true) {
                     WatchKey watchKey = watchService.take();
+
                     for (WatchEvent<?> event : watchKey.pollEvents()) {
                         Path fileChanged = (Path) event.context();
-                        System.out.println(fileChanged);
+                        // FIXME toAbsolutePath is wrong here - need "dir" from preVisitDirectory
+                        System.out.println("is pross: " + fileChanged.toAbsolutePath());
+                        if (SourceCodeFormatter.isProcessable(fileChanged)) {
+                            System.out.println("WILL FORMAT: " + fileChanged.toString());
+                            new SourceCodeFormatter(new SourceCodeFile(fileChanged)).format();
+                        }
                     }
                     // reset the key
                     boolean valid = watchKey.reset();
                     if (!valid) {
-                        System.out.println("Key has been unregisterede");
+                        System.out.println("Key has been unregistered");
                     }
                 }
             }
