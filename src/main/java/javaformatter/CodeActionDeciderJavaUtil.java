@@ -44,20 +44,20 @@ class CodeActionDeciderJavaUtil {
             lineToSearchIn = killChars(lineToSearchIn);
             return killComments(lineToSearchIn);
         }
-
-    static String killChars(String line) {
-        return killOccurences(line, "'[^']*'");
-    }
-
-    private static String killOccurences(String line, String regex) {
-        String tmp =line.replaceFirst(regex, "");
-        while(!tmp.equals(tmp.replaceFirst(regex, ""))) {
-            tmp =tmp.replaceFirst(regex, "");
+        
+        static String killChars(String line) {
+            return killOccurences(line, "'[^']*'");
         }
-        return tmp;
-    }
-
-    static String killComments(String lineToSearchIn) {
+        
+        private static String killOccurences(String line, String regex) {
+            String tmp =line.replaceFirst(regex, "");
+            while(!tmp.equals(tmp.replaceFirst(regex, ""))) {
+                tmp =tmp.replaceFirst(regex, "");
+            }
+            return tmp;
+        }
+        
+        static String killComments(String lineToSearchIn) {
             String regexSingleLineComment = "//.*";
             lineToSearchIn = lineToSearchIn.replaceAll(regexSingleLineComment, "");
             String regexMultiComment = "/\\*[^\\*/]*\\*/";
@@ -65,8 +65,8 @@ class CodeActionDeciderJavaUtil {
             return tmp.replaceAll("/\\*.*", "");
         }
         
-         static String killStrings(String line) {
-             return killOccurences(line.replaceAll("\\\\\"", ""), "\"[^\"]*[^\\\\]\"");
+        static String killStrings(String line) {
+            return killOccurences(line.replaceAll("\\\\\"", ""), "\"[^\"]*[^\\\\]\"");
         }
         static boolean isPackageDeclaration(String line) {
             return line.matches("^\\s*package.*;");

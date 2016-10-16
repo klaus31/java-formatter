@@ -10,6 +10,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class CodeActionDeciderJavaUtilTest {
+    
     @Test
     public void killStringsShouldDo() {
         assertThat(killStrings("\"lala\""), is(""));
@@ -18,8 +19,7 @@ public class CodeActionDeciderJavaUtilTest {
         assertThat(killStrings("abc\"def\"ghi"), is("abcghi"));
         assertThat(killStrings("abc\"def\"ghi and 123\"456\"789"), is("abcghi and 123789"));
     }
-
-
+    
     @Test
     public void isBlockCloseShouldDo() {
         assertTrue(isBlockClose("}"));
@@ -41,7 +41,7 @@ public class CodeActionDeciderJavaUtilTest {
         assertTrue(isBlockClose("'}'}'}'"));
         assertFalse(isBlockClose("'}' + '}'"));
     }
-
+    
     @Test
     public void isFirstAnnotationOfMethodShouldDo() {
         // given
@@ -55,7 +55,7 @@ public class CodeActionDeciderJavaUtilTest {
             assertThat(isFirstAnnotationOfMethod(lines, 0), is(true));
             assertThat(isFirstAnnotationOfMethod(lines, 1), is(false));
         }
-
+        
         @Test
         public void isMethodDeclarationShouldDo() {
             // given
@@ -72,7 +72,7 @@ public class CodeActionDeciderJavaUtilTest {
                     assertThat(isMethodDeclaration(lines, 3), is(false));
                     assertThat(isMethodDeclaration(lines, 4), is(false));
                 }
-
+                
                 @Test
                 public void isClassDeclarationShouldDo() {
                     // given
@@ -80,7 +80,7 @@ public class CodeActionDeciderJavaUtilTest {
                     lines.add("import com.mongodb.MongoClient;");
                     lines.add("@Configuration");
                     lines.add("class SpringMongoConfig extends AbstractMongoConfig {");
-
+                        
                         lines.add("   public static class SpringMongoConfig extends AbstractMongoConfig { // hihi");
                             lines.add("}");
                             lines.add("}");
@@ -92,7 +92,7 @@ public class CodeActionDeciderJavaUtilTest {
                             assertThat(isClassDeclaration(lines, 4), is(false));
                             assertThat(isClassDeclaration(lines, 5), is(false));
                         }
-
+                        
                         @Test
                         public void isAnnotationShouldDo() {
                             // given
@@ -104,7 +104,7 @@ public class CodeActionDeciderJavaUtilTest {
                                 // when ... then
                                 assertThat(isAnnotation(lines, 1), is(true));
                             }
-
+                            
                             @Test
                             public void hasAnnotationShouldDo() {
                                 // given
@@ -121,7 +121,7 @@ public class CodeActionDeciderJavaUtilTest {
                                     assertThat(hasAnnotation(lines, 3), is(true));
                                     assertThat(hasAnnotation(lines, 4), is(false));
                                 }
-
+                                
                                 @Test
                                 public void isImportShouldDo() {
                                     // given
@@ -142,7 +142,7 @@ public class CodeActionDeciderJavaUtilTest {
                                     assertThat(isImport(lines, 5), is(true));
                                     assertThat(isImport(lines, 6), is(true));
                                 }
-
+                                
                                 @Test
                                 public void isStaticImportShouldDo() {
                                     // given
@@ -153,7 +153,7 @@ public class CodeActionDeciderJavaUtilTest {
                                     assertThat(isStaticImport(lines, 0), is(false));
                                     assertThat(isStaticImport(lines, 1), is(true));
                                 }
-
+                                
                                 @Test
                                 public void isFirstAnnotationOfClassEnumOrInterfaceShouldDo() {
                                     // given
@@ -170,7 +170,7 @@ public class CodeActionDeciderJavaUtilTest {
                                         assertThat(isFirstAnnotationOfClassEnumOrInterface(lines, 3), is(false));
                                         assertThat(isFirstAnnotationOfClassEnumOrInterface(lines, 4), is(false));
                                     }
-
+                                    
                                     @Test
                                     public void isStartOfIfShouldDo() {
                                         assertTrue(isStartOfIf("if(bla)"));
