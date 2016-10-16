@@ -2,6 +2,8 @@
 
 .gradle
 .idea
+*ipr
+*iws
 gradle
 gradlew
 gradlew.bat
