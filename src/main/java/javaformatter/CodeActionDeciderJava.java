@@ -34,9 +34,9 @@ class CodeActionDeciderJava implements CodeActionDecider {
                 line = line
                 .replaceAll("if\\s*\\(", "if \\(")
                 .replaceAll("\\)\\s*\\{", ") \\{");
-                }
-                resultLines.add(line);
             }
-            return resultLines;
+            resultLines.add(line);
         }
+        return resultLines;
     }
+}

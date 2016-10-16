@@ -34,85 +34,84 @@ class CodeActionDeciderJavaUtil {
     }
     static boolean isMethodDeclaration(List<String> lines, int lineNumber) {
         return matches(lines, lineNumber, "(public\\s+|private\\s+|protected\\s+)?.*(void|[A-Z]+\\S*)\\s+.*\\(.*\\)\\s*(throws\\s+[A-Z].*)?\\{");
+    }
+    static boolean isBlockClose(String line) {
+        return killStringsCharsAndComments(line).contains("}");
+    }
+    
+    private static String killStringsCharsAndComments(String line) {
+        String lineToSearchIn = killStrings(line);
+        lineToSearchIn = killChars(lineToSearchIn);
+        return killComments(lineToSearchIn);
+    }
+    
+    static String killChars(String line) {
+        return killOccurences(line, "'[^']*'");
+    }
+    
+    private static String killOccurences(String line, String regex) {
+        String tmp =line.replaceFirst(regex, "");
+        while(!tmp.equals(tmp.replaceFirst(regex, ""))) {
+            tmp =tmp.replaceFirst(regex, "");
         }
-        static boolean isBlockClose(String line) {
-            return killStringsCharsAndComments(line).contains("}");
-        }
-        
-        private static String killStringsCharsAndComments(String line) {
-            String lineToSearchIn = killStrings(line);
-            lineToSearchIn = killChars(lineToSearchIn);
-            return killComments(lineToSearchIn);
-        }
-        
-        static String killChars(String line) {
-            return killOccurences(line, "'[^']*'");
-        }
-        
-        private static String killOccurences(String line, String regex) {
-            String tmp =line.replaceFirst(regex, "");
-            while(!tmp.equals(tmp.replaceFirst(regex, ""))) {
-                tmp =tmp.replaceFirst(regex, "");
-            }
-            return tmp;
-        }
-        
-        static String killComments(String lineToSearchIn) {
-            String regexSingleLineComment = "//.*";
-            lineToSearchIn = lineToSearchIn.replaceAll(regexSingleLineComment, "");
-            String regexMultiComment = "/\\*[^\\*/]*\\*/";
-            String tmp = killOccurences(lineToSearchIn, regexMultiComment);
-            return tmp.replaceAll("/\\*.*", "");
-        }
-        
-        static String killStrings(String line) {
-            return killOccurences(line.replaceAll("\\\\\"", ""), "\"[^\"]*[^\\\\]\"");
-        }
-        static boolean isPackageDeclaration(String line) {
-            return line.matches("^\\s*package.*;");
-        }
-
+        return tmp;
+    }
+    
+    static String killComments(String lineToSearchIn) {
+        String regexSingleLineComment = "//.*";
+        lineToSearchIn = lineToSearchIn.replaceAll(regexSingleLineComment, "");
+        String regexMultiComment = "/\\*[^\\*/]*\\*/";
+        String tmp = killOccurences(lineToSearchIn, regexMultiComment);
+        return tmp.replaceAll("/\\*.*", "");
+    }
+    
+    static String killStrings(String line) {
+        return killOccurences(line.replaceAll("\\\\\"", ""), "\"[^\"]*[^\\\\]\"");
+    }
+    static boolean isPackageDeclaration(String line) {
+        return line.matches("^\\s*package.*;");
+    }
     /**
-     * "block" means something starting and ending with curly braces.
-     * on line blocks in if clauses or cases in switch statements are not detected.
-     */
+    * "block" means something starting and ending with curly braces.
+    * on line blocks in if clauses or cases in switch statements are not detected.
+    */
     static boolean isBlockStart(String line) {
         return killStringsCharsAndComments(line).contains("{");
+    }
+    static boolean isClassDeclaration(List<String> lines, int lineNumber) {
+        return matches(lines.get(lineNumber), ".*class\\s+\\S+.*\\{");
+    }
+    static boolean isEnumDeclaration(List<String> lines, int lineNumber) {
+        return matches(lines.get(lineNumber), ".*enum\\s+\\S+.*\\{");
+    }
+    static boolean isInterfaceDeclaration(List<String> lines, int lineNumber) {
+        return matches(lines.get(lineNumber), ".*interface\\s+\\S+.*\\{");
+    }
+    static boolean isFirstAnnotationOfClassEnumOrInterface(List<String> lines, int lineNumber) {
+        String line = lines.get(lineNumber);
+        
+        if (isAnnotation(line) && (lineNumber == 0 || !isAnnotation(lines, lineNumber - 1))) {
+            int i = lineNumber + 1;
+            while (i < lines.size() && isAnnotation(lines.get(i))) {
+                i++;
             }
-            static boolean isClassDeclaration(List<String> lines, int lineNumber) {
-                return matches(lines.get(lineNumber), ".*class\\s+\\S+.*\\{");
-                }
-                static boolean isEnumDeclaration(List<String> lines, int lineNumber) {
-                    return matches(lines.get(lineNumber), ".*enum\\s+\\S+.*\\{");
-                    }
-                    static boolean isInterfaceDeclaration(List<String> lines, int lineNumber) {
-                        return matches(lines.get(lineNumber), ".*interface\\s+\\S+.*\\{");
-                        }
-                        static boolean isFirstAnnotationOfClassEnumOrInterface(List<String> lines, int lineNumber) {
-                            String line = lines.get(lineNumber);
-                            
-                            if (isAnnotation(line) && (lineNumber == 0 || !isAnnotation(lines, lineNumber - 1))) {
-                                int i = lineNumber + 1;
-                                while (i < lines.size() && isAnnotation(lines.get(i))) {
-                                    i++;
-                                }
-                                return isClassDeclaration(lines, i) || isEnumDeclaration(lines, i) || isInterfaceDeclaration(lines, i);
-                            }
-                            return false;
-                        }
-                        static boolean isFirstAnnotationOfMethod(List<String> lines, int lineNumber) {
-                            String line = lines.get(lineNumber);
-                            
-                            if (isAnnotation(line) && (lineNumber == 0 || !isAnnotation(lines, lineNumber - 1))) {
-                                int i = lineNumber + 1;
-                                while (i < lines.size() && isAnnotation(lines.get(i))) {
-                                    i++;
-                                }
-                                return isMethodDeclaration(lines, i);
-                            }
-                            return false;
-                        }
-                        public static boolean isStartOfIf(String line) {
-                            return matches(line, "if\\s*\\(.+\\).*");
-                        }
-                    }
+            return isClassDeclaration(lines, i) || isEnumDeclaration(lines, i) || isInterfaceDeclaration(lines, i);
+        }
+        return false;
+    }
+    static boolean isFirstAnnotationOfMethod(List<String> lines, int lineNumber) {
+        String line = lines.get(lineNumber);
+        
+        if (isAnnotation(line) && (lineNumber == 0 || !isAnnotation(lines, lineNumber - 1))) {
+            int i = lineNumber + 1;
+            while (i < lines.size() && isAnnotation(lines.get(i))) {
+                i++;
+            }
+            return isMethodDeclaration(lines, i);
+        }
+        return false;
+    }
+    public static boolean isStartOfIf(String line) {
+        return matches(line, "if\\s*\\(.+\\).*");
+    }
+}
