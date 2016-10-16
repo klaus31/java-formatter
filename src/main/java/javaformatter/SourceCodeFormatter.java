@@ -26,7 +26,6 @@ class SourceCodeFormatter {
     
     private List<String> prepare(List<String> lines) {
         List<String> resultLines = new ArrayList<>();
-        
         for(int lineNumber=0; lineNumber< lines.size(); lineNumber++) {
             if (!codeActionDecider.killLine(lines, lineNumber)) {
                 resultLines.add(lines.get(lineNumber));

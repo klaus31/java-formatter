@@ -8,12 +8,14 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class CodeActionDeciderJavaTest {
+    
     @Test
     public void blankLinesBeforeShouldDoOnMultiMethods() {
         // given
         List<String> lines = new ArrayList<>();
         lines.add("public void a() {}");
         lines.add("private static final void b(String b) {}");
+        
         lines.add("void c() {}");
         // when
         CodeActionDeciderJava decider = new CodeActionDeciderJava();
@@ -22,8 +24,7 @@ public class CodeActionDeciderJavaTest {
         assertThat(decider.blankLinesBefore(lines, 1), is(1));
         assertThat(decider.blankLinesBefore(lines, 2), is(1));
     }
-
-
+    
     @Test
     public void preProcessLinesShouldAddSpaces() {
         // given

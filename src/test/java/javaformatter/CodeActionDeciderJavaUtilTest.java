@@ -11,7 +11,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class CodeActionDeciderJavaUtilTest {
-
+    
     @Test
     public void isMethodDeclarationShouldDoOnPublicVoid() {
         // given
@@ -24,7 +24,7 @@ public class CodeActionDeciderJavaUtilTest {
         assertFalse(isMethodDeclaration(code, 1));
         assertFalse(isMethodDeclaration(code, 2));
     }
-
+    
     @Test
     public void isMethodDeclarationShouldReturnFalseOnThat() {
         assertFalse(isMethodDeclaration("public class Foo {"));
@@ -32,7 +32,7 @@ public class CodeActionDeciderJavaUtilTest {
         assertFalse(isMethodDeclaration("int i = 1,"));
         assertFalse(isMethodDeclaration("int i = 1;"));
     }
-
+    
     @Test
     public void isMethodDeclarationShouldDoOnProtectedFinalDate() {
         // given
@@ -45,7 +45,7 @@ public class CodeActionDeciderJavaUtilTest {
         assertFalse(isMethodDeclaration(code, 1));
         assertFalse(isMethodDeclaration(code, 2));
     }
-
+    
     @Test
     public void isMethodDeclarationShouldDoOnPrivateGenericProtectedFinalObject() {
         // given
@@ -58,11 +58,12 @@ public class CodeActionDeciderJavaUtilTest {
         assertFalse(isMethodDeclaration(code, 1));
         assertFalse(isMethodDeclaration(code, 2));
     }
-
+    
     @Test
     public void isMethodDeclarationShouldDoOnPackagePrivateGenericProtectedFinalObject() {
         // given
         List<String> code = new ArrayList<>();
+        
         code.add("Object a(){");
         code.add("b();");
         code.add("}");
@@ -71,7 +72,7 @@ public class CodeActionDeciderJavaUtilTest {
         assertFalse(isMethodDeclaration(code, 1));
         assertFalse(isMethodDeclaration(code, 2));
     }
-
+    
     @Test
     public void isMethodDeclarationShouldDoOnDoEverything() {
         // given
@@ -86,7 +87,7 @@ public class CodeActionDeciderJavaUtilTest {
         assertFalse(isMethodDeclaration(code, 2));
         assertFalse(isMethodDeclaration(code, 3));
     }
-
+    
     @Test
     public void isMethodDeclarationShouldDoOnOneliner() {
         // given
@@ -95,7 +96,7 @@ public class CodeActionDeciderJavaUtilTest {
         // when / then
         assertTrue(isMethodDeclaration(code, 0));
     }
-
+    
     @Test
     public void killStringsShouldDo() {
         assertThat(killStrings("\"lala\""), is(""));

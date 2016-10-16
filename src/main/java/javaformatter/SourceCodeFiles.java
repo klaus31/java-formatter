@@ -18,6 +18,7 @@ class SourceCodeFiles {
         this.javaFiles = Files.find(directory, 999, this::isFileOfInterest).iterator();
         this.suffix = suffix;
     }
+    
     private boolean isFileOfInterest(Path path, BasicFileAttributes basicFileAttributes) {
         return basicFileAttributes.isRegularFile() && path.getFileName().toString().matches("^.+\\." + suffix + "$") && path.toFile().canRead() && path.toFile().canWrite();
     }

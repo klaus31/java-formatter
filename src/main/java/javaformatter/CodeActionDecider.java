@@ -5,11 +5,9 @@ import java.util.stream.Collectors;
 
 interface CodeActionDecider {
     int tabChangeThisLine(String line);
-    
     default String getEol() {
         return "\n"; // 🐧
     }
-    
     default String getIndent() {
         return "    ";
     }
@@ -29,7 +27,6 @@ interface CodeActionDecider {
     * <p>
     * default: trim given line and let it unchanged
     */
-    
     default List<String> preProcessLines(List<String> lines) {
         return lines.stream().map(String::trim).collect(Collectors.toList());
     }
@@ -38,7 +35,6 @@ interface CodeActionDecider {
     * <p>
     * default: do nothing
     */
-    
     default List<String> postProcessFormattedLines(List<String> lines) {
         return lines;
     }
