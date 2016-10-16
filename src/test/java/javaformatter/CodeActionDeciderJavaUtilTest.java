@@ -50,7 +50,7 @@ public class CodeActionDeciderJavaUtilTest {
     public void isMethodDeclarationShouldDoOnPrivateGenericProtectedFinalObject() {
         // given
         List<String> code = new ArrayList<>();
-        code.add("public static <E extends Number> void someMethod(List<E> a, String ... c) throws Bla, Blub<Z> {");
+        code.add("public static <E extends Number> void someMethod_\uD83D\uDE0B_(List<E> a, String ... c) throws Bla, Blub<Z> {");
         code.add("b();");
         code.add("}");
         // when / then

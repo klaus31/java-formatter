@@ -41,7 +41,7 @@ class CodeActionDeciderJavaUtil {
     
     static boolean isMethodDeclaration(String line) {
         line = killComments(line);
-        line = killOccurences(line, "(public|private|protected|static|final|native|synchronized|abstract|transient)").trim();
+        line = killOccurences(line, "(public|private|protected|static|final|native|synchronized|abstract|transient)");
         line = killOccurences(line, "\\[\\s*\\]");
         line = killOccurences(line, "<[^<>]*>");
         line = killOccurences(line, "\\.\\.\\.");
