@@ -40,6 +40,27 @@ public class CodeActionDeciderJavaUtilTest {
         assertTrue(isBlockClose("'}'}"));
         assertTrue(isBlockClose("'}'}'}'"));
         assertFalse(isBlockClose("'}' + '}'"));
+    }    @Test
+
+    public void isBlockStartShouldDo() {
+        assertTrue(isBlockStart("{"));
+        assertFalse(isBlockStart("\"{\""));
+        assertFalse(isBlockStart("// {"));
+        assertFalse(isBlockStart("/* { */"));
+        assertFalse(isBlockStart("/* { "));
+        assertFalse(isBlockStart("/* {{{ */"));
+        assertFalse(isBlockStart("/* {{/* } */ */"));
+        assertFalse(isBlockStart("\"\\\"{\""));
+        assertTrue(isBlockStart("{ \"{\""));
+        assertTrue(isBlockStart("\"{\"{"));
+        assertTrue(isBlockStart("{//"));
+        assertTrue(isBlockStart("\"{\"{\"{\""));
+        assertTrue(isBlockStart("/*{*/{\"{\""));
+        assertTrue(isBlockStart("/*{*/{/*{*/"));
+        assertFalse(isBlockStart("'{'"));
+        assertTrue(isBlockStart("'{'{"));
+        assertTrue(isBlockStart("'{'{'{'"));
+        assertFalse(isBlockStart("'{' + '{'"));
     }
     
     @Test

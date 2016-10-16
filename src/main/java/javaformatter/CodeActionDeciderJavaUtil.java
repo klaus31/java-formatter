@@ -71,8 +71,13 @@ class CodeActionDeciderJavaUtil {
         static boolean isPackageDeclaration(String line) {
             return line.matches("^\\s*package.*;");
         }
-        static boolean isBlockStart(String line) {
-            return line.matches("^.*\\{.*$");
+
+    /**
+     * "block" means something starting and ending with curly braces.
+     * on line blocks in if clauses or cases in switch statements are not detected.
+     */
+    static boolean isBlockStart(String line) {
+        return killStringsCharsAndComments(line).contains("{");
             }
             static boolean isClassDeclaration(List<String> lines, int lineNumber) {
                 return matches(lines.get(lineNumber), ".*class\\s+\\S+.*\\{");
