@@ -26,6 +26,14 @@ public class CodeActionDeciderJavaUtilTest {
     }
 
     @Test
+    public void isMethodDeclarationShouldReturnFalseOnThat() {
+        assertFalse(isMethodDeclaration("public class Foo {"));
+        assertFalse(isMethodDeclaration("int i = 1"));
+        assertFalse(isMethodDeclaration("int i = 1,"));
+        assertFalse(isMethodDeclaration("int i = 1;"));
+    }
+
+    @Test
     public void isMethodDeclarationShouldDoOnProtectedFinalDate() {
         // given
         List<String> code = new ArrayList<>();
@@ -42,7 +50,7 @@ public class CodeActionDeciderJavaUtilTest {
     public void isMethodDeclarationShouldDoOnPrivateGenericProtectedFinalObject() {
         // given
         List<String> code = new ArrayList<>();
-        code.add("private <T> final Object a(){");
+        code.add("public static <E extends Number> void someMethod(List<E> a, String ... c) throws Bla, Blub<Z> {");
         code.add("b();");
         code.add("}");
         // when / then
@@ -77,6 +85,15 @@ public class CodeActionDeciderJavaUtilTest {
         assertTrue(isMethodDeclaration(code, 1));
         assertFalse(isMethodDeclaration(code, 2));
         assertFalse(isMethodDeclaration(code, 3));
+    }
+
+    @Test
+    public void isMethodDeclarationShouldDoOnOneliner() {
+        // given
+        List<String> code = new ArrayList<>();
+        code.add("public void a() {}");
+        // when / then
+        assertTrue(isMethodDeclaration(code, 0));
     }
 
     @Test

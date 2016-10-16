@@ -2,6 +2,8 @@ package javaformatter;
 
 import java.util.List;
 import static org.apache.commons.lang3.StringUtils.countMatches;
+import static org.apache.commons.lang3.StringUtils.replaceOnce;
+
 /**
 * First line: lineNumber == 0 !!!
 */
@@ -32,13 +34,21 @@ class CodeActionDeciderJavaUtil {
     static boolean isStaticImport(List<String> lines, int lineNumber) {
         return matches(lines, lineNumber, "import\\s+static\\s+\\S+\\s*;");
     }
+    static boolean isMethodDeclaration(String line) {
+        line = killComments(line);
+        line = killOccurences(line, "(public|private|protected|static|final|native|synchronized|abstract|transient)").trim();
+        line = killOccurences(line, "\\[\\s*\\]");
+        line = killOccurences(line, "<[^<>]*>");
+        line = killOccurences(line, "\\.\\.\\.");
+        return matches(line.trim(), "(void|\\S+)\\s+\\S+\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{]*)?(\\{.*)?");
+    }
     static boolean isMethodDeclaration(List<String> lines, int lineNumber) {
-        return matches(lines, lineNumber, "(public\\s+|private\\s+|protected\\s+)?.*(void|[A-Z]+\\S*)\\s+.*\\(.*\\)\\s*(throws\\s+[A-Z].*)?\\{");
+        return isMethodDeclaration(lines.get(lineNumber));
     }
     static boolean isBlockClose(String line) {
         return killStringsCharsAndComments(line).contains("}");
     }
-    
+
     private static String killStringsCharsAndComments(String line) {
         String lineToSearchIn = killStrings(line);
         lineToSearchIn = killChars(lineToSearchIn);
