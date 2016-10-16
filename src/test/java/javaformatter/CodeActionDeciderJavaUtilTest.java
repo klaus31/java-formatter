@@ -2,6 +2,7 @@ package javaformatter;
 
 import org.junit.Test;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import static javaformatter.CodeActionDeciderJavaUtil.*;
 import static org.hamcrest.core.Is.is;
@@ -10,7 +11,74 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class CodeActionDeciderJavaUtilTest {
-    
+
+    @Test
+    public void isMethodDeclarationShouldDoOnPublicVoid() {
+        // given
+        List<String> code = new ArrayList<>();
+        code.add("public void a(){");
+        code.add("b();");
+        code.add("}");
+        // when / then
+        assertTrue(isMethodDeclaration(code, 0));
+        assertFalse(isMethodDeclaration(code, 1));
+        assertFalse(isMethodDeclaration(code, 2));
+    }
+
+    @Test
+    public void isMethodDeclarationShouldDoOnProtectedFinalDate() {
+        // given
+        List<String> code = new ArrayList<>();
+        code.add("protected final Date a(){");
+        code.add("b();");
+        code.add("}");
+        // when / then
+        assertTrue(isMethodDeclaration(code, 0));
+        assertFalse(isMethodDeclaration(code, 1));
+        assertFalse(isMethodDeclaration(code, 2));
+    }
+
+    @Test
+    public void isMethodDeclarationShouldDoOnPrivateGenericProtectedFinalObject() {
+        // given
+        List<String> code = new ArrayList<>();
+        code.add("private <T> final Object a(){");
+        code.add("b();");
+        code.add("}");
+        // when / then
+        assertTrue(isMethodDeclaration(code, 0));
+        assertFalse(isMethodDeclaration(code, 1));
+        assertFalse(isMethodDeclaration(code, 2));
+    }
+
+    @Test
+    public void isMethodDeclarationShouldDoOnPackagePrivateGenericProtectedFinalObject() {
+        // given
+        List<String> code = new ArrayList<>();
+        code.add("Object a(){");
+        code.add("b();");
+        code.add("}");
+        // when / then
+        assertTrue(isMethodDeclaration(code, 0));
+        assertFalse(isMethodDeclaration(code, 1));
+        assertFalse(isMethodDeclaration(code, 2));
+    }
+
+    @Test
+    public void isMethodDeclarationShouldDoOnDoEverything() {
+        // given
+        List<String> code = new ArrayList<>();
+        code.add("@Autowired");
+        code.add("<T> static Object<U> a(final String a, final Date<WTF> b){");
+        code.add("b();");
+        code.add("}");
+        // when / then
+        assertFalse(isMethodDeclaration(code, 0));
+        assertTrue(isMethodDeclaration(code, 1));
+        assertFalse(isMethodDeclaration(code, 2));
+        assertFalse(isMethodDeclaration(code, 3));
+    }
+
     @Test
     public void killStringsShouldDo() {
         assertThat(killStrings("\"lala\""), is(""));
