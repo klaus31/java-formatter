@@ -14,6 +14,7 @@ interface CodeActionDecider {
     int tabChangeNextLine(String line);
     int blankLinesBefore(List<String> lines, int lineNumber);
     int blankLinesAfter(String line);
+    
     /**
     * part of the prepare process: Do want to kill before formatting the code? return true then.
     * <p>
@@ -22,6 +23,7 @@ interface CodeActionDecider {
     default boolean killLine(List<String> lines, int lineNumber) {
         return lines.get(lineNumber).trim().isEmpty();
     }
+    
     /**
     * do want to split lines? do it here!
     * <p>
@@ -30,6 +32,7 @@ interface CodeActionDecider {
     default List<String> preProcessLines(List<String> lines) {
         return lines.stream().map(String::trim).collect(Collectors.toList());
     }
+    
     /**
     * after code is formatted, you can do other things on the formatted code here (like reorder imports or destroy everything).
     * <p>

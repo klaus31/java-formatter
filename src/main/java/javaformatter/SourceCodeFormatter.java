@@ -31,7 +31,7 @@ class SourceCodeFormatter {
                 resultLines.add(lines.get(lineNumber));
             }
         }
-        return codeActionDecider.preProcessLines(lines);
+        return codeActionDecider.preProcessLines(resultLines);
     }
     
     private List<String> addTabs(List<String> lines) {
@@ -50,11 +50,13 @@ class SourceCodeFormatter {
         for(int i=0; i< lines.size(); i++) {
             String line = lines.get(i);
             if (line.isEmpty()) continue;
+            
             // add blank lines
             int blankLinesBefore = codeActionDecider.blankLinesBefore(lines, i);
             int bi = 0;
             while(bi++ < blankLinesBefore) resultLines.add("");
             resultLines.add(line);
+            
             // add blank lines
             int blankLinesAfter = codeActionDecider.blankLinesAfter(line);
             int ai = 0;

@@ -16,13 +16,15 @@ class CodeActionDeciderJava implements CodeActionDecider {
     }
     
     public int blankLinesBefore(final List<String> lines, final int lineNumber) {
-        if (isFirstAnnotationOfMethod(lines, lineNumber)) return 1;
-        if (isFirstAnnotationOfClassEnumOrInterface(lines, lineNumber)) return 1;
+        if (isFirstLineOfDoc(lines, lineNumber)) return 1;
+        boolean hasDoc = hasDoc(lines, lineNumber);
+        if (isFirstAnnotationOfMethod(lines, lineNumber) && !hasDoc) return 1;
+        if (isFirstAnnotationOfClassEnumOrInterface(lines, lineNumber) && !hasDoc) return 1;
         boolean hasAnnotation = hasAnnotation(lines, lineNumber);
-        if (isMethodDeclaration(lines, lineNumber) && !hasAnnotation) return 1;
-        if (isClassDeclaration(lines, lineNumber) && !hasAnnotation) return 1;
-        if (isEnumDeclaration(lines, lineNumber) && !hasAnnotation) return 1;
-        if (isInterfaceDeclaration(lines, lineNumber) && !hasAnnotation) return 1;
+        if (isMethodDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
+        if (isClassDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
+        if (isEnumDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
+        if (isInterfaceDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
         return 0;
     }
     

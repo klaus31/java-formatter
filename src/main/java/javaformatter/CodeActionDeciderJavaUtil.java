@@ -1,10 +1,10 @@
 package javaformatter;
 
 import java.util.List;
+
 /**
 * First line: lineNumber == 0 !!!
 */
-
 class CodeActionDeciderJavaUtil {
     private CodeActionDeciderJavaUtil() {
     }
@@ -52,6 +52,29 @@ class CodeActionDeciderJavaUtil {
         return isMethodDeclaration(lines.get(lineNumber));
     }
     
+    static boolean isFirstLineOfDoc(List<String> lines, final int lineNumber) {
+        return lines.get(lineNumber).trim().matches("(/\\*|//).*");
+    }
+    
+    static boolean hasDoc(List<String> lines, final int lineNumber) {
+        int i = lineNumber - 1;
+        return i >= 0 && (isAnnotation(lines.get(i)) ? hasDoc(lines, i) : containsDoc(lines, i) && !containsDoc(lines, i + 1));
+    }
+    
+    // TODO inaccurate and bad performance yet
+    static boolean containsDoc(List<String> lines, final int lineNumber) {
+        int i = lineNumber;
+        while(i >= 0) {
+            String line = killStrings(lines.get(i).trim());
+            line = killChars(line);
+            if (line.matches(".*\\*/")) return i == lineNumber;
+            if (line.matches(".*/\\*.*")) return true;
+            if (line.matches(".*//.*")) return i == lineNumber;
+            i--;
+        }
+        return false;
+    }
+    
     static boolean isBlockClose(String line) {
         return killStringsCharsAndComments(line).contains("}");
     }
@@ -89,11 +112,11 @@ class CodeActionDeciderJavaUtil {
     static boolean isPackageDeclaration(String line) {
         return line.matches("^\\s*package.*;");
     }
+    
     /**
     * "block" means something starting and ending with curly braces.
     * on line blocks in if clauses or cases in switch statements are not detected.
     */
-    
     static boolean isBlockStart(String line) {
         return killStringsCharsAndComments(line).contains("{");
     }
