@@ -12,10 +12,9 @@ class SourceCodeFormatter {
     private final SourceCodeFile sourceCodeFile;
     
     private final CodeActionDecider codeActionDecider;
+    
     SourceCodeFormatter(SourceCodeFile sourceCodeFile) {
-        
         this.sourceCodeFile = sourceCodeFile;
-        
         this.codeActionDecider = CodeActionDeciderSimpleFactory.create(sourceCodeFile.getSuffix());
     }
     
@@ -41,6 +40,7 @@ class SourceCodeFormatter {
     private List<String> addTabs(List<String> lines) {
         List<String> resultLines = new ArrayList<>();
         int tabLevel = 0;
+        
         for(String line : lines) {
             tabLevel += codeActionDecider.tabChangeThisLine(line);
             resultLines.add(StringUtils.repeat(codeActionDecider.getIndent(), tabLevel) + line);

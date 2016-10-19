@@ -11,8 +11,8 @@ class SourceCodeFile {
     private final Path path;
     
     private List<String> formattedLines;
+    
     SourceCodeFile(Path path) {
-        
         this.path = path;
     }
     

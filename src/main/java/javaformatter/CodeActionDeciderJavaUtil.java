@@ -1,14 +1,14 @@
 package javaformatter;
 
-import org.apache.commons.lang3.StringUtils;
 import java.util.List;
-import java.util.Optional;
+
 import static org.apache.commons.lang3.StringUtils.countMatches;
 
 /**
 * First line: lineNumber == 0 !!!
 */
 class CodeActionDeciderJavaUtil {
+    
     private CodeActionDeciderJavaUtil() {
     }
     
@@ -20,7 +20,7 @@ class CodeActionDeciderJavaUtil {
         return lineNumber != 0 && !isAnnotation(lines, lineNumber) && isAnnotation(lines, lineNumber - 1);
     }
     
-    static boolean isAnnotation(String line) {
+    private static boolean isAnnotation(String line) {
         return line.matches("^\\s*@.*");
     }
     
@@ -44,11 +44,20 @@ class CodeActionDeciderJavaUtil {
     
     static boolean isMethodDeclaration(String line) {
         line = killComments(line);
-        line = killOccurences(line, "(public|private|protected|static|final|native|synchronized|abstract|transient|default)");
-        line = killOccurences(line, "\\[\\s*\\]");
-        line = killOccurences(line, "<[^<>]*>");
-        line = killOccurences(line, "\\.\\.\\.");
+        line = killOccurrences(line, "(public|private|protected|static|final|native|synchronized|abstract|transient|default)");
+        line = killOccurrences(line, "\\[\\s*\\]");
+        line = killOccurrences(line, "<[^<>]*>");
+        line = killOccurrences(line, "\\.\\.\\.");
         return matches(line.trim(), "(void|\\S+)\\s+\\S+\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{]*)?(\\{.*)?");
+    }
+    
+    static boolean isConstructorDeclaration(String line) {
+        line = killComments(line);
+        line = killOccurrences(line, "(public|private|protected|final)");
+        line = killOccurrences(line, "\\[\\s*\\]");
+        line = killOccurrences(line, "<[^<>]*>");
+        line = killOccurrences(line, "\\.\\.\\.");
+        return matches(line.trim(), "\\S+\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{]*)?(\\{.*)?");
     }
     
     static boolean isMethodDeclaration(List<String> lines, int lineNumber) {
@@ -67,6 +76,7 @@ class CodeActionDeciderJavaUtil {
     // TODO inaccurate and bad performance yet
     static boolean containsDoc(List<String> lines, final int lineNumber) {
         int i = lineNumber;
+        
         while(i >= 0) {
             String line = killStrings(lines.get(i).trim());
             line = killChars(line);
@@ -80,11 +90,12 @@ class CodeActionDeciderJavaUtil {
     
     static boolean isFieldDeclaration(List<String> lines, final int lineNumber) {
         String line = killStringsCharsAndComments(lines.get(lineNumber)).trim();
-        return line.matches("\\S+.*;$") && !isPartOfAMethod(lines, lineNumber) && !isPackageDeclaration(line) && !isImport(lines, lineNumber);
+        return line.matches("\\S+.*;$") && !isPartOfAMethod(lines, lineNumber) && !isPackageDeclaration(line) && !isImport(lines, lineNumber) && !isPartOfAConstructor(lines, lineNumber);
     }
     
     static boolean isPartOfAMethod(List<String> lines, final int lineNumber) {
         int startOfDeclaration = -1;
+        
         for(int i = lineNumber;i > 0;i--) {
             if (isMethodDeclaration(lines, i)) {
                 startOfDeclaration = i;
@@ -110,6 +121,38 @@ class CodeActionDeciderJavaUtil {
         return false;
     }
     
+    private static boolean isPartOfAConstructor(List<String> lines, final int lineNumber) {
+        int startOfDeclaration = -1;
+        
+        for(int i = lineNumber;i > 0;i--) {
+            if (isConstructorDeclaration(lines, i)) {
+                startOfDeclaration = i;
+                break;
+            }
+        }
+        if (startOfDeclaration >= 0) {
+            int curlyBraces = 0;
+            int endOfDeclaration = startOfDeclaration;
+            String line = "";
+            for(;curlyBraces == 0 && endOfDeclaration < lines.size();endOfDeclaration++) {
+                line = killStringsCharsAndComments(lines.get(endOfDeclaration));
+                curlyBraces += countMatches(line, "{");
+            }
+            curlyBraces -= countMatches(line, "}");
+            for(;curlyBraces != 0 && endOfDeclaration < lines.size();endOfDeclaration++) {
+                line = killStringsCharsAndComments(lines.get(endOfDeclaration));
+                curlyBraces += countMatches(line, "{");
+                curlyBraces -= countMatches(line, "}");
+            }
+            return lineNumber >= startOfDeclaration && lineNumber < endOfDeclaration;
+        }
+        return false;
+    }
+    
+    static boolean isConstructorDeclaration(List<String> lines, int lineNumber) {
+        return isConstructorDeclaration(lines.get(lineNumber));
+    }
+    
     static boolean isBlockClose(String line) {
         return killStringsCharsAndComments(line).contains("}");
     }
@@ -120,11 +163,11 @@ class CodeActionDeciderJavaUtil {
         return killComments(lineToSearchIn);
     }
     
-    static String killChars(String line) {
-        return killOccurences(line, "'[^']*'");
+    private static String killChars(String line) {
+        return killOccurrences(line, "'[^']*'");
     }
     
-    private static String killOccurences(String line, String regex) {
+    private static String killOccurrences(String line, String regex) {
         String tmp =line.replaceFirst(regex, "");
         while(!tmp.equals(tmp.replaceFirst(regex, ""))) {
             tmp =tmp.replaceFirst(regex, "");
@@ -132,16 +175,16 @@ class CodeActionDeciderJavaUtil {
         return tmp;
     }
     
-    static String killComments(String lineToSearchIn) {
+    private static String killComments(String lineToSearchIn) {
         String regexSingleLineComment = "//.*";
         lineToSearchIn = lineToSearchIn.replaceAll(regexSingleLineComment, "");
         String regexMultiComment = "/\\*[^\\*/]*\\*/";
-        String tmp = killOccurences(lineToSearchIn, regexMultiComment);
+        String tmp = killOccurrences(lineToSearchIn, regexMultiComment);
         return tmp.replaceAll("/\\*.*", "");
     }
     
     static String killStrings(String line) {
-        return killOccurences(line.replaceAll("\\\\\"", ""), "\"[^\"]*[^\\\\]\"");
+        return killOccurrences(line.replaceAll("\\\\\"", ""), "\"[^\"]*[^\\\\]\"");
     }
     
     static boolean isPackageDeclaration(String line) {

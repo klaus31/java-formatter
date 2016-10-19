@@ -2,6 +2,7 @@ package javaformatter;
 
 
 class CodeActionDeciderSimpleFactory {
+    
     private CodeActionDeciderSimpleFactory() {
     }
     

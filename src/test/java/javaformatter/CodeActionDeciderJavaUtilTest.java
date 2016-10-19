@@ -58,11 +58,13 @@ public class CodeActionDeciderJavaUtilTest {
         code.add("String d;"); // 5
         code.add("public void d() {"); // 6
         code.add("int a = 5;"); // 7
+        
         code.add("if(true){ // hihi {"); // 8
         code.add("while(getFoo()) {"); // 9
         code.add("System.out.println(3);"); // 10
         code.add("}"); // 11
         code.add("}"); // 12
+        
         code.add("switch(HUHU) {"); // 13
         code.add("case 3:"); // 14
         code.add("bla();"); // 15
@@ -278,6 +280,19 @@ public class CodeActionDeciderJavaUtilTest {
         assertFalse(isMethodDeclaration("int i = 1"));
         assertFalse(isMethodDeclaration("int i = 1,"));
         assertFalse(isMethodDeclaration("int i = 1;"));
+    }
+    
+    @Test
+    public void isConstructorDeclarationShouldDo() {
+        assertFalse(isConstructorDeclaration("public class Foo {"));
+        assertFalse(isConstructorDeclaration("int i = 1"));
+        assertFalse(isConstructorDeclaration("public void foo()"));
+        
+        assertTrue(isConstructorDeclaration("Foo(){"));
+        
+        assertTrue(isConstructorDeclaration("Foo(String ... args){"));
+        
+        assertTrue(isConstructorDeclaration("public Foo(String ... args){"));
     }
     
     @Test

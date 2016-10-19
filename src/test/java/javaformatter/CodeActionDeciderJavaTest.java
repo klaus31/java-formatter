@@ -33,6 +33,7 @@ public class CodeActionDeciderJavaTest {
         
         // given
         List<String> lines = new ArrayList<>();
+        
         lines.add("if(true){");
         
         // when
