@@ -1,6 +1,9 @@
 package javaformatter;
 
+import org.apache.commons.lang3.StringUtils;
 import java.util.List;
+import java.util.Optional;
+import static org.apache.commons.lang3.StringUtils.countMatches;
 
 /**
 * First line: lineNumber == 0 !!!
@@ -41,7 +44,7 @@ class CodeActionDeciderJavaUtil {
     
     static boolean isMethodDeclaration(String line) {
         line = killComments(line);
-        line = killOccurences(line, "(public|private|protected|static|final|native|synchronized|abstract|transient)");
+        line = killOccurences(line, "(public|private|protected|static|final|native|synchronized|abstract|transient|default)");
         line = killOccurences(line, "\\[\\s*\\]");
         line = killOccurences(line, "<[^<>]*>");
         line = killOccurences(line, "\\.\\.\\.");
@@ -71,6 +74,38 @@ class CodeActionDeciderJavaUtil {
             if (line.matches(".*/\\*.*")) return true;
             if (line.matches(".*//.*")) return i == lineNumber;
             i--;
+        }
+        return false;
+    }
+    
+    static boolean isFieldDeclaration(List<String> lines, final int lineNumber) {
+        String line = killStringsCharsAndComments(lines.get(lineNumber)).trim();
+        return line.matches("\\S+.*;$") && !isPartOfAMethod(lines, lineNumber) && !isPackageDeclaration(line) && !isImport(lines, lineNumber);
+    }
+    
+    static boolean isPartOfAMethod(List<String> lines, final int lineNumber) {
+        int startOfDeclaration = -1;
+        for(int i = lineNumber;i > 0;i--) {
+            if (isMethodDeclaration(lines, i)) {
+                startOfDeclaration = i;
+                break;
+            }
+        }
+        if (startOfDeclaration >= 0) {
+            int curlyBraces = 0;
+            int endOfDeclaration = startOfDeclaration;
+            String line = "";
+            for(;curlyBraces == 0 && endOfDeclaration < lines.size();endOfDeclaration++) {
+                line = killStringsCharsAndComments(lines.get(endOfDeclaration));
+                curlyBraces += countMatches(line, "{");
+            }
+            curlyBraces -= countMatches(line, "}");
+            for(;curlyBraces != 0 && endOfDeclaration < lines.size();endOfDeclaration++) {
+                line = killStringsCharsAndComments(lines.get(endOfDeclaration));
+                curlyBraces += countMatches(line, "{");
+                curlyBraces -= countMatches(line, "}");
+            }
+            return lineNumber >= startOfDeclaration && lineNumber < endOfDeclaration;
         }
         return false;
     }
@@ -153,6 +188,18 @@ class CodeActionDeciderJavaUtil {
                 i++;
             }
             return isMethodDeclaration(lines, i);
+        }
+        return false;
+    }
+    
+    static boolean isFirstAnnotationOfField(List<String> lines, int lineNumber) {
+        String line = lines.get(lineNumber);
+        if (isAnnotation(line) && (lineNumber == 0 || !isAnnotation(lines, lineNumber - 1))) {
+            int i = lineNumber + 1;
+            while (i < lines.size() && isAnnotation(lines.get(i))) {
+                i++;
+            }
+            return isFieldDeclaration(lines, i);
         }
         return false;
     }

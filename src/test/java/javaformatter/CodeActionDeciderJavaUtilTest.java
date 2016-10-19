@@ -1,5 +1,6 @@
 package javaformatter;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,135 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class CodeActionDeciderJavaUtilTest {
+    
+    @Test
+    public void isFieldDeclarationShouldDo() {
+        
+        // given
+        List<String> code = new ArrayList<>();
+        code.add("public class A {");
+        code.add("");
+        code.add("@B");
+        code.add("String c;");
+        code.add("/** this is d ;*/");
+        code.add("String d;");
+        code.add("int e = 5;");
+        code.add("private static final int F = 5_000;");
+        code.add("private static final Consumer F = () -> whatever();");
+        code.add("private class D {");
+        code.add("public void b() {");
+        code.add("public void b(@Param(\"wtf;omg\") String wtf) {");
+        
+        // when / then
+        assertFalse(isFieldDeclaration(code, 0));
+        assertFalse(isFieldDeclaration(code, 1));
+        assertFalse(isFieldDeclaration(code, 2));
+        assertTrue(isFieldDeclaration(code, 3));
+        assertFalse(isFieldDeclaration(code, 4));
+        assertTrue(isFieldDeclaration(code, 5));
+        assertTrue(isFieldDeclaration(code, 6));
+        assertTrue(isFieldDeclaration(code, 7));
+        assertTrue(isFieldDeclaration(code, 8));
+        assertFalse(isFieldDeclaration(code, 9));
+        assertFalse(isFieldDeclaration(code, 10));
+        assertFalse(isFieldDeclaration(code, 11));
+    }
+    
+    @Test
+    public void isPartOfAMethodShouldDo() {
+        
+        // given
+        List<String> code = new ArrayList<>();
+        code.add("public class A {"); // 0
+        code.add(""); // 1
+        code.add("@B"); // 2
+        code.add("String c;"); // 3
+        code.add("/** this is d */"); // 4
+        code.add("String d;"); // 5
+        code.add("public void d() {"); // 6
+        code.add("int a = 5;"); // 7
+        code.add("if(true){ // hihi {"); // 8
+        code.add("while(getFoo()) {"); // 9
+        code.add("System.out.println(3);"); // 10
+        code.add("}"); // 11
+        code.add("}"); // 12
+        code.add("switch(HUHU) {"); // 13
+        code.add("case 3:"); // 14
+        code.add("bla();"); // 15
+        code.add(""); // 16
+        code.add("break;"); // 17
+        code.add("}"); // 18
+        code.add("}"); // 19
+        code.add(""); // 20
+        code.add("static String RICK;"); // 21
+        
+        // when / then
+        assertFalse(isPartOfAMethod(code, 0));
+        assertFalse(isPartOfAMethod(code, 1));
+        assertFalse(isPartOfAMethod(code, 2));
+        assertFalse(isPartOfAMethod(code, 3));
+        assertFalse(isPartOfAMethod(code, 4));
+        assertFalse(isPartOfAMethod(code, 5));
+        assertTrue(isPartOfAMethod(code, 6));
+        assertTrue(isPartOfAMethod(code, 7));
+        assertTrue(isPartOfAMethod(code, 8));
+        assertTrue(isPartOfAMethod(code, 9));
+        assertTrue(isPartOfAMethod(code, 10));
+        assertTrue(isPartOfAMethod(code, 11));
+        assertTrue(isPartOfAMethod(code, 12));
+        assertTrue(isPartOfAMethod(code, 13));
+        assertTrue(isPartOfAMethod(code, 14));
+        assertTrue(isPartOfAMethod(code, 15));
+        assertTrue(isPartOfAMethod(code, 16));
+        assertTrue(isPartOfAMethod(code, 17));
+        assertTrue(isPartOfAMethod(code, 18));
+        assertTrue(isPartOfAMethod(code, 19));
+        assertFalse(isPartOfAMethod(code, 20));
+        assertFalse(isPartOfAMethod(code, 21));
+    }
+    
+    @Test
+    public void isPartOfAMethodShouldDoOnCurliesOnNextLine() {
+        
+        // given
+        List<String> code = new ArrayList<>();
+        code.add("static String RICK;"); // 0
+        code.add("void efg()"); // 1
+        code.add("{"); // 2
+        code.add("}"); // 3
+        code.add("static String RICK;"); // 4
+        
+        // when / then
+        assertFalse(isPartOfAMethod(code, 0));
+        assertTrue(isPartOfAMethod(code, 1));
+        assertTrue(isPartOfAMethod(code, 2));
+        assertTrue(isPartOfAMethod(code, 3));
+        assertFalse(isPartOfAMethod(code, 4));
+    }
+    
+    @Test
+    public void isPartOfAMethodShouldDoOnOneliner() {
+        
+        // given
+        List<String> code = new ArrayList<>();
+        code.add("static String RICK;"); // 0
+        
+        code.add("void a(){}"); // 1
+        code.add("static String RICK;"); // 2
+        
+        code.add("void b(){}"); // 3
+        
+        code.add("void c(){}"); // 4
+        code.add("static String BERTA;"); // 5
+        
+        // when / then
+        assertFalse(isPartOfAMethod(code, 0));
+        assertTrue(isPartOfAMethod(code, 1));
+        assertFalse(isPartOfAMethod(code, 2));
+        assertTrue(isPartOfAMethod(code, 3));
+        assertTrue(isPartOfAMethod(code, 4));
+        assertFalse(isPartOfAMethod(code, 5));
+    }
     
     @Test
     public void isFirstLineOfDocShouldDo() {
@@ -105,6 +235,44 @@ public class CodeActionDeciderJavaUtilTest {
     }
     
     @Test
+    public void isMethodDeclarationShouldDoOnCurlyBraceNextLine() {
+        
+        // given
+        List<String> code = new ArrayList<>();
+        code.add("public void a()");
+        code.add("{");
+        code.add("b();");
+        code.add("}");
+        
+        // when / then
+        assertTrue(isMethodDeclaration(code, 0));
+        assertFalse(isMethodDeclaration(code, 1));
+        assertFalse(isMethodDeclaration(code, 2));
+        assertFalse(isMethodDeclaration(code, 3));
+    }
+    
+    @Test
+    public void isMethodDeclarationShouldDoOnOneliner() {
+        
+        // given
+        List<String> code = new ArrayList<>();
+        code.add("public void a(){}");
+        code.add("private int b;");
+        code.add("public void c(){}");
+        code.add("private int d;");
+        code.add("public void e(){}");
+        code.add("private int f;");
+        
+        // when / then
+        assertTrue(isMethodDeclaration(code, 0));
+        assertFalse(isMethodDeclaration(code, 1));
+        assertTrue(isMethodDeclaration(code, 2));
+        assertFalse(isMethodDeclaration(code, 3));
+        assertTrue(isMethodDeclaration(code, 4));
+        assertFalse(isMethodDeclaration(code, 5));
+    }
+    
+    @Test
     public void isMethodDeclarationShouldReturnFalseOnThat() {
         assertFalse(isMethodDeclaration("public class Foo {"));
         assertFalse(isMethodDeclaration("int i = 1"));
@@ -173,17 +341,6 @@ public class CodeActionDeciderJavaUtilTest {
         assertTrue(isMethodDeclaration(code, 1));
         assertFalse(isMethodDeclaration(code, 2));
         assertFalse(isMethodDeclaration(code, 3));
-    }
-    
-    @Test
-    public void isMethodDeclarationShouldDoOnOneliner() {
-        
-        // given
-        List<String> code = new ArrayList<>();
-        code.add("public void a() {}");
-        
-        // when / then
-        assertTrue(isMethodDeclaration(code, 0));
     }
     
     @Test

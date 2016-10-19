@@ -4,15 +4,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 interface CodeActionDecider {
+    
     int tabChangeThisLine(String line);
+    
     default String getEol() {
         return "\n"; // 🐧
     }
+    
     default String getIndent() {
         return "    ";
     }
+    
     int tabChangeNextLine(String line);
+    
     int blankLinesBefore(List<String> lines, int lineNumber);
+    
     int blankLinesAfter(String line);
     
     /**

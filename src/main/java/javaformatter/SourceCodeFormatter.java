@@ -8,10 +8,14 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 class SourceCodeFormatter {
+    
     private final SourceCodeFile sourceCodeFile;
+    
     private final CodeActionDecider codeActionDecider;
     SourceCodeFormatter(SourceCodeFile sourceCodeFile) {
+        
         this.sourceCodeFile = sourceCodeFile;
+        
         this.codeActionDecider = CodeActionDeciderSimpleFactory.create(sourceCodeFile.getSuffix());
     }
     

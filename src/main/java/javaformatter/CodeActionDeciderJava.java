@@ -19,8 +19,10 @@ class CodeActionDeciderJava implements CodeActionDecider {
         if (isFirstLineOfDoc(lines, lineNumber)) return 1;
         boolean hasDoc = hasDoc(lines, lineNumber);
         if (isFirstAnnotationOfMethod(lines, lineNumber) && !hasDoc) return 1;
+        if (isFirstAnnotationOfField(lines, lineNumber) && !hasDoc) return 1;
         if (isFirstAnnotationOfClassEnumOrInterface(lines, lineNumber) && !hasDoc) return 1;
         boolean hasAnnotation = hasAnnotation(lines, lineNumber);
+        if (isFieldDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
         if (isMethodDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
         if (isClassDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
         if (isEnumDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;

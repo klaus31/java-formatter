@@ -8,14 +8,20 @@ import java.util.Iterator;
 import java.util.function.Consumer;
 
 class SourceCodeFiles {
+    
     private final Iterator<Path> javaFiles;
+    
     private final String suffix;
     SourceCodeFiles(Path directory, String suffix) throws IOException {
         if (!directory.toFile().isDirectory()) {
+            
             System.err.println(directory + " is not a directory");
+            
             System.exit(1610121905);
         }
+        
         this.javaFiles = Files.find(directory, 999, this::isFileOfInterest).iterator();
+        
         this.suffix = suffix;
     }
     
