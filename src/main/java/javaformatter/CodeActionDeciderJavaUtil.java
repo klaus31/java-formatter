@@ -47,7 +47,7 @@ class CodeActionDeciderJavaUtil {
         line = killOccurrences(line, "\\[\\s*\\]");
         line = killOccurrences(line, "<[^<>]*>");
         line = killOccurrences(line, "\\.\\.\\.");
-        return matches(line.trim(), "\\S+\\s+\\S+\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{]*)?(\\{.*)?");
+        return matches(line.trim(), "[a-zA-Z][^\\s\\.]*\\s+\\S+\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{]*)?(\\{.*)?");
     }
     
     static boolean isConstructorDeclaration(String line) {
@@ -56,7 +56,7 @@ class CodeActionDeciderJavaUtil {
         line = killOccurrences(line, "\\[\\s*\\]");
         line = killOccurrences(line, "<[^<>]*>");
         line = killOccurrences(line, "\\.\\.\\.");
-        return matches(line.trim(), "\\S+\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{]*)?(\\{.*)?");
+        return matches(line.trim(), "[A-Z][^\\s\\.]*\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{]*)?(\\{.*)?");
     }
     
     static boolean isMethodDeclaration(List<String> lines, int lineNumber) {
@@ -75,7 +75,6 @@ class CodeActionDeciderJavaUtil {
     // TODO inaccurate and bad performance yet
     static boolean containsDoc(List<String> lines, final int lineNumber) {
         int i = lineNumber;
-        
         while(i >= 0) {
             String line = killStrings(lines.get(i).trim());
             line = killChars(line);
@@ -94,7 +93,6 @@ class CodeActionDeciderJavaUtil {
     
     static boolean isPartOfAMethod(List<String> lines, final int lineNumber) {
         int startOfDeclaration = -1;
-        
         for(int i = lineNumber;i > 0;i--) {
             if (isMethodDeclaration(lines, i)) {
                 startOfDeclaration = i;
@@ -122,7 +120,6 @@ class CodeActionDeciderJavaUtil {
     
     private static boolean isPartOfAConstructor(List<String> lines, final int lineNumber) {
         int startOfDeclaration = -1;
-        
         for(int i = lineNumber;i > 0;i--) {
             if (isConstructorDeclaration(lines, i)) {
                 startOfDeclaration = i;

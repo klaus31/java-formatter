@@ -58,13 +58,11 @@ public class CodeActionDeciderJavaUtilTest {
         code.add("String d;"); // 5
         code.add("public void d() {"); // 6
         code.add("int a = 5;"); // 7
-        
         code.add("if(true){ // hihi {"); // 8
         code.add("while(getFoo()) {"); // 9
         code.add("System.out.println(3);"); // 10
         code.add("}"); // 11
         code.add("}"); // 12
-        
         code.add("switch(HUHU) {"); // 13
         code.add("case 3:"); // 14
         code.add("bla();"); // 15
@@ -125,12 +123,9 @@ public class CodeActionDeciderJavaUtilTest {
         // given
         List<String> code = new ArrayList<>();
         code.add("static String RICK;"); // 0
-        
         code.add("void a(){}"); // 1
         code.add("static String RICK;"); // 2
-        
         code.add("void b(){}"); // 3
-        
         code.add("void c(){}"); // 4
         code.add("static String BERTA;"); // 5
         
@@ -287,9 +282,8 @@ public class CodeActionDeciderJavaUtilTest {
         assertFalse(isConstructorDeclaration("public class Foo {"));
         assertFalse(isConstructorDeclaration("int i = 1"));
         assertFalse(isConstructorDeclaration("public void foo()"));
-        
+        assertFalse(isConstructorDeclaration("lines.add(\"if(true){\");"));
         assertTrue(isConstructorDeclaration("Foo(){"));
-        
         assertTrue(isConstructorDeclaration("Foo(String ... args){"));
         
         assertTrue(isConstructorDeclaration("public Foo(String ... args){"));
@@ -330,7 +324,6 @@ public class CodeActionDeciderJavaUtilTest {
         
         // given
         List<String> code = new ArrayList<>();
-        
         code.add("Object a(){");
         code.add("b();");
         code.add("}");
@@ -339,6 +332,13 @@ public class CodeActionDeciderJavaUtilTest {
         assertTrue(isMethodDeclaration(code, 0));
         assertFalse(isMethodDeclaration(code, 1));
         assertFalse(isMethodDeclaration(code, 2));
+    }
+    
+    @Test
+    public void debug201610201912() {
+        assertFalse(isMethodDeclaration("lines.add(\"abc\");"));
+        assertFalse(isMethodDeclaration("lines.add(\"a()\");"));
+        assertFalse(isMethodDeclaration("lines.add(\"    lines.add(\\\"if(true){\\\");\");"));
     }
     
     @Test
