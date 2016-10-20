@@ -1,7 +1,6 @@
 package javaformatter;
 
 import java.util.List;
-
 import static org.apache.commons.lang3.StringUtils.countMatches;
 
 /**
@@ -48,7 +47,7 @@ class CodeActionDeciderJavaUtil {
         line = killOccurrences(line, "\\[\\s*\\]");
         line = killOccurrences(line, "<[^<>]*>");
         line = killOccurrences(line, "\\.\\.\\.");
-        return matches(line.trim(), "(void|\\S+)\\s+\\S+\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{]*)?(\\{.*)?");
+        return matches(line.trim(), "\\S+\\s+\\S+\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{]*)?(\\{.*)?");
     }
     
     static boolean isConstructorDeclaration(String line) {
