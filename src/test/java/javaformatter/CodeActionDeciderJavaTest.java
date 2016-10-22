@@ -61,9 +61,10 @@ public class CodeActionDeciderJavaTest {
         assertThat(new CodeActionDeciderJava().blankLinesBefore(lines, 6), is(0));
         assertThat(new CodeActionDeciderJava().blankLinesBefore(lines, 7), is(0));
     }
-
+    
     @Test
     public void preProcessLinesShouldKillDoubleSpaces() {
+        
         // given
         List<String> lines = new ArrayList<>();
         lines.add("final     String             s;");
@@ -72,10 +73,10 @@ public class CodeActionDeciderJavaTest {
         lines.add("\"  \",");
         lines.add("final String b = \"\"");
         lines.add("doSomething('\"',     5)");
-
+        
         // when
         List<String> preprocessedLines = new CodeActionDeciderJava().preProcessLines(lines);
-
+        
         // then
         assertThat(preprocessedLines.get(0), is("final String s;"));
         assertThat(preprocessedLines.get(1), is("final String b = \"  \";"));
@@ -84,23 +85,24 @@ public class CodeActionDeciderJavaTest {
         assertThat(preprocessedLines.get(4), is("final String b = \"\""));
         assertThat(preprocessedLines.get(5), is("doSomething('\"', 5)"));
     }
-
+    
     @Test
     public void debug201610221709() {
+        
         // given
         List<String> lines = new ArrayList<>();
         lines.add("assertFalse(isBlockClose(\"'}'\"));");
-
+        
         // when
         List<String> preprocessedLines = new CodeActionDeciderJava().preProcessLines(lines);
-
+        
         // then no endless loop
         assertThat(preprocessedLines.get(0), is("assertFalse(isBlockClose(\"'}'\"));"));
     }
-
+    
     @Test
     public void preProcessLinesShouldTrim() {
-
+        
         // given
         List<String> lines = new ArrayList<>();
         lines.add("  import com.mongodb.MongoClient;  ");
