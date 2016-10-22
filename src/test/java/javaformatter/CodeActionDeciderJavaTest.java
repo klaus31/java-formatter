@@ -43,6 +43,7 @@ public class CodeActionDeciderJavaTest {
         lines.add("for(;i>=a.length;i++){");
         lines.add("for(;i<=a.length;i++){");
         lines.add("if(a==b)");
+        lines.add("andDo(()->hossa::dieWaldFee)");
 
         // when
         List<String> preprocessedLines = new CodeActionDeciderJava().preProcessLines(lines);
@@ -60,6 +61,7 @@ public class CodeActionDeciderJavaTest {
         assertThat(preprocessedLines.get(9), is("for (; i >= a.length; i++) {"));
         assertThat(preprocessedLines.get(10), is("for (; i <= a.length; i++) {"));
         assertThat(preprocessedLines.get(11), is("if (a == b)"));
+        assertThat(preprocessedLines.get(12), is("andDo(() -> hossa::dieWaldFee)"));
     }
     
     @Test
