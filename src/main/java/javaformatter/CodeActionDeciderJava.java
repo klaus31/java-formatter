@@ -2,6 +2,8 @@ package javaformatter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.*;
+
 import static java.util.stream.Collectors.toList;
 import static javaformatter.CodeActionDeciderJavaUtil.*;
 import static org.apache.commons.lang3.StringUtils.join;
@@ -41,10 +43,28 @@ class CodeActionDeciderJava implements CodeActionDecider {
         return lines.stream()
         .map(String::trim)
         .map(this::killDoubleSpaces)
+        .map(this::putInSingleSpaces)
         .collect(toList());
     }
     
+    private String putInSingleSpaces(String line) {
+        return withPartsInLineNotBeingAString(line, part -> part
+                .replaceAll("if\\(", "if (")
+                .replaceAll("\\)\\{", ") {"));
+        // TODO and a lot more
+    }
+
     private String killDoubleSpaces(String line) {
+        return withPartsInLineNotBeingAString(line, part -> {
+            String tmp;
+            do {
+                tmp = part;
+                part = part.replaceAll("\\s\\s", " ");
+            } while (!tmp.equals(part));
+            return part;
+        });
+    }
+    private String withPartsInLineNotBeingAString(String line, Function<String, String> format) {
         
         // build array with even indexes == non-strings and odd indexes == strings
         List<String> lineSplitAtStrings = new ArrayList<>();
@@ -82,12 +102,7 @@ class CodeActionDeciderJava implements CodeActionDecider {
         for (int j=0; j<lineSplitAtStrings.size();j++) {
             if (j % 2 == 0) {
                 String result = lineSplitAtStrings.get(j);
-                String tmp;
-                do {
-                    tmp = result;
-                    result = result.replaceAll("\\s\\s", " ");
-                } while (!tmp.equals(result));
-                splittedResults.add(result);
+                splittedResults.add(format.apply(result));
             } else {
                 splittedResults.add(lineSplitAtStrings.get(j));
             }

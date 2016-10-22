@@ -32,12 +32,14 @@ public class CodeActionDeciderJavaTest {
         // given
         List<String> lines = new ArrayList<>();
         lines.add("if(true){");
-        
+        lines.add("\"if(true){\"");
+
         // when
         List<String> preprocessedLines = new CodeActionDeciderJava().preProcessLines(lines);
         
         // then
         assertThat(preprocessedLines.get(0), is("if (true) {"));
+        assertThat(preprocessedLines.get(1), is("\"if(true){\""));
     }
     
     @Test
