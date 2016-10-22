@@ -3,6 +3,8 @@ package javaformatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.util.stream.Collectors.toList;
 import static javaformatter.CodeActionDeciderJavaUtil.*;
@@ -48,10 +50,28 @@ class CodeActionDeciderJava implements CodeActionDecider {
     }
     
     private String putInSingleSpaces(String line) {
-        return withPartsInLineNotBeingAString(line, part -> part
-                .replaceAll("if\\(", "if (")
-                .replaceAll("\\)\\{", ") {"));
-        // TODO and a lot more
+        return withPartsInLineNotBeingAString(line, part -> {
+            part = findAndReplace(part, "<([^=\\s])", m -> "< " + m.group(1));
+            part = findAndReplace(part, ">([^=\\s])", m -> "> " + m.group(1));
+            part = findAndReplace(part, "=([^=\\s])", m -> "= " + m.group(1));
+            part = findAndReplace(part, ";([^\\s])", m -> "; " + m.group(1));
+            part = findAndReplace(part, "([^\\s])<", m -> m.group(1) + " <");
+            part = findAndReplace(part, "([^\\s])>", m -> m.group(1) + " >");
+            part = findAndReplace(part, "([^\\s])\\{", m -> m.group(1) + " {");
+            part = findAndReplace(part, "([^><=\\s])=", m -> m.group(1) + " =");
+            part = findAndReplace(part, "^if\\(", m -> "if (");
+            part = findAndReplace(part, "^for\\(", m -> "for (");
+            part = findAndReplace(part, "^while\\(", m -> "while (");
+            return part;
+        });
+    }
+
+    private String findAndReplace(String haystack, String regex, Function<Matcher, String> exec) {
+        Matcher m = Pattern.compile(regex).matcher(haystack);
+        while(m.find()) {
+            haystack = haystack.replaceAll(regex, exec.apply(m));
+        }
+        return haystack;
     }
 
     private String killDoubleSpaces(String line) {
