@@ -58,6 +58,8 @@ public class CodeActionDeciderJavaTest {
         assertThat(preProcessLine("a--;"), is("a--;"));
         assertThat(preProcessLine("for(;i<=a.length;i*=1){"), is("for (; i <= a.length; i *= 1) {"));
         assertThat(preProcessLine("int a*=b*c;"), is("int a *= b * c;"));
+        assertThat(preProcessLine("int a+=b+c;"), is("int a += b + c;"));
+        assertThat(preProcessLine("int a-=b-c;"), is("int a -= b - c;"));
     }
 
     @Test
@@ -66,8 +68,6 @@ public class CodeActionDeciderJavaTest {
         assertThat(preProcessLine("for(;i<=a.length;i/=1){"), is("for (; i <= a.length; i /= 1) {"));
         assertThat(preProcessLine("for(;i<=a.length;i%=1){"), is("for (; i <= a.length; i %= 1) {"));
         assertThat(preProcessLine("String a+=\"b\"+\"c\";"), is("int a += \"b\" + \"c\";"));
-        assertThat(preProcessLine("int a+=b+c;"), is("int a += b + c;"));
-        assertThat(preProcessLine("int a-=b-c;"), is("int a -= b - c;"));
         assertThat(preProcessLine("int a/=b/c;"), is("int a /= b / c;"));
         assertThat(preProcessLine("int a%=b%c;"), is("int a %= b % c;"));
         assertThat(preProcessLine("boolean a=b||c;"), is("boolean a = b || c;"));
