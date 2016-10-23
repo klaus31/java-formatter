@@ -156,10 +156,11 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * a+=b
             * a++;
             * for(;;i++)
+            * int a = +34;
             */
-            part = findAndReplace(part, "\\+([^\\s=\\+\\);])", m -> "+ " + m.group(1));
+            part = findAndReplace(part, "\\+([^\\s=\\+\\);\\d])", m -> "+ " + m.group(1));
             // quite same with -
-            part = findAndReplace(part, "\\-([^\\s=\\-\\);>])", m -> "- " + m.group(1));
+            part = findAndReplace(part, "\\-([^\\s=\\-\\);>\\d])", m -> "- " + m.group(1));
             // quite same with *
             part = findAndReplace(part, "\\*([^\\s=;])", m -> "* " + m.group(1));
             // quite same with /
