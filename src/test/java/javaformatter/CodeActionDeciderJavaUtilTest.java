@@ -11,7 +11,23 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class CodeActionDeciderJavaUtilTest {
-    
+    @Test
+    public void isAPureDocLineShouldDo() {
+        assertThat(isAPureDocLine("//"), is(true));
+        assertThat(isAPureDocLine("// hi!"), is(true));
+        assertThat(isAPureDocLine("/*"), is(true));
+        assertThat(isAPureDocLine("/* hi!"), is(true));
+        assertThat(isAPureDocLine("/**"), is(true));
+        assertThat(isAPureDocLine("/** hi!"), is(true));
+        assertThat(isAPureDocLine("* hi!"), is(true));
+        assertThat(isAPureDocLine("int a; // hi!"), is(false));
+        assertThat(isAPureDocLine("int a; /* hi!"), is(false));
+        assertThat(isAPureDocLine("int a; /** hi!"), is(false));
+        assertThat(isAPureDocLine("/* foo */ int a;"), is(false));
+        assertThat(isAPureDocLine("int a = \"// no komment at all\";"), is(false));
+    }
+
+
     @Test
     public void isFieldDeclarationShouldDo() {
         

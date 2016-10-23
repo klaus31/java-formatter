@@ -66,6 +66,11 @@ class CodeActionDeciderJavaUtil {
     static boolean isFirstLineOfDoc(List<String> lines, final int lineNumber) {
         return lines.get(lineNumber).trim().matches("(/\\*|//).*");
     }
+
+    static boolean isAPureDocLine(final String line) {
+        String l = killComments(line.trim());
+        return l.isEmpty() || l.matches("^\\*[^\\*/]*");
+    }
     
     static boolean hasDoc(List<String> lines, final int lineNumber) {
         int i = lineNumber - 1;

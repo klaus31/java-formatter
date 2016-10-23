@@ -44,6 +44,18 @@ public class CodeActionDeciderJavaTest {
         lines.add("for(;i<=a.length;i++){");
         lines.add("if(a==b)");
         lines.add("andDo(()->hossa::dieWaldFee)");
+        lines.add("// if(true){");
+        lines.add("/* if(true){");
+        lines.add("* if(true){");
+        lines.add("List<String> c=new ArrayList<>();"); // TODO
+        lines.add("int a=3;"); // TODO
+        lines.add("boolean a=c<d;"); // TODO
+        lines.add("for(;;)"); // TODO
+        lines.add("boolean a=a()<b();"); // TODO
+        lines.add("boolean a=a()>b();"); // TODO
+        lines.add("boolean a=a()>=b();"); // TODO
+        lines.add("boolean a=a()<=b();"); // TODO
+        lines.add("}else{"); // TODO
 
         // when
         List<String> preprocessedLines = new CodeActionDeciderJava().preProcessLines(lines);
@@ -62,6 +74,9 @@ public class CodeActionDeciderJavaTest {
         assertThat(preprocessedLines.get(10), is("for (; i <= a.length; i++) {"));
         assertThat(preprocessedLines.get(11), is("if (a == b)"));
         assertThat(preprocessedLines.get(12), is("andDo(() -> hossa::dieWaldFee)"));
+        assertThat(preprocessedLines.get(13), is("// if(true){"));
+        assertThat(preprocessedLines.get(14), is("/* if(true){"));
+        assertThat(preprocessedLines.get(15), is("* if(true){"));
     }
     
     @Test
@@ -97,6 +112,9 @@ public class CodeActionDeciderJavaTest {
         lines.add("\"  \",");
         lines.add("final String b = \"\"");
         lines.add("doSomething('\"',     5)");
+        lines.add("// javadoc      => beast");
+        lines.add("/* javadoc      => beast");
+        lines.add("* javadoc      => beast");
 
         // when
         List<String> preprocessedLines = new CodeActionDeciderJava().preProcessLines(lines);
@@ -108,6 +126,9 @@ public class CodeActionDeciderJavaTest {
         assertThat(preprocessedLines.get(3), is("\"  \","));
         assertThat(preprocessedLines.get(4), is("final String b = \"\""));
         assertThat(preprocessedLines.get(5), is("doSomething('\"', 5)"));
+        assertThat(preprocessedLines.get(6), is("// javadoc      => beast"));
+        assertThat(preprocessedLines.get(7), is("/* javadoc      => beast"));
+        assertThat(preprocessedLines.get(8), is("* javadoc      => beast"));
     }
     
     @Test

@@ -41,7 +41,6 @@ class CodeActionDeciderJava implements CodeActionDecider {
     }
     
     public List<String> preProcessLines(List<String> lines) {
-        
         return lines.stream()
         .map(String::trim)
         .map(this::killDoubleSpaces)
@@ -50,19 +49,111 @@ class CodeActionDeciderJava implements CodeActionDecider {
     }
     
     private String putInSingleSpaces(String line) {
+        if(CodeActionDeciderJavaUtil.isAPureDocLine(line)) return line;
         return withPartsInLineNotBeingAString(line, part -> {
-            part = findAndReplace(part, "<([^=\\s])", m -> "< " + m.group(1));
-            part = findAndReplace(part, ">([^=\\s])", m -> "> " + m.group(1));
+
+            /*
+            * "<"          ==> "< "
+            *
+            * E.g.:
+            * if(a<b)      ==> if(a< b)
+            * for(;a<b;)   ==> for(;a< b;)
+            *
+            * do not change:
+            * List<String>
+            */
+            part = findAndReplace(part, "(;|\\()([^\\)]+)<([^=\\s>])", m -> m.group(1) + m.group(2) + "< " + m.group(3));
+
+            /*
+            * ">"                ==> "> "
+            *
+            * E.g.:
+            * if(a>b)            ==> if(a> b)
+            * for(;a>b;)         ==> for(;a> b;)
+            * foo(()->this::bar) ==> foo(()-> this::bar)
+            *
+            * do not change:
+            * List<String>
+            */
+            part = findAndReplace(part, "(;|\\()(.+)>([^=\\s\\(])", m -> m.group(1) + m.group(2) + "> " + m.group(3));
+
+            /*
+            * "="     ==> "= "
+            *
+            * E.g.:
+            * a=b     ==> a= b
+            * a== b   ==> a== b
+            */
             part = findAndReplace(part, "=([^=\\s])", m -> "= " + m.group(1));
+
+            /*
+            * ";"                 ==> "; "
+            *
+            * E.g.:
+            * for(i=0;i<7;i++)    ==> for(i=0; i<7; i++)
+            */
             part = findAndReplace(part, ";([^\\s])", m -> "; " + m.group(1));
-            part = findAndReplace(part, "([^\\s])<", m -> m.group(1) + " <");
-            part = findAndReplace(part, "([^\\s-])>", m -> m.group(1) + " >");
+
+            /*
+            * "<"             ==> " <"
+            *
+            * E.g.:
+            * if(a<b)         ==> if(a <b)
+            * for(;a<b;)      ==> for(;a <b;)
+            *
+            * but not:
+            * List<String>
+            */
+            part = findAndReplace(part, "(;|\\()([^\\)]*)([^\\s])<", m -> m.group(1) + m.group(2) + m.group(3) + " <");
+
+            /*
+            * ">"             ==> " >"
+            *
+            * E.g.:
+            * if(a>b)         ==> if(a >b)
+            * for(;a>b;)      ==> for(;a >b;)
+            *
+            * but not:
+            * List<String>
+            */
+            part = findAndReplace(part, "([^\\s-<])>", m -> m.group(1) + " >");
+
+            /*
+            * "->"      ==> " ->"
+            */
             part = findAndReplace(part, "([^\\s])->", m -> m.group(1) + " ->");
+
+            /*
+            * "{"       ==> " {"
+            */
             part = findAndReplace(part, "([^\\s])\\{", m -> m.group(1) + " {");
+
+            /*
+            * "="       ==> " ="
+            */
             part = findAndReplace(part, "([^><=\\s])=", m -> m.group(1) + " =");
+
+            /*
+            * "if("     ==> "if ("
+            *
+            * E.g.:
+            * if(a>b)   ==> if (a>b)
+            *
+            * but not:
+            * gif(true)
+            */
             part = findAndReplace(part, "^if\\(", m -> "if (");
+
+            /*
+            * "for("             ==> "for ("
+            */
             part = findAndReplace(part, "^for\\(", m -> "for (");
+
+            /*
+            * "while("             ==> "while ("
+            */
             part = findAndReplace(part, "^while\\(", m -> "while (");
+
             return part;
         });
     }
@@ -76,6 +167,7 @@ class CodeActionDeciderJava implements CodeActionDecider {
     }
 
     private String killDoubleSpaces(String line) {
+        if(CodeActionDeciderJavaUtil.isAPureDocLine(line)) return line;
         return withPartsInLineNotBeingAString(line, part -> {
             String tmp;
             do {
