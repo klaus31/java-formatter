@@ -86,9 +86,7 @@ public class CodeActionDeciderJavaTest {
         assertThat(preProcessLine("foo(String a,Object b,List c)"), is("foo(String a, Object b, List c)"));
         assertThat(preProcessLine("int a=-2"), is("int a = -2"));
         assertThat(preProcessLine("int a=+2"), is("int a = +2"));
-        /* TODO
         assertThat(preProcessLine("foo(a!=-5)"), is("foo(a != -5)"));
-        */
     }
 
     private String preProcessLine(String line) {
