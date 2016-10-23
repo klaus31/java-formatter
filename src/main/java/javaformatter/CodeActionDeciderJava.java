@@ -266,6 +266,8 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * }
             */
             part = findAndReplace(part, "\\}([^\\s])", m -> "} " + m.group(1));
+
+            part = findAndReplace(part, ",([^\\s])", m -> ", " + m.group(1));
             return part;
         });
     }

@@ -82,8 +82,9 @@ public class CodeActionDeciderJavaTest {
         assertThat(preProcessLine("*/"), is("*/"));
         assertThat(preProcessLine("import static foo.bar.Rab.*;"), is("import static foo.bar.Rab.*;"));
         assertThat(preProcessLine("return a;//ok"), is("return a; // ok"));
-        /* TODO
         assertThat(preProcessLine("foo(a,b)"), is("foo(a, b)"));
+        assertThat(preProcessLine("foo(String a,Object b,List c)"), is("foo(String a, Object b, List c)"));
+        /* TODO
         assertThat(preProcessLine("int a=-2"), is("int a = -2"));
         assertThat(preProcessLine("foo(a!=-5)"), is("foo(a != -5)"));
         */
