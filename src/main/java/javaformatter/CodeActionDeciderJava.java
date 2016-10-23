@@ -164,6 +164,8 @@ class CodeActionDeciderJava implements CodeActionDecider {
             part = findAndReplace(part, "\\*([^\\s=])", m -> "* " + m.group(1));
             // quite same with /
             part = findAndReplace(part, "/([^\\s=])", m -> "/ " + m.group(1));
+            // quite same with %
+            part = findAndReplace(part, "%([^\\s=])", m -> "% " + m.group(1));
 
             /*
             * "+"       ==> " +"
@@ -184,6 +186,8 @@ class CodeActionDeciderJava implements CodeActionDecider {
             part = findAndReplace(part, "([^\\s])\\*", m -> m.group(1) + " *");
             // quite same with /
             part = findAndReplace(part, "([^\\s])/", m -> m.group(1) + " /");
+            // quite same with %
+            part = findAndReplace(part, "([^\\s])%", m -> m.group(1) + " %");
 
             /*
             * "if("     ==> "if ("

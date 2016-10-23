@@ -67,9 +67,9 @@ public class CodeActionDeciderJavaTest {
 
     @Test
     public void preProcessLinesShouldAddSpaces_WIP() {
-        /* TODO
         assertThat(preProcessLine("for(;i<=a.length;i%=1){"), is("for (; i <= a.length; i %= 1) {"));
         assertThat(preProcessLine("int a%=b%c;"), is("int a %= b % c;"));
+        /* TODO
         assertThat(preProcessLine("boolean a=b||c;"), is("boolean a = b || c;"));
         assertThat(preProcessLine("boolean a=b&&c;"), is("boolean a = b && c;"));
         assertThat(preProcessLine("boolean a=b&c;"), is("boolean a = b & c;"));
