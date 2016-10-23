@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import java.util.function.Consumer;
 
 public class Main {
-    
+
     public static void main(final String... args) throws IOException, InterruptedException {
         if (args.length != 1) {
             System.err.println("Usage java -jar formatter.jar <directory-with-java-sources>");
@@ -16,7 +16,7 @@ public class Main {
         Path inputDirectory = Paths.get(args[0]);
         new SourceCodeFiles(inputDirectory, "java").forEach(process());
     }
-    
+
     private static Consumer<SourceCodeFile> process() {
         return (sourceCodeFile) -> {
             SourceCodeFormatter formatter = new SourceCodeFormatter(sourceCodeFile);

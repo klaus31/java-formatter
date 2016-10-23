@@ -11,7 +11,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class CodeActionDeciderJavaUtilTest {
-    
+
     @Test
     public void isAPureDocLineShouldDo() {
         assertThat(isAPureDocLine("//"), is(true));
@@ -28,10 +28,10 @@ public class CodeActionDeciderJavaUtilTest {
         assertThat(isAPureDocLine("int a = \"// no komment at all\";"), is(false));
         assertThat(isAPureDocLine("*/"), is(true));
     }
-    
+
     @Test
     public void isFieldDeclarationShouldDo() {
-        
+
         // given
         List<String> code = new ArrayList<>();
         code.add("public class A {");
@@ -46,7 +46,7 @@ public class CodeActionDeciderJavaUtilTest {
         code.add("private class D {");
         code.add("public void b() {");
         code.add("public void b(@Param(\"wtf;omg\") String wtf) {");
-        
+
         // when / then
         assertFalse(isFieldDeclaration(code, 0));
         assertFalse(isFieldDeclaration(code, 1));
@@ -61,10 +61,10 @@ public class CodeActionDeciderJavaUtilTest {
         assertFalse(isFieldDeclaration(code, 10));
         assertFalse(isFieldDeclaration(code, 11));
     }
-    
+
     @Test
     public void isPartOfAMethodShouldDo() {
-        
+
         // given
         List<String> code = new ArrayList<>();
         code.add("public class A {"); // 0
@@ -89,7 +89,7 @@ public class CodeActionDeciderJavaUtilTest {
         code.add("}"); // 19
         code.add(""); // 20
         code.add("static String RICK;"); // 21
-        
+
         // when / then
         assertFalse(isPartOfAMethod(code, 0));
         assertFalse(isPartOfAMethod(code, 1));
@@ -114,10 +114,10 @@ public class CodeActionDeciderJavaUtilTest {
         assertFalse(isPartOfAMethod(code, 20));
         assertFalse(isPartOfAMethod(code, 21));
     }
-    
+
     @Test
     public void isPartOfAMethodShouldDoOnCurliesOnNextLine() {
-        
+
         // given
         List<String> code = new ArrayList<>();
         code.add("static String RICK;"); // 0
@@ -125,7 +125,7 @@ public class CodeActionDeciderJavaUtilTest {
         code.add("{"); // 2
         code.add("}"); // 3
         code.add("static String RICK;"); // 4
-        
+
         // when / then
         assertFalse(isPartOfAMethod(code, 0));
         assertTrue(isPartOfAMethod(code, 1));
@@ -133,10 +133,10 @@ public class CodeActionDeciderJavaUtilTest {
         assertTrue(isPartOfAMethod(code, 3));
         assertFalse(isPartOfAMethod(code, 4));
     }
-    
+
     @Test
     public void isPartOfAMethodShouldDoOnOneliner() {
-        
+
         // given
         List<String> code = new ArrayList<>();
         code.add("static String RICK;"); // 0
@@ -145,7 +145,7 @@ public class CodeActionDeciderJavaUtilTest {
         code.add("void b(){}"); // 3
         code.add("void c(){}"); // 4
         code.add("static String BERTA;"); // 5
-        
+
         // when / then
         assertFalse(isPartOfAMethod(code, 0));
         assertTrue(isPartOfAMethod(code, 1));
@@ -154,10 +154,10 @@ public class CodeActionDeciderJavaUtilTest {
         assertTrue(isPartOfAMethod(code, 4));
         assertFalse(isPartOfAMethod(code, 5));
     }
-    
+
     @Test
     public void isFirstLineOfDocShouldDo() {
-        
+
         // given
         List<String> code = new ArrayList<>();
         code.add(" /*");
@@ -168,7 +168,7 @@ public class CodeActionDeciderJavaUtilTest {
         code.add("String b;");
         code.add("// horray for c");
         code.add("String c;");
-        
+
         // when / then
         assertTrue(isFirstLineOfDoc(code, 0));
         assertFalse(isFirstLineOfDoc(code, 1));
@@ -179,10 +179,10 @@ public class CodeActionDeciderJavaUtilTest {
         assertTrue(isFirstLineOfDoc(code, 6));
         assertFalse(isFirstLineOfDoc(code, 7));
     }
-    
+
     @Test
     public void containsDocShouldDo() {
-        
+
         // given
         List<String> code = new ArrayList<>();
         code.add(" /*");
@@ -193,7 +193,7 @@ public class CodeActionDeciderJavaUtilTest {
         code.add("String b;");
         code.add("// horray for c");
         code.add("String c;");
-        
+
         // when / then
         assertTrue(containsDoc(code, 0));
         assertTrue(containsDoc(code, 1));
@@ -204,10 +204,10 @@ public class CodeActionDeciderJavaUtilTest {
         assertTrue(containsDoc(code, 6));
         assertFalse(containsDoc(code, 7));
     }
-    
+
     @Test
     public void hasDocShouldDo() {
-        
+
         // given
         List<String> code = new ArrayList<>();
         code.add(" /*");
@@ -221,7 +221,7 @@ public class CodeActionDeciderJavaUtilTest {
         code.add("@Autowired");
         code.add("@Deprecated");
         code.add("String c;");
-        
+
         // when / then
         assertFalse(hasDoc(code, 0));
         assertFalse(hasDoc(code, 1));
@@ -232,42 +232,42 @@ public class CodeActionDeciderJavaUtilTest {
         assertTrue(hasDoc(code, 6));
         assertFalse(hasDoc(code, 7));
     }
-    
+
     @Test
     public void isMethodDeclarationShouldDoOnPublicVoid() {
-        
+
         // given
         List<String> code = new ArrayList<>();
         code.add("public void a(){");
         code.add("b();");
         code.add("}");
-        
+
         // when / then
         assertTrue(isMethodDeclaration(code, 0));
         assertFalse(isMethodDeclaration(code, 1));
         assertFalse(isMethodDeclaration(code, 2));
     }
-    
+
     @Test
     public void isMethodDeclarationShouldDoOnCurlyBraceNextLine() {
-        
+
         // given
         List<String> code = new ArrayList<>();
         code.add("public void a()");
         code.add("{");
         code.add("b();");
         code.add("}");
-        
+
         // when / then
         assertTrue(isMethodDeclaration(code, 0));
         assertFalse(isMethodDeclaration(code, 1));
         assertFalse(isMethodDeclaration(code, 2));
         assertFalse(isMethodDeclaration(code, 3));
     }
-    
+
     @Test
     public void isMethodDeclarationShouldDoOnOneliner() {
-        
+
         // given
         List<String> code = new ArrayList<>();
         code.add("public void a(){}");
@@ -276,7 +276,7 @@ public class CodeActionDeciderJavaUtilTest {
         code.add("private int d;");
         code.add("public void e(){}");
         code.add("private int f;");
-        
+
         // when / then
         assertTrue(isMethodDeclaration(code, 0));
         assertFalse(isMethodDeclaration(code, 1));
@@ -285,7 +285,7 @@ public class CodeActionDeciderJavaUtilTest {
         assertTrue(isMethodDeclaration(code, 4));
         assertFalse(isMethodDeclaration(code, 5));
     }
-    
+
     @Test
     public void isMethodDeclarationShouldReturnFalseOnThat() {
         assertFalse(isMethodDeclaration("public class Foo {"));
@@ -293,7 +293,7 @@ public class CodeActionDeciderJavaUtilTest {
         assertFalse(isMethodDeclaration("int i = 1,"));
         assertFalse(isMethodDeclaration("int i = 1;"));
     }
-    
+
     @Test
     public void isConstructorDeclarationShouldDo() {
         assertFalse(isConstructorDeclaration("public class Foo {"));
@@ -302,79 +302,79 @@ public class CodeActionDeciderJavaUtilTest {
         assertFalse(isConstructorDeclaration("lines.add(\"if(true){\");"));
         assertTrue(isConstructorDeclaration("Foo(){"));
         assertTrue(isConstructorDeclaration("Foo(String ... args){"));
-        
+
         assertTrue(isConstructorDeclaration("public Foo(String ... args){"));
     }
-    
+
     @Test
     public void isMethodDeclarationShouldDoOnProtectedFinalDate() {
-        
+
         // given
         List<String> code = new ArrayList<>();
         code.add("protected final Date a(){");
         code.add("b();");
         code.add("}");
-        
+
         // when / then
         assertTrue(isMethodDeclaration(code, 0));
         assertFalse(isMethodDeclaration(code, 1));
         assertFalse(isMethodDeclaration(code, 2));
     }
-    
+
     @Test
     public void isMethodDeclarationShouldDoOnPrivateGenericProtectedFinalObject() {
-        
+
         // given
         List<String> code = new ArrayList<>();
         code.add("public static <E extends Number> void someMethod_\uD83D\uDE0B_(List<E> a, String ... c) throws Bla, Blub<Z> {");
         code.add("b();");
         code.add("}");
-        
+
         // when / then
         assertTrue(isMethodDeclaration(code, 0));
         assertFalse(isMethodDeclaration(code, 1));
         assertFalse(isMethodDeclaration(code, 2));
     }
-    
+
     @Test
     public void isMethodDeclarationShouldDoOnPackagePrivateGenericProtectedFinalObject() {
-        
+
         // given
         List<String> code = new ArrayList<>();
         code.add("Object a(){");
         code.add("b();");
         code.add("}");
-        
+
         // when / then
         assertTrue(isMethodDeclaration(code, 0));
         assertFalse(isMethodDeclaration(code, 1));
         assertFalse(isMethodDeclaration(code, 2));
     }
-    
+
     @Test
     public void debug201610201912() {
         assertFalse(isMethodDeclaration("lines.add(\"abc\");"));
         assertFalse(isMethodDeclaration("lines.add(\"a()\");"));
         assertFalse(isMethodDeclaration("lines.add(\"    lines.add(\\\"if(true){\\\");\");"));
     }
-    
+
     @Test
     public void isMethodDeclarationShouldDoOnDoEverything() {
-        
+
         // given
         List<String> code = new ArrayList<>();
         code.add("@Autowired");
         code.add("<T> static Object<U> a(final String a, final Date<WTF> b){");
         code.add("b();");
         code.add("}");
-        
+
         // when / then
         assertFalse(isMethodDeclaration(code, 0));
         assertTrue(isMethodDeclaration(code, 1));
         assertFalse(isMethodDeclaration(code, 2));
         assertFalse(isMethodDeclaration(code, 3));
     }
-    
+
     @Test
     public void killStringsShouldDo() {
         assertThat(killStrings("\"lala\""), is(""));
@@ -383,7 +383,7 @@ public class CodeActionDeciderJavaUtilTest {
         assertThat(killStrings("abc\"def\"ghi"), is("abcghi"));
         assertThat(killStrings("abc\"def\"ghi and 123\"456\"789"), is("abcghi and 123789"));
     }
-    
+
     @Test
     public void isBlockCloseShouldDo() {
         assertTrue(isBlockClose("}"));
@@ -405,7 +405,7 @@ public class CodeActionDeciderJavaUtilTest {
         assertTrue(isBlockClose("'}'}'}'"));
         assertFalse(isBlockClose("'}' + '}'"));
     }
-    
+
     @Test
     public void isBlockStartShouldDo() {
         assertTrue(isBlockStart("{"));
@@ -427,10 +427,10 @@ public class CodeActionDeciderJavaUtilTest {
         assertTrue(isBlockStart("'{'{'{'"));
         assertFalse(isBlockStart("'{' + '{'"));
     }
-    
+
     @Test
     public void isFirstAnnotationOfMethodShouldDo() {
-        
+
         // given
         List<String> lines = new ArrayList<>();
         lines.add("@Override");
@@ -438,15 +438,15 @@ public class CodeActionDeciderJavaUtilTest {
         lines.add("public Mongo mongo() throws Exception {");
         lines.add("    return new MongoClient(\"127.0.0.1\");");
         lines.add("}");
-        
+
         // when ... then
         assertThat(isFirstAnnotationOfMethod(lines, 0), is(true));
         assertThat(isFirstAnnotationOfMethod(lines, 1), is(false));
     }
-    
+
     @Test
     public void isMethodDeclarationShouldDo() {
-        
+
         // given
         List<String> lines = new ArrayList<>();
         lines.add("@Bean");
@@ -454,7 +454,7 @@ public class CodeActionDeciderJavaUtilTest {
         lines.add("System.out.print(\"public Mongo mongo() throws Exception {\"");
         lines.add("    return new MongoClient(\"127.0.0.1\");");
         lines.add("}");
-        
+
         // when ... then
         assertThat(isMethodDeclaration(lines, 0), is(false));
         assertThat(isMethodDeclaration(lines, 1), is(true));
@@ -462,20 +462,20 @@ public class CodeActionDeciderJavaUtilTest {
         assertThat(isMethodDeclaration(lines, 3), is(false));
         assertThat(isMethodDeclaration(lines, 4), is(false));
     }
-    
+
     @Test
     public void isClassDeclarationShouldDo() {
-        
+
         // given
         List<String> lines = new ArrayList<>();
         lines.add("import com.mongodb.MongoClient;");
         lines.add("@Configuration");
         lines.add("class SpringMongoConfig extends AbstractMongoConfig {");
-        
+
         lines.add("   public static class SpringMongoConfig extends AbstractMongoConfig { // hihi");
         lines.add("}");
         lines.add("}");
-        
+
         // when ... then
         assertThat(isClassDeclaration(lines, 0), is(false));
         assertThat(isClassDeclaration(lines, 1), is(false));
@@ -484,24 +484,24 @@ public class CodeActionDeciderJavaUtilTest {
         assertThat(isClassDeclaration(lines, 4), is(false));
         assertThat(isClassDeclaration(lines, 5), is(false));
     }
-    
+
     @Test
     public void isAnnotationShouldDo() {
-        
+
         // given
         List<String> lines = new ArrayList<>();
         lines.add(" import com.mongodb.MongoClient;");
         lines.add("  @Configuration");
         lines.add("class SpringMongoConfig extends AbstractMongoConfig {");
         lines.add("}");
-        
+
         // when ... then
         assertThat(isAnnotation(lines, 1), is(true));
     }
-    
+
     @Test
     public void hasAnnotationShouldDo() {
-        
+
         // given
         List<String> lines = new ArrayList<>();
         lines.add("import com.mongodb.MongoClient;");
@@ -509,7 +509,7 @@ public class CodeActionDeciderJavaUtilTest {
         lines.add("@Configuration");
         lines.add("class SpringMongoConfig extends AbstractMongoConfig {");
         lines.add("}");
-        
+
         // when ... then
         assertThat(hasAnnotation(lines, 0), is(false));
         assertThat(hasAnnotation(lines, 1), is(false));
@@ -517,10 +517,10 @@ public class CodeActionDeciderJavaUtilTest {
         assertThat(hasAnnotation(lines, 3), is(true));
         assertThat(hasAnnotation(lines, 4), is(false));
     }
-    
+
     @Test
     public void isImportShouldDo() {
-        
+
         // given
         List<String> lines = new ArrayList<>();
         lines.add("import com.mongodb.MongoClient;");
@@ -530,7 +530,7 @@ public class CodeActionDeciderJavaUtilTest {
         lines.add("  /* mean */    import static a.b.c.*; // huhu");
         lines.add("  /* mean */import static a.b.c.*;// huhu");
         lines.add("/**/import static a.b.c.*;/**/");
-        
+
         // when ... then
         assertThat(isImport(lines, 0), is(true));
         assertThat(isImport(lines, 1), is(true));
@@ -540,23 +540,23 @@ public class CodeActionDeciderJavaUtilTest {
         assertThat(isImport(lines, 5), is(true));
         assertThat(isImport(lines, 6), is(true));
     }
-    
+
     @Test
     public void isStaticImportShouldDo() {
-        
+
         // given
         List<String> lines = new ArrayList<>();
         lines.add("import com.mongodb.MongoClient;");
         lines.add("import static a.b.c.*;");
-        
+
         // when ... then
         assertThat(isStaticImport(lines, 0), is(false));
         assertThat(isStaticImport(lines, 1), is(true));
     }
-    
+
     @Test
     public void isFirstAnnotationOfClassEnumOrInterfaceShouldDo() {
-        
+
         // given
         List<String> lines = new ArrayList<>();
         lines.add("import com.mongodb.MongoClient;");
@@ -564,7 +564,7 @@ public class CodeActionDeciderJavaUtilTest {
         lines.add("@Configuration");
         lines.add("class SpringMongoConfig extends AbstractMongoConfig {");
         lines.add("}");
-        
+
         // when ... then
         assertThat(isFirstAnnotationOfClassEnumOrInterface(lines, 0), is(false));
         assertThat(isFirstAnnotationOfClassEnumOrInterface(lines, 1), is(true));
@@ -572,7 +572,7 @@ public class CodeActionDeciderJavaUtilTest {
         assertThat(isFirstAnnotationOfClassEnumOrInterface(lines, 3), is(false));
         assertThat(isFirstAnnotationOfClassEnumOrInterface(lines, 4), is(false));
     }
-    
+
     @Test
     public void isStartOfIfShouldDo() {
         assertTrue(isStartOfIf("if(bla)"));

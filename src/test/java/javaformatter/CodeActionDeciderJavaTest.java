@@ -7,29 +7,29 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class CodeActionDeciderJavaTest {
-    
+
     @Test
     public void blankLinesBeforeShouldDoOnMultiMethods() {
-        
+
         // given
         List<String> lines = new ArrayList<>();
         lines.add("public void a() {}");
         lines.add("private static final void b(String b) {}");
         lines.add("void c() {}");
-        
+
         // when
         CodeActionDeciderJava decider = new CodeActionDeciderJava();
-        
+
         // then
         assertThat(decider.blankLinesBefore(lines, 0), is(1));
         assertThat(decider.blankLinesBefore(lines, 1), is(1));
         assertThat(decider.blankLinesBefore(lines, 2), is(1));
     }
-    
+
     @Test
     public void preProcessLinesShouldAddSpaces() {
         assertThat(preProcessLine("if(true){"), is("if (true) {"));
-        
+
         assertThat(preProcessLine("\"if(true){\""), is("\"if(true){\""));
         assertThat(preProcessLine("foo;bar"), is("foo; bar"));
         assertThat(preProcessLine("for(int i=0;i<a.length;i++){"), is("for (int i = 0; i < a.length; i++) {"));
@@ -44,7 +44,7 @@ public class CodeActionDeciderJavaTest {
         assertThat(preProcessLine("andDo(()->hossa::dieWaldFee)"), is("andDo(() -> hossa::dieWaldFee)"));
         assertThat(preProcessLine("// if(true){"), is("// if(true){"));
         assertThat(preProcessLine("/* if(true){"), is("/* if(true){"));
-        
+
         assertThat(preProcessLine("* if(true){"), is("* if(true){"));
         assertThat(preProcessLine("int a=3;"), is("int a = 3;"));
         assertThat(preProcessLine("List<String>c=new ArrayList<>();"), is("List<String> c = new ArrayList<>();"));
@@ -93,17 +93,17 @@ public class CodeActionDeciderJavaTest {
         assertThat(preProcessLine("int a=b+2"), is("int a = b + 2"));
         assertThat(preProcessLine("a+=\"\\\"\"+b[ i ];"), is("a += \"\\\"\" + b[i];"));
         assertThat(preProcessLine("}catch("), is("} catch ("));
-        
+
         // TODO (wtf syntax): assertThat(preProcessLine("int a=+2"), is("int a = +2"));
     }
-    
+
     private String preProcessLine(String line) {
         List<String> lines = new ArrayList<>();
         lines.add(line);
         List<String> preprocessedLines = new CodeActionDeciderJava().preProcessLines(lines);
         return preprocessedLines.get(0);
     }
-    
+
     @Test
     public void debug201610201905() {
         List<String> lines = new ArrayList<>();
@@ -118,17 +118,17 @@ public class CodeActionDeciderJavaTest {
         lines.add("    // when");
         lines.add("    List<String> preprocessedLines = new CodeActionDeciderJava().preProcessLines(lines);");
         lines.add("}");
-        
+
         // when / then
         assertThat(new CodeActionDeciderJava().blankLinesAfter(lines.get(4)), is(0));
         assertThat(new CodeActionDeciderJava().blankLinesBefore(lines, 5), is(0));
         assertThat(new CodeActionDeciderJava().blankLinesBefore(lines, 6), is(0));
         assertThat(new CodeActionDeciderJava().blankLinesBefore(lines, 7), is(0));
     }
-    
+
     @Test
     public void preProcessLinesShouldKillDoubleSpaces() {
-        
+
         // given
         List<String> lines = new ArrayList<>();
         lines.add("final     String             s;");
@@ -140,10 +140,10 @@ public class CodeActionDeciderJavaTest {
         lines.add("// javadoc      => beast");
         lines.add("/* javadoc      => beast");
         lines.add("* javadoc      => beast");
-        
+
         // when
         List<String> preprocessedLines = new CodeActionDeciderJava().preProcessLines(lines);
-        
+
         // then
         assertThat(preprocessedLines.get(0), is("final String s;"));
         assertThat(preprocessedLines.get(1), is("final String b = \"  \";"));
@@ -155,31 +155,31 @@ public class CodeActionDeciderJavaTest {
         assertThat(preprocessedLines.get(7), is("/* javadoc      => beast"));
         assertThat(preprocessedLines.get(8), is("* javadoc      => beast"));
     }
-    
+
     @Test
     public void debug201610221709() {
-        
+
         // given
         List<String> lines = new ArrayList<>();
         lines.add("assertFalse(isBlockClose(\"'}'\"));");
-        
+
         // when
         List<String> preprocessedLines = new CodeActionDeciderJava().preProcessLines(lines);
-        
+
         // then no endless loop
         assertThat(preprocessedLines.get(0), is("assertFalse(isBlockClose(\"'}'\"));"));
     }
-    
+
     @Test
     public void preProcessLinesShouldTrim() {
-        
+
         // given
         List<String> lines = new ArrayList<>();
         lines.add("  import com.mongodb.MongoClient;  ");
-        
+
         // when
         List<String> preprocessedLines = new CodeActionDeciderJava().preProcessLines(lines);
-        
+
         // then
         assertThat(preprocessedLines.size(), is(1));
         assertThat(preprocessedLines.get(0), is("import com.mongodb.MongoClient;"));

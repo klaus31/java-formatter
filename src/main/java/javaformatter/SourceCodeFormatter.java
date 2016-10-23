@@ -8,16 +8,16 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 class SourceCodeFormatter {
-    
+
     private final SourceCodeFile sourceCodeFile;
-    
+
     private final CodeActionDecider codeActionDecider;
-    
+
     SourceCodeFormatter(SourceCodeFile sourceCodeFile) {
         this.sourceCodeFile = sourceCodeFile;
         this.codeActionDecider = CodeActionDeciderSimpleFactory.create(sourceCodeFile.getSuffix());
     }
-    
+
     void format() throws IOException {
         List<String> lines = sourceCodeFile.readContentLines();
         lines = prepare(lines);
@@ -26,7 +26,7 @@ class SourceCodeFormatter {
         lines = codeActionDecider.postProcessFormattedLines(lines);
         sourceCodeFile.setFormattedLines(lines);
     }
-    
+
     private List<String> prepare(List<String> lines) {
         List<String> resultLines = new ArrayList<>();
         for (int lineNumber = 0; lineNumber < lines.size(); lineNumber++) {
@@ -36,7 +36,7 @@ class SourceCodeFormatter {
         }
         return codeActionDecider.preProcessLines(resultLines);
     }
-    
+
     private List<String> addTabs(List<String> lines) {
         List<String> resultLines = new ArrayList<>();
         int tabLevel = 0;
@@ -47,18 +47,18 @@ class SourceCodeFormatter {
         }
         return resultLines;
     }
-    
+
     private List<String> addBlankLines(List<String> lines) {
         List<String> resultLines = new ArrayList<>();
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i);
-            
+
             // add blank lines before
             int blankLinesBefore = codeActionDecider.blankLinesBefore(lines, i);
             int bi = 0;
             while (bi++ < blankLinesBefore) resultLines.add("");
             resultLines.add(line);
-            
+
             // add blank lines after
             int blankLinesAfter = codeActionDecider.blankLinesAfter(line);
             int ai = 0;
@@ -66,7 +66,7 @@ class SourceCodeFormatter {
         }
         return resultLines;
     }
-    
+
     void withSource(Consumer<String> consumer) {
         consumer.accept(sourceCodeFile.getFormattedLines().stream().collect(Collectors.joining(codeActionDecider.getEol())));
     }

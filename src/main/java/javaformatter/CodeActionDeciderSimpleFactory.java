@@ -2,10 +2,10 @@ package javaformatter;
 
 
 class CodeActionDeciderSimpleFactory {
-    
+
     private CodeActionDeciderSimpleFactory() {
     }
-    
+
     static CodeActionDecider create(String suffix) {
         switch (suffix) {
             case "java":

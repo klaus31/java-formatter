@@ -10,40 +10,40 @@ import static org.apache.commons.lang3.StringUtils.join;
 * First line: lineNumber == 0 !!!
 */
 class CodeActionDeciderJavaUtil {
-    
+
     private CodeActionDeciderJavaUtil() {
     }
-    
+
     static boolean isAnnotation(List<String> lines, int lineNumber) {
         return isAnnotation(lines.get(lineNumber));
     }
-    
+
     static boolean hasAnnotation(List<String> lines, int lineNumber) {
         return lineNumber != 0 && !isAnnotation(lines, lineNumber) && isAnnotation(lines, lineNumber - 1);
     }
-    
+
     private static boolean isAnnotation(String line) {
         return line.matches("^\\s*@.*");
     }
-    
+
     static boolean isImport(List<String> lines, int lineNumber) {
         return matches(lines, lineNumber, "import\\s+(static\\s+)?\\S+\\s*;");
     }
-    
+
     private static boolean matches(String line, String regex) {
         String optionalStart = "^\\s*(/\\*.*\\*/)?\\s*";
         String optionalEnd = "\\s*(//.*|/\\*.*)?\\s*$";
         return line.matches(optionalStart + regex + optionalEnd);
     }
-    
+
     private static boolean matches(List<String> lines, int lineNumber, String regex) {
         return matches(lines.get(lineNumber), regex);
     }
-    
+
     static boolean isStaticImport(List<String> lines, int lineNumber) {
         return matches(lines, lineNumber, "import\\s+static\\s+\\S+\\s*;");
     }
-    
+
     static boolean isMethodDeclaration(String line) {
         line = killComments(line);
         line = killOccurrences(line, "(public|private|protected|static|final|native|synchronized|abstract|transient|default)");
@@ -52,7 +52,7 @@ class CodeActionDeciderJavaUtil {
         line = killOccurrences(line, "\\.\\.\\.");
         return matches(line.trim(), "[a-zA-Z][^\\s\\.]*\\s+\\S+\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{]*)?(\\{.*)?");
     }
-    
+
     static boolean isConstructorDeclaration(String line) {
         line = killComments(line);
         line = killOccurrences(line, "(public|private|protected|final)");
@@ -61,25 +61,25 @@ class CodeActionDeciderJavaUtil {
         line = killOccurrences(line, "\\.\\.\\.");
         return matches(line.trim(), "[A-Z][^\\s\\.]*\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{]*)?(\\{.*)?");
     }
-    
+
     static boolean isMethodDeclaration(List<String> lines, int lineNumber) {
         return isMethodDeclaration(lines.get(lineNumber));
     }
-    
+
     static boolean isFirstLineOfDoc(List<String> lines, final int lineNumber) {
         return lines.get(lineNumber).trim().matches("(/\\*|//).*");
     }
-    
+
     static boolean isAPureDocLine(final String line) {
         String l = killComments(line.trim());
         return l.isEmpty() || l.matches("^\\*.*") || l.matches(".*\\*/\\s*$");
     }
-    
+
     static boolean hasDoc(List<String> lines, final int lineNumber) {
         int i = lineNumber - 1;
         return i >= 0 && (isAnnotation(lines.get(i)) ? hasDoc(lines, i) : containsDoc(lines, i) && !containsDoc(lines, i + 1));
     }
-    
+
     // TODO inaccurate and bad performance yet
     static boolean containsDoc(List<String> lines, final int lineNumber) {
         int i = lineNumber;
@@ -93,12 +93,12 @@ class CodeActionDeciderJavaUtil {
         }
         return false;
     }
-    
+
     static boolean isFieldDeclaration(List<String> lines, final int lineNumber) {
         String line = killStringsCharsAndComments(lines.get(lineNumber)).trim();
         return line.matches("\\S+.*;$") && !isPartOfAMethod(lines, lineNumber) && !isPackageDeclaration(line) && !isImport(lines, lineNumber) && !isPartOfAConstructor(lines, lineNumber);
     }
-    
+
     static boolean isPartOfAMethod(List<String> lines, final int lineNumber) {
         int startOfDeclaration = -1;
         for (int i = lineNumber; i > 0; i--) {
@@ -125,7 +125,7 @@ class CodeActionDeciderJavaUtil {
         }
         return false;
     }
-    
+
     private static boolean isPartOfAConstructor(List<String> lines, final int lineNumber) {
         int startOfDeclaration = -1;
         for (int i = lineNumber; i > 0; i--) {
@@ -152,25 +152,25 @@ class CodeActionDeciderJavaUtil {
         }
         return false;
     }
-    
+
     static boolean isConstructorDeclaration(List<String> lines, int lineNumber) {
         return isConstructorDeclaration(lines.get(lineNumber));
     }
-    
+
     static boolean isBlockClose(String line) {
         return !isAPureDocLine(line) && killStringsCharsAndComments(line).contains("}");
     }
-    
+
     private static String killStringsCharsAndComments(String line) {
         String lineToSearchIn = killStrings(line);
         lineToSearchIn = killChars(lineToSearchIn);
         return killComments(lineToSearchIn);
     }
-    
+
     private static String killChars(String line) {
         return killOccurrences(line, "'[^']*'");
     }
-    
+
     private static String killOccurrences(String line, String regex) {
         String tmp = line.replaceFirst(regex, "");
         while (!tmp.equals(tmp.replaceFirst(regex, ""))) {
@@ -178,7 +178,7 @@ class CodeActionDeciderJavaUtil {
         }
         return tmp;
     }
-    
+
     private static String killComments(String lineToSearchIn) {
         String regexSingleLineComment = "//.*";
         lineToSearchIn = lineToSearchIn.replaceAll(regexSingleLineComment, "");
@@ -186,15 +186,15 @@ class CodeActionDeciderJavaUtil {
         String tmp = killOccurrences(lineToSearchIn, regexMultiComment);
         return tmp.replaceAll("/\\*.*", "");
     }
-    
+
     static String killStrings(String line) {
         return killOccurrences(line.replaceAll("\\\\\"", ""), "\"[^\"]*[^\\\\]\"");
     }
-    
+
     static boolean isPackageDeclaration(String line) {
         return line.matches("^\\s*package.*;");
     }
-    
+
     /**
     * "block" means something starting and ending with curly braces.
     * on line blocks in if clauses or cases in switch statements are not detected.
@@ -202,19 +202,19 @@ class CodeActionDeciderJavaUtil {
     static boolean isBlockStart(String line) {
         return !isAPureDocLine(line) && killStringsCharsAndComments(line).contains("{");
     }
-    
+
     static boolean isClassDeclaration(List<String> lines, int lineNumber) {
         return matches(lines.get(lineNumber), ".*class\\s+\\S+.*\\{");
     }
-    
+
     static boolean isEnumDeclaration(List<String> lines, int lineNumber) {
         return matches(lines.get(lineNumber), ".*enum\\s+\\S+.*\\{");
     }
-    
+
     static boolean isInterfaceDeclaration(List<String> lines, int lineNumber) {
         return matches(lines.get(lineNumber), ".*interface\\s+\\S+.*\\{");
     }
-    
+
     static boolean isFirstAnnotationOfClassEnumOrInterface(List<String> lines, int lineNumber) {
         String line = lines.get(lineNumber);
         if (isAnnotation(line) && (lineNumber == 0 || !isAnnotation(lines, lineNumber - 1))) {
@@ -226,7 +226,7 @@ class CodeActionDeciderJavaUtil {
         }
         return false;
     }
-    
+
     static boolean isFirstAnnotationOfMethod(List<String> lines, int lineNumber) {
         String line = lines.get(lineNumber);
         if (isAnnotation(line) && (lineNumber == 0 || !isAnnotation(lines, lineNumber - 1))) {
@@ -238,7 +238,7 @@ class CodeActionDeciderJavaUtil {
         }
         return false;
     }
-    
+
     static boolean isFirstAnnotationOfField(List<String> lines, int lineNumber) {
         String line = lines.get(lineNumber);
         if (isAnnotation(line) && (lineNumber == 0 || !isAnnotation(lines, lineNumber - 1))) {
@@ -250,34 +250,32 @@ class CodeActionDeciderJavaUtil {
         }
         return false;
     }
-    
+
     static boolean isStartOfIf(String line) {
         return matches(line, "if\\s*\\(.+\\).*");
     }
-    
+
     static String withPartsInLineNotBeingAString(String line, Function<String, String> format) {
-        
+
         // build array with even indexes == non-strings and odd indexes == strings
         List<String> lineSplitAtStrings = new ArrayList<>();
         String[] dirtySplitsAtQuotes = line.split("\"", -1);
         int i = 0;
         while (i < dirtySplitsAtQuotes.length) {
             String lineSplit = dirtySplitsAtQuotes[i];
-            
+
             // put slashed quotes into its string again
             while (lineSplit.matches(".*\\\\$")) {
-                
+
                 // FIXME potential IndexOutOfBoundsException (in wtf syntax)
                 i++;
                 lineSplit += "\"" + dirtySplitsAtQuotes[i];
             }
-            
+
             // put slashed quotes into its char again
             boolean falseAlarm = false;
             while (lineSplit.matches(".*'$") && !falseAlarm) {
-                
-                // FIXME potential IndexOutOfBoundsException (in wtf syntax)
-                if (dirtySplitsAtQuotes[i + 1].matches("^'.*")) {
+                if (i + 1 < dirtySplitsAtQuotes.length && dirtySplitsAtQuotes[i + 1].matches("^'.*")) {
                     i++;
                     lineSplit += "\"" + dirtySplitsAtQuotes[i];
                 } else {
@@ -287,7 +285,7 @@ class CodeActionDeciderJavaUtil {
             lineSplitAtStrings.add(lineSplit);
             i++;
         }
-        
+
         // replace double whitespaces in non-strings (even indexes)
         List<String> splittedResults = new ArrayList<>();
         for (int j = 0; j < lineSplitAtStrings.size(); j++) {
