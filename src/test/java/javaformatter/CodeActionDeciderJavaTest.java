@@ -49,7 +49,10 @@ public class CodeActionDeciderJavaTest {
         lines.add("* if(true){");
         lines.add("int a=3;");
         lines.add("List<String>c=new ArrayList<>();");
-        lines.add("boolean a=c<d;"); // TODO
+        lines.add("boolean a=c<d;");
+        lines.add("boolean a=c>d;"); // TODO
+        lines.add("boolean a=c>=d;"); // TODO
+        lines.add("boolean a=c<=d;"); // TODO
         lines.add("for(;;)"); // TODO
         lines.add("boolean a=a()<b();"); // TODO
         lines.add("boolean a=a()>b();"); // TODO
@@ -79,6 +82,7 @@ public class CodeActionDeciderJavaTest {
         assertThat(preprocessedLines.get(15), is("* if(true){"));
         assertThat(preprocessedLines.get(16), is("int a = 3;"));
         assertThat(preprocessedLines.get(17), is("List<String> c = new ArrayList<>();"));
+        assertThat(preprocessedLines.get(18), is("boolean a = c < d;"));
     }
     
     @Test

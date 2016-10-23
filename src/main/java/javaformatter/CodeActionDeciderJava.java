@@ -53,16 +53,19 @@ class CodeActionDeciderJava implements CodeActionDecider {
         return withPartsInLineNotBeingAString(line, part -> {
 
             /*
-            * "<"          ==> "< "
+            * "<"             ==> "< "
             *
             * E.g.:
-            * if(a<b)      ==> if(a< b)
-            * for(;a<b;)   ==> for(;a< b;)
+            * if(a<b)         ==> if(a< b)
+            * for(;a<b;)      ==> for(;a< b;)
+            * boolean a=b<c;  ==> boolean a=b< c;
             *
             * do not change:
             * List<String>
+            * a <= b
             */
-            part = findAndReplace(part, "(;|\\()([^\\)]+)<([^=\\s>])", m -> m.group(1) + m.group(2) + "< " + m.group(3));
+            part = findAndReplace(part, "<([^=\\s>])", m -> "< " + m.group(1));
+            part = findAndReplace(part, "< ([A-Za-z0-9\\s,]*)>", m -> "<" + m.group(1) + ">");
 
             /*
             * ">"                ==> "> "
@@ -106,7 +109,9 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * new ArrayList<>()
             * List<String>
             */
-            part = findAndReplace(part, "(;|\\()([^\\)]*)([^\\s])<", m -> m.group(1) + m.group(2) + m.group(3) + " <");
+            part = findAndReplace(part, "([^\\s])<", m -> m.group(1) + " <");
+            part = findAndReplace(part, " <([A-Za-z0-9\\s,]+)>", m -> "<" + m.group(1) + ">");
+            part = part.replaceAll(" <>", "<>");
 
             /*
             * ">"             ==> " >"
