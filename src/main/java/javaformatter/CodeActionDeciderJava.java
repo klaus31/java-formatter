@@ -171,7 +171,7 @@ class CodeActionDeciderJava implements CodeActionDecider {
     private String findAndReplace(String haystack, String regex, Function<Matcher, String> exec) {
         Matcher m = Pattern.compile(regex).matcher(haystack);
         while(m.find()) {
-            haystack = haystack.replaceAll(regex, exec.apply(m));
+            haystack = haystack.replaceFirst(regex, exec.apply(m));
         }
         return haystack;
     }

@@ -27,7 +27,7 @@ public class CodeActionDeciderJavaTest {
     }
     
     @Test
-    public void preProcessLinesShouldAddSpaces() {
+    public void preProcessLinesShouldAddSpacesA() {
         
         // given
         List<String> lines = new ArrayList<>();
@@ -50,15 +50,7 @@ public class CodeActionDeciderJavaTest {
         lines.add("int a=3;");
         lines.add("List<String>c=new ArrayList<>();");
         lines.add("boolean a=c<d;");
-        lines.add("boolean a=c>d;"); // TODO
-        lines.add("boolean a=c>=d;"); // TODO
-        lines.add("boolean a=c<=d;"); // TODO
-        lines.add("for(;;)"); // TODO
-        lines.add("boolean a=a()<b();"); // TODO
-        lines.add("boolean a=a()>b();"); // TODO
-        lines.add("boolean a=a()>=b();"); // TODO
-        lines.add("boolean a=a()<=b();"); // TODO
-        lines.add("}else{"); // TODO
+        lines.add("boolean a=c>d;");
 
         // when
         List<String> preprocessedLines = new CodeActionDeciderJava().preProcessLines(lines);
@@ -83,6 +75,27 @@ public class CodeActionDeciderJavaTest {
         assertThat(preprocessedLines.get(16), is("int a = 3;"));
         assertThat(preprocessedLines.get(17), is("List<String> c = new ArrayList<>();"));
         assertThat(preprocessedLines.get(18), is("boolean a = c < d;"));
+        assertThat(preprocessedLines.get(19), is("boolean a = c > d;"));
+    }
+
+    @Test
+    public void preProcessLinesShouldAddSpacesB() {
+        assertThat(preProcessLine("boolean a=c>=d;"), is("boolean a = c >= d;"));
+        assertThat(preProcessLine("boolean a=c<=d;"), is("boolean a = c <= d;"));
+        // TODO:
+//        assertThat(preProcessLine("for(;;)"), is("for(;;)"));
+//        assertThat(preProcessLine("boolean a=a()<b();"), is("boolean a = a() < b();"));
+//        assertThat(preProcessLine("boolean a=a()>b();"), is("boolean a = a() > b();"));
+//        assertThat(preProcessLine("boolean a=a()>=b();"), is("boolean a = a() >= b();"));
+//        assertThat(preProcessLine("boolean a=a()<=b();"), is("boolean a = a() <= b();"));
+//        assertThat(preProcessLine("}else{"), is("} else {"));
+    }
+
+    private String preProcessLine(String line) {
+        List<String> lines = new ArrayList<>();
+        lines.add(line);
+        List<String> preprocessedLines = new CodeActionDeciderJava().preProcessLines(lines);
+        return preprocessedLines.get(0);
     }
     
     @Test
