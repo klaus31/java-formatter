@@ -156,7 +156,7 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * for(;;i++)
             * int a = +34;
             */
-            part = findAndReplace(part, "\\+([^\\s=\\+\\);\\d])", m -> "+ " + m.group(1));
+            part = findAndReplace(part, "\\+([^\\s=\\+\\);])", m -> "+ " + m.group(1));
             
             // quite same with -
             part = findAndReplace(part, "\\-([^\\s=\\-\\);>\\d])", m -> "- " + m.group(1));
@@ -182,7 +182,8 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * a++
             */
             part = findAndReplace(part, "([^\\s\\+])\\+([^\\+])", m -> m.group(1) + " +" + m.group(2));
-            if (part.equals("+")) part = " + ";
+            part = findAndReplace(part, "^\\+", m -> " +");
+            part = findAndReplace(part, "\\+$", m -> "+ ");
             
             // quite same with -
             part = findAndReplace(part, "([^\\s\\-])\\-([^\\-])", m -> m.group(1) + " -" + m.group(2));
@@ -242,6 +243,13 @@ class CodeActionDeciderJava implements CodeActionDecider {
             // quite same with "while"
             part = findAndReplace(part, "^while\\(", m -> "while (");
             
+            // quite same with "catch"
+            part = findAndReplace(part, "catch\\(", m -> "catch (");
+            
+            // quite same with "return"
+            part = findAndReplace(part, "return([^\\s])", m -> "return " + m.group(1));
+            part = findAndReplace(part, "return$", m -> "return ");
+            
             /*
             * "?"             ==> " ? "
             *
@@ -283,6 +291,8 @@ class CodeActionDeciderJava implements CodeActionDecider {
             part = part.replaceAll(" ;", ";");
             part = part.replaceAll("\\} \\)", "})");
             part = part.replaceAll("\\) \\}", ")}");
+            part = part.replaceAll(" \\]", "]");
+            part = part.replaceAll("\\[ ", "[");
             return part;
         });
     }
