@@ -69,7 +69,7 @@ class CodeActionDeciderJavaUtil {
 
     static boolean isAPureDocLine(final String line) {
         String l = killComments(line.trim());
-        return l.isEmpty() || l.matches("^\\*[^\\*/]*");
+        return l.isEmpty() || l.matches("^\\*.*") || l.matches(".*\\*/\\s*$");
     }
     
     static boolean hasDoc(List<String> lines, final int lineNumber) {

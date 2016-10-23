@@ -79,6 +79,7 @@ public class CodeActionDeciderJavaTest {
         assertThat(preProcessLine("boolean a=a()>=b();"), is("boolean a = a() >= b();"));
         assertThat(preProcessLine("boolean a=a()<=b();"), is("boolean a = a() <= b();"));
         assertThat(preProcessLine("}else{"), is("} else {"));
+        assertThat(preProcessLine("*/"), is("*/"));
     }
 
     private String preProcessLine(String line) {

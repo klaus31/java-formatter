@@ -25,6 +25,7 @@ public class CodeActionDeciderJavaUtilTest {
         assertThat(isAPureDocLine("int a; /** hi!"), is(false));
         assertThat(isAPureDocLine("/* foo */ int a;"), is(false));
         assertThat(isAPureDocLine("int a = \"// no komment at all\";"), is(false));
+        assertThat(isAPureDocLine("*/"), is(true));
     }
 
 
