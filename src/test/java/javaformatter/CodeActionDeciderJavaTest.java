@@ -70,13 +70,14 @@ public class CodeActionDeciderJavaTest {
         assertThat(preProcessLine("boolean a=b&c;"), is("boolean a = b & c;"));
         assertThat(preProcessLine("boolean a=b|c;"), is("boolean a = b | c;"));
         assertThat(preProcessLine("boolean a|=b|c;"), is("boolean a |= b | c;"));
+        assertThat(preProcessLine("boolean a=b?c:d;"), is("boolean a = b ? c : d;"));
+        assertThat(preProcessLine("Foo<?>foo;"), is("Foo<?> foo;"));
+        assertThat(preProcessLine("boolean a=(b?c:d)?e:f;"), is("boolean a = (b ? c : d) ? e : f;"));
     }
 
     @Test
     public void preProcessLinesShouldAddSpaces_WIP() {
         /* TODO
-        assertThat(preProcessLine("boolean a=b?c:d;"), is("boolean a = b ? c : d;"));
-        assertThat(preProcessLine("boolean a=(b?c:d)?e:f;"), is("boolean a = (b ? c : d) ? e : f;"));
         assertThat(preProcessLine("for(;;)"), is("for(;;)"));
         assertThat(preProcessLine("boolean a=a()<b();"), is("boolean a = a() < b();"));
         assertThat(preProcessLine("boolean a=a()>b();"), is("boolean a = a() > b();"));

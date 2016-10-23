@@ -65,7 +65,7 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * a <= b
             */
             part = findAndReplace(part, "<([^=\\s>])", m -> "< " + m.group(1));
-            part = findAndReplace(part, "< ([A-Za-z0-9\\s,]*)>", m -> "<" + m.group(1) + ">");
+            part = findAndReplace(part, "< ([A-Za-z0-9\\s,\\?]*)>", m -> "<" + m.group(1) + ">");
 
             /*
             * ">"                ==> "> "
@@ -112,7 +112,7 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * List<String>
             */
             part = findAndReplace(part, "([^\\s])<", m -> m.group(1) + " <");
-            part = findAndReplace(part, " <([A-Za-z0-9\\s,]+)>", m -> "<" + m.group(1) + ">");
+            part = findAndReplace(part, " <([A-Za-z0-9\\s,\\?]+)>", m -> "<" + m.group(1) + ">");
             part = part.replaceAll(" <>", "<>");
 
             /*
@@ -127,8 +127,8 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * () -> this.foo()
             * List<String>
             */
-            part = findAndReplace(part, "([^\\s-<])>", m -> m.group(1) + " >");
-            part = findAndReplace(part, "<([A-Za-z0-9\\s,]*) >", m -> "<" + m.group(1) + ">");
+            part = findAndReplace(part, "([^\\s-<\\?])>", m -> m.group(1) + " >");
+            part = findAndReplace(part, "<([A-Za-z0-9\\s,\\?]*) >", m -> "<" + m.group(1) + ">");
 
             /*
             * "->"      ==> " ->"
@@ -226,16 +226,32 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * gif(true)
             */
             part = findAndReplace(part, "^if\\(", m -> "if (");
-
-            /*
-            * "for("             ==> "for ("
-            */
+// quite same with "for"
             part = findAndReplace(part, "^for\\(", m -> "for (");
+// quite same with "while"
+            part = findAndReplace(part, "^while\\(", m -> "while (");
 
             /*
-            * "while("             ==> "while ("
+            * "?"             ==> " ? "
+            *
+            * E.g.:
+            * int a=b?c:d;   ==> int a=b ? c:d;
+            *
+            * but not:
+            * Foo<?> foo;
             */
-            part = findAndReplace(part, "^while\\(", m -> "while (");
+            part = findAndReplace(part, "([^\\s\\<])\\?([^\\s\\>])", m -> m.group(1) + " ? " + m.group(2));
+
+            /*
+            * ":"             ==> " : "
+            *
+            * E.g.:
+            * int a=b?c:d;   ==> int a=b?c : d;
+            *
+            * but not:
+            * list.stream().filter(this::bar);
+            */
+            part = findAndReplace(part, "([^\\s:])\\:([^\\s:])", m -> m.group(1) + " : " + m.group(2));
 
             return part;
         });
