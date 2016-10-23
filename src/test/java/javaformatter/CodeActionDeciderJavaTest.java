@@ -73,18 +73,12 @@ public class CodeActionDeciderJavaTest {
         assertThat(preProcessLine("boolean a=b?c:d;"), is("boolean a = b ? c : d;"));
         assertThat(preProcessLine("Foo<?>foo;"), is("Foo<?> foo;"));
         assertThat(preProcessLine("boolean a=(b?c:d)?e:f;"), is("boolean a = (b ? c : d) ? e : f;"));
-    }
-
-    @Test
-    public void preProcessLinesShouldAddSpaces_WIP() {
-        /* TODO
-        assertThat(preProcessLine("for(;;)"), is("for(;;)"));
+        assertThat(preProcessLine("for(;;)"), is("for (;;)"));
         assertThat(preProcessLine("boolean a=a()<b();"), is("boolean a = a() < b();"));
         assertThat(preProcessLine("boolean a=a()>b();"), is("boolean a = a() > b();"));
         assertThat(preProcessLine("boolean a=a()>=b();"), is("boolean a = a() >= b();"));
         assertThat(preProcessLine("boolean a=a()<=b();"), is("boolean a = a() <= b();"));
         assertThat(preProcessLine("}else{"), is("} else {"));
-        */
     }
 
     private String preProcessLine(String line) {
