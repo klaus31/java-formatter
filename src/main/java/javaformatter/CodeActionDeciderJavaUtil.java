@@ -155,7 +155,7 @@ class CodeActionDeciderJavaUtil {
     }
     
     static boolean isBlockClose(String line) {
-        return killStringsCharsAndComments(line).contains("}");
+        return !isAPureDocLine(line) && killStringsCharsAndComments(line).contains("}");
     }
     
     private static String killStringsCharsAndComments(String line) {
@@ -197,7 +197,7 @@ class CodeActionDeciderJavaUtil {
     * on line blocks in if clauses or cases in switch statements are not detected.
     */
     static boolean isBlockStart(String line) {
-        return killStringsCharsAndComments(line).contains("{");
+        return !isAPureDocLine(line) && killStringsCharsAndComments(line).contains("{");
     }
     
     static boolean isClassDeclaration(List<String> lines, int lineNumber) {
