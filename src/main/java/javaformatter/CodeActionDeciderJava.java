@@ -263,7 +263,6 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * list.stream().filter(this::bar);
             */
             part = findAndReplace(part, "([^\\s:])\\:([^\\s:])", m -> m.group(1) + " : " + m.group(2));
-            part = part.replaceAll("; ;", ";;");
             
             /*
             * "}"             ==> "} "
@@ -274,11 +273,18 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * but not:
             * }
             */
-            part = findAndReplace(part,"\\}([^\\s])", m -> "} " + m.group(1));
-            part = findAndReplace(part,",([^\\s])", m -> ", " + m.group(1));
-            part = findAndReplace(part,"([^\\s])\\!=", m -> m.group(1) + " !=");
+            part = findAndReplace(part, "\\}([^\\s])", m -> "} " + m.group(1));
+            part = findAndReplace(part, ",([^\\s])", m -> ", " + m.group(1));
+            part = findAndReplace(part, ",$", m -> ", ");
+            part = findAndReplace(part, "([^\\s])\\!=", m -> m.group(1) + " !=");
+            
+            // repair stuff
+            part = part.replaceAll("; ;", ";;");
+            part = part.replaceAll(" ;", ";");
+            part = part.replaceAll("\\} \\)", "})");
+            part = part.replaceAll("\\) \\}", ")}");
             return part;
-        } );
+        });
     }
     
     private String findAndReplace(String haystack, String regex, Function<Matcher, String> exec) {
@@ -298,6 +304,6 @@ class CodeActionDeciderJava implements CodeActionDecider {
                 part = part.replaceAll("\\s\\s", " ");
             } while (!tmp.equals(part));
             return part;
-        } );
+        });
     }
 }
