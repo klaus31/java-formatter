@@ -141,7 +141,38 @@ class CodeActionDeciderJava implements CodeActionDecider {
             /*
             * "="       ==> " ="
             */
-            part = findAndReplace(part, "([^><=\\s])=", m -> m.group(1) + " =");
+            part = findAndReplace(part, "([^><=\\s-+\\*/%])=", m -> m.group(1) + " =");
+
+            /*
+            * "+"       ==> "+ "
+            *
+            * E.g.:
+            * a+b       ==> a+ b
+            * "a"+"b"   ==> "a"+ "b"
+            *
+            * but not:
+            * a+=b
+            * a++;
+            * for(;;i++)
+            */
+            part = findAndReplace(part, "\\+([^\\s=\\+\\);])", m -> "+ " + m.group(1));
+            // quite same with -
+            part = findAndReplace(part, "\\-([^\\s=\\-\\);>])", m -> "- " + m.group(1));
+
+            /*
+            * "+"       ==> " +"
+            *
+            * E.g.:
+            * a+b       ==> a +b
+            * "a"+"b"   ==> "a" +"b"
+            * a+=b      ==> a +=b
+            *
+            * but not:
+            * a++
+            */
+            part = findAndReplace(part, "([^\\s\\+])\\+([^\\+])", m -> m.group(1) + " +" + m.group(2));
+            // quite same with -
+            part = findAndReplace(part, "([^\\s\\-])\\-([^\\-])", m -> m.group(1) + " -" + m.group(2));
 
             /*
             * "if("     ==> "if ("

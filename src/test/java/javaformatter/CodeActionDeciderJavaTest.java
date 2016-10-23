@@ -29,7 +29,7 @@ public class CodeActionDeciderJavaTest {
     }
 
     @Test
-    public void preProcessLinesShouldAddSpacesA() {
+    public void preProcessLinesShouldAddSpaces() {
         assertThat(preProcessLine("if(true){"), is("if (true) {"));
         assertThat(preProcessLine("\"if(true){\""), is("\"if(true){\""));
         assertThat(preProcessLine("foo;bar"), is("foo; bar"));
@@ -52,19 +52,38 @@ public class CodeActionDeciderJavaTest {
         assertThat(preProcessLine("boolean a=c>d;"), is("boolean a = c > d;"));
         assertThat(preProcessLine("boolean a=c>=d;"), is("boolean a = c >= d;"));
         assertThat(preProcessLine("boolean a=c<=d;"), is("boolean a = c <= d;"));
+        assertThat(preProcessLine("for(;i<=a.length;i+=1){"), is("for (; i <= a.length; i += 1) {"));
+        assertThat(preProcessLine("for(;i<=a.length;i-=1){"), is("for (; i <= a.length; i -= 1) {"));
+        assertThat(preProcessLine("a++;"), is("a++;"));
+        assertThat(preProcessLine("a--;"), is("a--;"));
     }
 
     @Test
-    public void preProcessLinesShouldAddSpacesB() {
-        // TODO:
-        //  assertThat(preProcessLine("for(;i<=a.length;i+=1){"), is("for (; i <= a.length; i += 1) {"));
-        //  assertThat(preProcessLine("for(;i<=a.length;i-=1){"), is("for (; i <= a.length; i -= 1) {"));
-        //  assertThat(preProcessLine("for(;;)"), is("for(;;)"));
-        //  assertThat(preProcessLine("boolean a=a()<b();"), is("boolean a = a() < b();"));
-        //  assertThat(preProcessLine("boolean a=a()>b();"), is("boolean a = a() > b();"));
-        //  assertThat(preProcessLine("boolean a=a()>=b();"), is("boolean a = a() >= b();"));
-        //  assertThat(preProcessLine("boolean a=a()<=b();"), is("boolean a = a() <= b();"));
-        //  assertThat(preProcessLine("}else{"), is("} else {"));
+    public void preProcessLinesShouldAddSpaces_WIP() {
+        /* TODO
+        assertThat(preProcessLine("for(;i<=a.length;i*=1){"), is("for (; i <= a.length; i *= 1) {"));
+        assertThat(preProcessLine("for(;i<=a.length;i/=1){"), is("for (; i <= a.length; i /= 1) {"));
+        assertThat(preProcessLine("for(;i<=a.length;i%=1){"), is("for (; i <= a.length; i %= 1) {"));
+        assertThat(preProcessLine("String a+=\"b\"+\"c\";"), is("int a += \"b\" + \"c\";"));
+        assertThat(preProcessLine("int a+=b+c;"), is("int a += b + c;"));
+        assertThat(preProcessLine("int a-=b-c;"), is("int a -= b - c;"));
+        assertThat(preProcessLine("int a/=b/c;"), is("int a /= b / c;"));
+        assertThat(preProcessLine("int a*=b*c;"), is("int a *= b * c;"));
+        assertThat(preProcessLine("int a%=b%c;"), is("int a %= b % c;"));
+        assertThat(preProcessLine("boolean a=b||c;"), is("boolean a = b || c;"));
+        assertThat(preProcessLine("boolean a=b&&c;"), is("boolean a = b && c;"));
+        assertThat(preProcessLine("boolean a=b&c;"), is("boolean a = b & c;"));
+        assertThat(preProcessLine("boolean a=b|c;"), is("boolean a = b | c;"));
+        assertThat(preProcessLine("boolean a|=b|c;"), is("boolean a |= b | c;"));
+        assertThat(preProcessLine("boolean a=b?c:d;"), is("boolean a = b ? c : d;"));
+        assertThat(preProcessLine("boolean a=(b?c:d)?e:f;"), is("boolean a = (b ? c : d) ? e : f;"));
+        assertThat(preProcessLine("for(;;)"), is("for(;;)"));
+        assertThat(preProcessLine("boolean a=a()<b();"), is("boolean a = a() < b();"));
+        assertThat(preProcessLine("boolean a=a()>b();"), is("boolean a = a() > b();"));
+        assertThat(preProcessLine("boolean a=a()>=b();"), is("boolean a = a() >= b();"));
+        assertThat(preProcessLine("boolean a=a()<=b();"), is("boolean a = a() <= b();"));
+        assertThat(preProcessLine("}else{"), is("} else {"));
+        */
     }
 
     private String preProcessLine(String line) {
