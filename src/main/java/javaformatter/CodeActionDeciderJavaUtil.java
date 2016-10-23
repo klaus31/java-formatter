@@ -1,7 +1,10 @@
 package javaformatter;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import static org.apache.commons.lang3.StringUtils.countMatches;
+import static org.apache.commons.lang3.StringUtils.join;
 
 /**
 * First line: lineNumber == 0 !!!
@@ -66,7 +69,7 @@ class CodeActionDeciderJavaUtil {
     static boolean isFirstLineOfDoc(List<String> lines, final int lineNumber) {
         return lines.get(lineNumber).trim().matches("(/\\*|//).*");
     }
-
+    
     static boolean isAPureDocLine(final String line) {
         String l = killComments(line.trim());
         return l.isEmpty() || l.matches("^\\*.*") || l.matches(".*\\*/\\s*$");
@@ -80,7 +83,7 @@ class CodeActionDeciderJavaUtil {
     // TODO inaccurate and bad performance yet
     static boolean containsDoc(List<String> lines, final int lineNumber) {
         int i = lineNumber;
-        while(i >= 0) {
+        while (i >= 0) {
             String line = killStrings(lines.get(i).trim());
             line = killChars(line);
             if (line.matches(".*\\*/")) return i == lineNumber;
@@ -98,7 +101,7 @@ class CodeActionDeciderJavaUtil {
     
     static boolean isPartOfAMethod(List<String> lines, final int lineNumber) {
         int startOfDeclaration = -1;
-        for(int i = lineNumber;i > 0;i--) {
+        for (int i = lineNumber; i > 0; i--) {
             if (isMethodDeclaration(lines, i)) {
                 startOfDeclaration = i;
                 break;
@@ -108,12 +111,12 @@ class CodeActionDeciderJavaUtil {
             int curlyBraces = 0;
             int endOfDeclaration = startOfDeclaration;
             String line = "";
-            for(;curlyBraces == 0 && endOfDeclaration < lines.size();endOfDeclaration++) {
+            for (; curlyBraces == 0 && endOfDeclaration < lines.size(); endOfDeclaration++) {
                 line = killStringsCharsAndComments(lines.get(endOfDeclaration));
                 curlyBraces += countMatches(line, "{");
             }
             curlyBraces -= countMatches(line, "}");
-            for(;curlyBraces != 0 && endOfDeclaration < lines.size();endOfDeclaration++) {
+            for (; curlyBraces != 0 && endOfDeclaration < lines.size(); endOfDeclaration++) {
                 line = killStringsCharsAndComments(lines.get(endOfDeclaration));
                 curlyBraces += countMatches(line, "{");
                 curlyBraces -= countMatches(line, "}");
@@ -125,7 +128,7 @@ class CodeActionDeciderJavaUtil {
     
     private static boolean isPartOfAConstructor(List<String> lines, final int lineNumber) {
         int startOfDeclaration = -1;
-        for(int i = lineNumber;i > 0;i--) {
+        for (int i = lineNumber; i > 0; i--) {
             if (isConstructorDeclaration(lines, i)) {
                 startOfDeclaration = i;
                 break;
@@ -135,12 +138,12 @@ class CodeActionDeciderJavaUtil {
             int curlyBraces = 0;
             int endOfDeclaration = startOfDeclaration;
             String line = "";
-            for(;curlyBraces == 0 && endOfDeclaration < lines.size();endOfDeclaration++) {
+            for (; curlyBraces == 0 && endOfDeclaration < lines.size(); endOfDeclaration++) {
                 line = killStringsCharsAndComments(lines.get(endOfDeclaration));
                 curlyBraces += countMatches(line, "{");
             }
             curlyBraces -= countMatches(line, "}");
-            for(;curlyBraces != 0 && endOfDeclaration < lines.size();endOfDeclaration++) {
+            for (; curlyBraces != 0 && endOfDeclaration < lines.size(); endOfDeclaration++) {
                 line = killStringsCharsAndComments(lines.get(endOfDeclaration));
                 curlyBraces += countMatches(line, "{");
                 curlyBraces -= countMatches(line, "}");
@@ -169,9 +172,9 @@ class CodeActionDeciderJavaUtil {
     }
     
     private static String killOccurrences(String line, String regex) {
-        String tmp =line.replaceFirst(regex, "");
-        while(!tmp.equals(tmp.replaceFirst(regex, ""))) {
-            tmp =tmp.replaceFirst(regex, "");
+        String tmp = line.replaceFirst(regex, "");
+        while (!tmp.equals(tmp.replaceFirst(regex, ""))) {
+            tmp = tmp.replaceFirst(regex, "");
         }
         return tmp;
     }
@@ -250,5 +253,51 @@ class CodeActionDeciderJavaUtil {
     
     static boolean isStartOfIf(String line) {
         return matches(line, "if\\s*\\(.+\\).*");
+    }
+    
+    static String withPartsInLineNotBeingAString(String line, Function<String, String> format) {
+        
+        // build array with even indexes == non-strings and odd indexes == strings
+        List<String> lineSplitAtStrings = new ArrayList<>();
+        String[] dirtySplitsAtQuotes = line.split("\"", -1);
+        int i = 0;
+        while (i < dirtySplitsAtQuotes.length) {
+            String lineSplit = dirtySplitsAtQuotes[i];
+            
+            // put slashed quotes into its string again
+            while (lineSplit.matches(".*\\\\$")) {
+                
+                // FIXME potential IndexOutOfBoundsException (in wtf syntax)
+                i++;
+                lineSplit += "\"" + dirtySplitsAtQuotes[i];
+            }
+            
+            // put slashed quotes into its char again
+            boolean falseAlarm = false;
+            while (lineSplit.matches(".*'$") && !falseAlarm) {
+                
+                // FIXME potential IndexOutOfBoundsException (in wtf syntax)
+                if (dirtySplitsAtQuotes[i + 1].matches("^'.*")) {
+                    i++;
+                    lineSplit += "\"" + dirtySplitsAtQuotes[i];
+                } else {
+                    falseAlarm = true;
+                }
+            }
+            lineSplitAtStrings.add(lineSplit);
+            i++;
+        }
+        
+        // replace double whitespaces in non-strings (even indexes)
+        List<String> splittedResults = new ArrayList<>();
+        for (int j = 0; j < lineSplitAtStrings.size(); j++) {
+            if (j % 2 == 0) {
+                String result = lineSplitAtStrings.get(j);
+                splittedResults.add(format.apply(result));
+            } else {
+                splittedResults.add(lineSplitAtStrings.get(j));
+            }
+        }
+        return join(splittedResults, "\"");
     }
 }

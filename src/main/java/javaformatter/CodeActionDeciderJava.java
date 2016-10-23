@@ -1,25 +1,22 @@
 package javaformatter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import static java.util.stream.Collectors.toList;
 import static javaformatter.CodeActionDeciderJavaUtil.*;
-import static org.apache.commons.lang3.StringUtils.join;
 
 class CodeActionDeciderJava implements CodeActionDecider {
-
+    
     public int tabChangeNextLine(String line) {
         return isBlockStart(line) ? 1 : 0;
     }
-
+    
     public int tabChangeThisLine(String line) {
         return isBlockClose(line) ? -1 : 0;
     }
-
+    
     public int blankLinesBefore(final List<String> lines, final int lineNumber) {
         if (isFirstLineOfDoc(lines, lineNumber)) return 1;
         boolean hasDoc = hasDoc(lines, lineNumber);
@@ -35,23 +32,24 @@ class CodeActionDeciderJava implements CodeActionDecider {
         if (isInterfaceDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
         return 0;
     }
-
+    
     public int blankLinesAfter(String line) {
         return isPackageDeclaration(line) ? 1 : 0;
     }
-
+    
     public List<String> preProcessLines(List<String> lines) {
+        
         return lines.stream()
-                .map(String::trim)
-                .map(this::killDoubleSpaces)
-                .map(this::putInSingleSpaces)
-                .collect(toList());
+        .map(String::trim)
+        .map(this::killDoubleSpaces)
+        .map(this::putInSingleSpaces)
+        .collect(toList());
     }
-
+    
     private String putInSingleSpaces(String line) {
         if (CodeActionDeciderJavaUtil.isAPureDocLine(line)) return line;
         return withPartsInLineNotBeingAString(line, part -> {
-
+            
             /*
             * "<"             ==> "< "
             *
@@ -66,7 +64,7 @@ class CodeActionDeciderJava implements CodeActionDecider {
             */
             part = findAndReplace(part, "<([^=\\s>])", m -> "< " + m.group(1));
             part = findAndReplace(part, "< ([A-Za-z0-9\\s,\\?]*)>", m -> "<" + m.group(1) + ">");
-
+            
             /*
             * ">"                ==> "> "
             *
@@ -80,7 +78,7 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * new ArrayList<>()
             */
             part = findAndReplace(part, ">([^=\\s\\(])", m -> "> " + m.group(1));
-
+            
             /*
             * "="     ==> "= "
             *
@@ -91,7 +89,7 @@ class CodeActionDeciderJava implements CodeActionDecider {
             */
             part = findAndReplace(part, "=([^=\\s])", m -> "= " + m.group(1));
             if (part.matches(".*=$")) part += " ";
-
+            
             /*
             * ";"                 ==> "; "
             *
@@ -99,7 +97,7 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * for(i=0;i<7;i++)    ==> for(i=0; i<7; i++)
             */
             part = findAndReplace(part, ";([^\\s])", m -> "; " + m.group(1));
-
+            
             /*
             * "<"             ==> " <"
             *
@@ -114,7 +112,7 @@ class CodeActionDeciderJava implements CodeActionDecider {
             part = findAndReplace(part, "([^\\s])<", m -> m.group(1) + " <");
             part = findAndReplace(part, " <([A-Za-z0-9\\s,\\?]+)>", m -> "<" + m.group(1) + ">");
             part = part.replaceAll(" <>", "<>");
-
+            
             /*
             * ">"             ==> " >"
             *
@@ -129,22 +127,22 @@ class CodeActionDeciderJava implements CodeActionDecider {
             */
             part = findAndReplace(part, "([^\\s-<\\?])>", m -> m.group(1) + " >");
             part = findAndReplace(part, "<([A-Za-z0-9\\s,\\?]*) >", m -> "<" + m.group(1) + ">");
-
+            
             /*
             * "->"      ==> " ->"
             */
             part = findAndReplace(part, "([^\\s])->", m -> m.group(1) + " ->");
-
+            
             /*
             * "{"       ==> " {"
             */
             part = findAndReplace(part, "([^\\s])\\{", m -> m.group(1) + " {");
-
+            
             /*
             * "="       ==> " ="
             */
             part = findAndReplace(part, "([^><=\\s-+\\*/%\\|\\&\\!])=", m -> m.group(1) + " =");
-
+            
             /*
             * "+"       ==> "+ "
             *
@@ -159,15 +157,19 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * int a = +34;
             */
             part = findAndReplace(part, "\\+([^\\s=\\+\\);\\d])", m -> "+ " + m.group(1));
+            
             // quite same with -
             part = findAndReplace(part, "\\-([^\\s=\\-\\);>\\d])", m -> "- " + m.group(1));
+            
             // quite same with *
             part = findAndReplace(part, "\\*([^\\s=;])", m -> "* " + m.group(1));
+            
             // quite same with /
             part = findAndReplace(part, "/([^\\s=/])", m -> "/ " + m.group(1));
+            
             // quite same with %
             part = findAndReplace(part, "%([^\\s=])", m -> "% " + m.group(1));
-
+            
             /*
             * "+"       ==> " +"
             *
@@ -181,16 +183,20 @@ class CodeActionDeciderJava implements CodeActionDecider {
             */
             part = findAndReplace(part, "([^\\s\\+])\\+([^\\+])", m -> m.group(1) + " +" + m.group(2));
             if (part.equals("+")) part = " + ";
+            
             // quite same with -
             part = findAndReplace(part, "([^\\s\\-])\\-([^\\-])", m -> m.group(1) + " -" + m.group(2));
+            
             // quite same with *
             part = findAndReplace(part, "([^\\s\\.])\\*", m -> m.group(1) + " *");
+            
             // quite same with /
             part = findAndReplace(part, "([^\\s/])/", m -> m.group(1) + " /");
             part = findAndReplace(part, "//([^\\s])", m -> "// " + m.group(1));
+            
             // quite same with %
             part = findAndReplace(part, "([^\\s])%", m -> m.group(1) + " %");
-
+            
             /*
             * "|"       ==> "| "
             *
@@ -202,9 +208,10 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * a|=b
             */
             part = findAndReplace(part, "\\|([^\\s=\\|])", m -> "| " + m.group(1));
+            
             // quite same with &
             part = findAndReplace(part, "\\&([^\\s=\\&])", m -> "& " + m.group(1));
-
+            
             /*
             * "|"       ==> " |"
             *
@@ -214,10 +221,10 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * a |=b
             */
             part = findAndReplace(part, "([^\\s\\|])\\|", m -> m.group(1) + " |");
+            
             // quite same with &
             part = findAndReplace(part, "([^\\s\\&])\\&", m -> m.group(1) + " &");
-
-
+            
             /*
             * "if("     ==> "if ("
             *
@@ -228,11 +235,13 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * gif(true)
             */
             part = findAndReplace(part, "^if\\(", m -> "if (");
-// quite same with "for"
+            
+            // quite same with "for"
             part = findAndReplace(part, "^for\\(", m -> "for (");
-// quite same with "while"
+            
+            // quite same with "while"
             part = findAndReplace(part, "^while\\(", m -> "while (");
-
+            
             /*
             * "?"             ==> " ? "
             *
@@ -243,7 +252,7 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * Foo<?> foo;
             */
             part = findAndReplace(part, "([^\\s\\<])\\?([^\\s\\>])", m -> m.group(1) + " ? " + m.group(2));
-
+            
             /*
             * ":"             ==> " : "
             *
@@ -254,9 +263,8 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * list.stream().filter(this::bar);
             */
             part = findAndReplace(part, "([^\\s:])\\:([^\\s:])", m -> m.group(1) + " : " + m.group(2));
-
             part = part.replaceAll("; ;", ";;");
-
+            
             /*
             * "}"             ==> "} "
             *
@@ -266,14 +274,13 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * but not:
             * }
             */
-            part = findAndReplace(part, "\\}([^\\s])", m -> "} " + m.group(1));
-
-            part = findAndReplace(part, ",([^\\s])", m -> ", " + m.group(1));
-            part = findAndReplace(part, "([^\\s])\\!=", m -> m.group(1) + " !=");
+            part = findAndReplace(part,"\\}([^\\s])", m -> "} " + m.group(1));
+            part = findAndReplace(part,",([^\\s])", m -> ", " + m.group(1));
+            part = findAndReplace(part,"([^\\s])\\!=", m -> m.group(1) + " !=");
             return part;
-        });
+        } );
     }
-
+    
     private String findAndReplace(String haystack, String regex, Function<Matcher, String> exec) {
         Matcher m = Pattern.compile(regex).matcher(haystack);
         while (m.find()) {
@@ -281,7 +288,7 @@ class CodeActionDeciderJava implements CodeActionDecider {
         }
         return haystack;
     }
-
+    
     private String killDoubleSpaces(String line) {
         if (CodeActionDeciderJavaUtil.isAPureDocLine(line)) return line;
         return withPartsInLineNotBeingAString(line, part -> {
@@ -291,52 +298,6 @@ class CodeActionDeciderJava implements CodeActionDecider {
                 part = part.replaceAll("\\s\\s", " ");
             } while (!tmp.equals(part));
             return part;
-        });
-    }
-
-    private String withPartsInLineNotBeingAString(String line, Function<String, String> format) {
-
-        // build array with even indexes == non-strings and odd indexes == strings
-        List<String> lineSplitAtStrings = new ArrayList<>();
-        String[] dirtySplitsAtQuotes = line.split("\"", -1);
-        int i = 0;
-        while (i < dirtySplitsAtQuotes.length) {
-            String lineSplit = dirtySplitsAtQuotes[i];
-
-            // put slashed quotes into its string again
-            while (lineSplit.matches(".*\\\\$")) {
-
-                // FIXME potential IndexOutOfBoundsException (in wtf syntax)
-                i++;
-                lineSplit += "\"" + dirtySplitsAtQuotes[i];
-            }
-
-            // put slashed quotes into its char again
-            boolean falseAlarm = false;
-            while (lineSplit.matches(".*'$") && !falseAlarm) {
-
-                // FIXME potential IndexOutOfBoundsException (in wtf syntax)
-                if (dirtySplitsAtQuotes[i + 1].matches("^'.*")) {
-                    i++;
-                    lineSplit += "\"" + dirtySplitsAtQuotes[i];
-                } else {
-                    falseAlarm = true;
-                }
-            }
-            lineSplitAtStrings.add(lineSplit);
-            i++;
-        }
-
-        // replace double whitespaces in non-strings (even indexes)
-        List<String> splittedResults = new ArrayList<>();
-        for (int j = 0; j < lineSplitAtStrings.size(); j++) {
-            if (j % 2 == 0) {
-                String result = lineSplitAtStrings.get(j);
-                splittedResults.add(format.apply(result));
-            } else {
-                splittedResults.add(lineSplitAtStrings.get(j));
-            }
-        }
-        return join(splittedResults, "\"");
+        } );
     }
 }

@@ -11,6 +11,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class CodeActionDeciderJavaUtilTest {
+    
     @Test
     public void isAPureDocLineShouldDo() {
         assertThat(isAPureDocLine("//"), is(true));
@@ -27,8 +28,7 @@ public class CodeActionDeciderJavaUtilTest {
         assertThat(isAPureDocLine("int a = \"// no komment at all\";"), is(false));
         assertThat(isAPureDocLine("*/"), is(true));
     }
-
-
+    
     @Test
     public void isFieldDeclarationShouldDo() {
         

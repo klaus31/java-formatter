@@ -28,10 +28,10 @@ public class Main {
                     } catch (IOException e) {
                         System.exit(1610142042);
                     }
-                });
+                } );
             } catch (IOException e) {
                 System.exit(1610122032);
             }
-        };
+        } ;
     }
 }

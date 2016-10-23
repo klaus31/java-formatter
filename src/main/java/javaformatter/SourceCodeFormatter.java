@@ -29,7 +29,7 @@ class SourceCodeFormatter {
     
     private List<String> prepare(List<String> lines) {
         List<String> resultLines = new ArrayList<>();
-        for(int lineNumber=0; lineNumber< lines.size(); lineNumber++) {
+        for (int lineNumber = 0; lineNumber < lines.size(); lineNumber++) {
             if (!codeActionDecider.killLine(lines, lineNumber)) {
                 resultLines.add(lines.get(lineNumber));
             }
@@ -40,7 +40,7 @@ class SourceCodeFormatter {
     private List<String> addTabs(List<String> lines) {
         List<String> resultLines = new ArrayList<>();
         int tabLevel = 0;
-        for(String line : lines) {
+        for (String line : lines) {
             tabLevel += codeActionDecider.tabChangeThisLine(line);
             resultLines.add(StringUtils.repeat(codeActionDecider.getIndent(), tabLevel) + line);
             tabLevel += codeActionDecider.tabChangeNextLine(line);
@@ -50,19 +50,19 @@ class SourceCodeFormatter {
     
     private List<String> addBlankLines(List<String> lines) {
         List<String> resultLines = new ArrayList<>();
-        for(int i=0; i< lines.size(); i++) {
+        for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i);
             
             // add blank lines before
             int blankLinesBefore = codeActionDecider.blankLinesBefore(lines, i);
             int bi = 0;
-            while(bi++ < blankLinesBefore) resultLines.add("");
+            while (bi++ < blankLinesBefore) resultLines.add("");
             resultLines.add(line);
             
             // add blank lines after
             int blankLinesAfter = codeActionDecider.blankLinesAfter(line);
             int ai = 0;
-            while(ai++ < blankLinesAfter) resultLines.add("");
+            while (ai++ < blankLinesAfter) resultLines.add("");
         }
         return resultLines;
     }
