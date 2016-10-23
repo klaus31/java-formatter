@@ -143,7 +143,7 @@ class CodeActionDeciderJava implements CodeActionDecider {
             /*
             * "="       ==> " ="
             */
-            part = findAndReplace(part, "([^><=\\s-+\\*/%])=", m -> m.group(1) + " =");
+            part = findAndReplace(part, "([^><=\\s-+\\*/%\\|\\&])=", m -> m.group(1) + " =");
 
             /*
             * "+"       ==> "+ "
@@ -188,6 +188,33 @@ class CodeActionDeciderJava implements CodeActionDecider {
             part = findAndReplace(part, "([^\\s])/", m -> m.group(1) + " /");
             // quite same with %
             part = findAndReplace(part, "([^\\s])%", m -> m.group(1) + " %");
+
+            /*
+            * "|"       ==> "| "
+            *
+            * E.g.:
+            * a||b       ==> a|| b
+            * a|b   ==> a| b
+            *
+            * but not:
+            * a|=b
+            */
+            part = findAndReplace(part, "\\|([^\\s=\\|])", m -> "| " + m.group(1));
+            // quite same with &
+            part = findAndReplace(part, "\\&([^\\s=\\&])", m -> "& " + m.group(1));
+
+            /*
+            * "|"       ==> " |"
+            *
+            * E.g.:
+            * a||b       ==> a ||b
+            * a|b   ==> a |b
+            * a |=b
+            */
+            part = findAndReplace(part, "([^\\s\\|])\\|", m -> m.group(1) + " |");
+            // quite same with &
+            part = findAndReplace(part, "([^\\s\\&])\\&", m -> m.group(1) + " &");
+
 
             /*
             * "if("     ==> "if ("

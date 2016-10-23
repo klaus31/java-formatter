@@ -63,18 +63,18 @@ public class CodeActionDeciderJavaTest {
         assertThat(preProcessLine("String a+=\"b\"+\"c\";"), is("String a += \"b\" + \"c\";"));
         assertThat(preProcessLine("for(;i<=a.length;i/=1){"), is("for (; i <= a.length; i /= 1) {"));
         assertThat(preProcessLine("a/=b/c;"), is("a /= b / c;"));
-    }
-
-    @Test
-    public void preProcessLinesShouldAddSpaces_WIP() {
         assertThat(preProcessLine("for(;i<=a.length;i%=1){"), is("for (; i <= a.length; i %= 1) {"));
         assertThat(preProcessLine("int a%=b%c;"), is("int a %= b % c;"));
-        /* TODO
         assertThat(preProcessLine("boolean a=b||c;"), is("boolean a = b || c;"));
         assertThat(preProcessLine("boolean a=b&&c;"), is("boolean a = b && c;"));
         assertThat(preProcessLine("boolean a=b&c;"), is("boolean a = b & c;"));
         assertThat(preProcessLine("boolean a=b|c;"), is("boolean a = b | c;"));
         assertThat(preProcessLine("boolean a|=b|c;"), is("boolean a |= b | c;"));
+    }
+
+    @Test
+    public void preProcessLinesShouldAddSpaces_WIP() {
+        /* TODO
         assertThat(preProcessLine("boolean a=b?c:d;"), is("boolean a = b ? c : d;"));
         assertThat(preProcessLine("boolean a=(b?c:d)?e:f;"), is("boolean a = (b ? c : d) ? e : f;"));
         assertThat(preProcessLine("for(;;)"), is("for(;;)"));
