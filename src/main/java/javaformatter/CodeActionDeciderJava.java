@@ -87,8 +87,10 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * E.g.:
             * a=b     ==> a= b
             * a== b   ==> a== b
+            * a="b"   ==> a= "b"
             */
             part = findAndReplace(part, "=([^=\\s])", m -> "= " + m.group(1));
+            if(part.matches(".*=$")) part += " ";
 
             /*
             * ";"                 ==> "; "
@@ -173,6 +175,7 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * a++
             */
             part = findAndReplace(part, "([^\\s\\+])\\+([^\\+])", m -> m.group(1) + " +" + m.group(2));
+            if(part.equals("+")) part = " + ";
             // quite same with -
             part = findAndReplace(part, "([^\\s\\-])\\-([^\\-])", m -> m.group(1) + " -" + m.group(2));
             // quite same with *
