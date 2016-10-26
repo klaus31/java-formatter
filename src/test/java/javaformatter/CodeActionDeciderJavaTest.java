@@ -94,9 +94,16 @@ public class CodeActionDeciderJavaTest {
         assertThat(preProcessLine("a+=\"\\\"\"+b[ i ];"), is("a += \"\\\"\" + b[i];"));
         assertThat(preProcessLine("}catch("), is("} catch ("));
         assertThat(preProcessLine("Optional<List<String>>findObj(String name){"), is("Optional<List<String>> findObj(String name) {"));
-//        assertThat(preProcessLine("int spaceHere,int noSpaceAtEnd,"), is("int spaceHere, int noSpaceAtEnd,"));
-//        assertThat(preProcessLine("foo(-1)"), is("foo(-1)"));
-//        assertThat(preProcessLine("foo(result()-12)"), is("foo(result() - 12)"));
+        assertThat(preProcessLine("List<List<List<List<String>>>>wtf;"), is("List<List<List<List<String>>>> wtf;"));
+        assertThat(preProcessLine("foo(-1)"), is("foo(-1)"));
+        assertThat(preProcessLine("int spaceHere,int noSpaceAtEnd,"), is("int spaceHere, int noSpaceAtEnd,"));
+        assertThat(preProcessLine("foo(result()-12)"), is("foo(result() - 12)"));
+        assertThat(preProcessLine("foo(result()*12)"), is("foo(result() * 12)"));
+        assertThat(preProcessLine("foo(result()+12)"), is("foo(result() + 12)"));
+        assertThat(preProcessLine("foo(result()/12)"), is("foo(result() / 12)"));
+        assertThat(preProcessLine("foo(result()%12)"), is("foo(result() % 12)"));
+        assertThat(preProcessLine("foo(a-b)"), is("foo(a - b)"));
+        assertThat(preProcessLine("foo(a-b(int c=3*a()))"), is("foo(a - b(int c = 3 * a()))"));
 
         // TODO (wtf syntax): assertThat(preProcessLine("int a=+2"), is("int a = +2"));
     }

@@ -189,7 +189,8 @@ class CodeActionDeciderJava implements CodeActionDecider {
             part = findAndReplace(part, "\\+$", m -> "+ ");
 
             // quite same with -
-            part = findAndReplace(part, "([^\\s\\-])\\-([^\\-])", m -> m.group(1) + " -" + m.group(2));
+            part = findAndReplace(part, "([^\\s\\-\\(\\)])\\-([^\\-])", m -> m.group(1) + " -" + m.group(2));
+            part = findAndReplace(part, "\\)\\-", m -> ") - ");
 
             // quite same with *
             part = findAndReplace(part, "([^\\s\\.])\\*", m -> m.group(1) + " *");
@@ -297,7 +298,7 @@ class CodeActionDeciderJava implements CodeActionDecider {
             part = part.replaceAll(" \\]", "]");
             part = part.replaceAll("\\[ ", "[");
             return part;
-        });
+        }).trim();
     }
 
     private String findAndReplace(String haystack, String regex, Function<Matcher, String> exec) {
