@@ -3,12 +3,13 @@ package javaformatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+
 import static org.apache.commons.lang3.StringUtils.countMatches;
 import static org.apache.commons.lang3.StringUtils.join;
 
 /**
-* First line: lineNumber == 0 !!!
-*/
+ * First line: lineNumber == 0 !!!
+ */
 class CodeActionDeciderJavaUtil {
 
     private CodeActionDeciderJavaUtil() {
@@ -196,9 +197,9 @@ class CodeActionDeciderJavaUtil {
     }
 
     /**
-    * "block" means something starting and ending with curly braces.
-    * on line blocks in if clauses or cases in switch statements are not detected.
-    */
+     * "block" means something starting and ending with curly braces.
+     * on line blocks in if clauses or cases in switch statements are not detected.
+     */
     static boolean isBlockStart(String line) {
         return !isAPureDocLine(line) && killStringsCharsAndComments(line).contains("{");
     }
@@ -266,10 +267,12 @@ class CodeActionDeciderJavaUtil {
 
             // put slashed quotes into its string again
             while (lineSplit.matches(".*\\\\$")) {
-
-                // FIXME potential IndexOutOfBoundsException (in wtf syntax)
-                i++;
-                lineSplit += "\"" + dirtySplitsAtQuotes[i];
+                if (i + 1 < dirtySplitsAtQuotes.length) {
+                    i++;
+                    lineSplit += "\"" + dirtySplitsAtQuotes[i];
+                } else {
+                    break;
+                }
             }
 
             // put slashed quotes into its char again

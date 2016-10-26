@@ -93,6 +93,10 @@ public class CodeActionDeciderJavaTest {
         assertThat(preProcessLine("int a=b+2"), is("int a = b + 2"));
         assertThat(preProcessLine("a+=\"\\\"\"+b[ i ];"), is("a += \"\\\"\" + b[i];"));
         assertThat(preProcessLine("}catch("), is("} catch ("));
+        assertThat(preProcessLine("Optional<List<String>>findObj(String name){"), is("Optional<List<String>> findObj(String name) {"));
+//        assertThat(preProcessLine("int spaceHere,int noSpaceAtEnd,"), is("int spaceHere, int noSpaceAtEnd,"));
+//        assertThat(preProcessLine("foo(-1)"), is("foo(-1)"));
+//        assertThat(preProcessLine("foo(result()-12)"), is("foo(result() - 12)"));
 
         // TODO (wtf syntax): assertThat(preProcessLine("int a=+2"), is("int a = +2"));
     }
@@ -103,6 +107,24 @@ public class CodeActionDeciderJavaTest {
         List<String> preprocessedLines = new CodeActionDeciderJava().preProcessLines(lines);
         return preprocessedLines.get(0);
     }
+
+    @Test
+    public void postProcessShouldDoFormatDocCorrectly() {
+        // given
+        List<String> lines = new ArrayList<>();
+        lines.add("    /*");
+        lines.add("    * hi ho ha");
+        lines.add("    * this is wunderbar");
+        lines.add("    */");
+        // when
+        List<String> postProcessed = new CodeActionDeciderJava().postProcessFormattedLines(lines);
+        // then
+        assertThat(postProcessed.get(0), is("    /*"));
+        assertThat(postProcessed.get(1), is("     * hi ho ha"));
+        assertThat(postProcessed.get(2), is("     * this is wunderbar"));
+        assertThat(postProcessed.get(3), is("     */"));
+    }
+
 
     @Test
     public void debug201610201905() {

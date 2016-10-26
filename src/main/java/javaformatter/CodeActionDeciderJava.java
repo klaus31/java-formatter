@@ -108,10 +108,12 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * do not change:
             * new ArrayList<>()
             * List<String>
+            * List<List<String>>
             */
             part = findAndReplace(part, "([^\\s])<", m -> m.group(1) + " <");
-            part = findAndReplace(part, " <([A-Za-z0-9\\s,\\?]+)>", m -> "<" + m.group(1) + ">");
+            part = findAndReplace(part, " <([A-Za-z0-9\\s,\\?<>]+)>", m -> "<" + m.group(1).replaceAll("\\s", "") + ">");
             part = part.replaceAll(" <>", "<>");
+            part = findAndReplace(part, ">>([a-z])", m -> ">> " + m.group(1));
 
             /*
             * ">"             ==> " >"
@@ -124,9 +126,10 @@ class CodeActionDeciderJava implements CodeActionDecider {
             * new ArrayList<>()
             * () -> this.foo()
             * List<String>
+            * List<List<String>>
             */
-            part = findAndReplace(part, "([^\\s-<\\?])>", m -> m.group(1) + " >");
-            part = findAndReplace(part, "<([A-Za-z0-9\\s,\\?]*) >", m -> "<" + m.group(1) + ">");
+            part = findAndReplace(part, "([^\\s-<>\\?])>", m -> m.group(1) + " >");
+            part = findAndReplace(part, "<([A-Za-z0-9\\s,\\?<>]*) >", m -> "<" + m.group(1) + ">");
 
             /*
             * "->"      ==> " ->"
