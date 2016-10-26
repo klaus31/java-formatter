@@ -177,7 +177,7 @@ public class CodeActionDeciderJavaTest {
         assertThat(preprocessedLines.get(0), is("final String s;"));
         assertThat(preprocessedLines.get(1), is("final String b = \"  \";"));
         assertThat(preprocessedLines.get(2), is("final String c = \"  \\\"  \";"));
-        assertThat(preprocessedLines.get(3), is("\"  \", "));
+        assertThat(preprocessedLines.get(3), is("\"  \","));
         assertThat(preprocessedLines.get(4), is("final String b = \"\""));
         assertThat(preprocessedLines.get(5), is("doSomething('\"', 5)"));
         assertThat(preprocessedLines.get(6), is("// javadoc      => beast"));
