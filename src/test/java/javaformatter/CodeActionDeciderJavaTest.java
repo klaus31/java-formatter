@@ -117,21 +117,23 @@ public class CodeActionDeciderJavaTest {
 
     @Test
     public void postProcessShouldDoFormatDocCorrectly() {
+
         // given
         List<String> lines = new ArrayList<>();
         lines.add("    /*");
         lines.add("    * hi ho ha");
         lines.add("    * this is wunderbar");
         lines.add("    */");
+
         // when
         List<String> postProcessed = new CodeActionDeciderJava().postProcessFormattedLines(lines);
+
         // then
         assertThat(postProcessed.get(0), is("    /*"));
         assertThat(postProcessed.get(1), is("     * hi ho ha"));
         assertThat(postProcessed.get(2), is("     * this is wunderbar"));
         assertThat(postProcessed.get(3), is("     */"));
     }
-
 
     @Test
     public void debug201610201905() {

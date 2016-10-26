@@ -3,7 +3,6 @@ package javaformatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-
 import static org.apache.commons.lang3.StringUtils.countMatches;
 import static org.apache.commons.lang3.StringUtils.join;
 

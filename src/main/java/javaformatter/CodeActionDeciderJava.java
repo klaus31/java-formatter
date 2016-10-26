@@ -51,114 +51,114 @@ class CodeActionDeciderJava implements CodeActionDecider {
         return withPartsInLineNotBeingAString(line, part -> {
 
             /*
-            * "<"             ==> "< "
-            *
-            * E.g.:
-            * if(a<b)         ==> if(a< b)
-            * for(;a<b;)      ==> for(;a< b;)
-            * boolean a=b<c;  ==> boolean a=b< c;
-            *
-            * do not change:
-            * List<String>
-            * a <= b
-            */
+             * "<"             ==> "< "
+             *
+             * E.g.:
+             * if(a<b)         ==> if(a< b)
+             * for(;a<b;)      ==> for(;a< b;)
+             * boolean a=b<c;  ==> boolean a=b< c;
+             *
+             * do not change:
+             * List<String>
+             * a <= b
+             */
             part = findAndReplace(part, "<([^=\\s>])", m -> "< " + m.group(1));
             part = findAndReplace(part, "< ([A-Za-z0-9\\s,\\?]*)>", m -> "<" + m.group(1) + ">");
 
             /*
-            * ">"                ==> "> "
-            *
-            * E.g.:
-            * if(a>b)            ==> if(a> b)
-            * for(;a>b;)         ==> for(;a> b;)
-            * foo(()->this::bar) ==> foo(()-> this::bar)
-            * List<String>a      ==> List<String> a
-            *
-            * do not change:
-            * new ArrayList<>()
-            */
+             * ">"                ==> "> "
+             *
+             * E.g.:
+             * if(a>b)            ==> if(a> b)
+             * for(;a>b;)         ==> for(;a> b;)
+             * foo(()->this::bar) ==> foo(()-> this::bar)
+             * List<String>a      ==> List<String> a
+             *
+             * do not change:
+             * new ArrayList<>()
+             */
             part = findAndReplace(part, ">([^=\\s\\(])", m -> "> " + m.group(1));
 
             /*
-            * "="     ==> "= "
-            *
-            * E.g.:
-            * a=b     ==> a= b
-            * a== b   ==> a== b
-            * a="b"   ==> a= "b"
-            */
+             * "="     ==> "= "
+             *
+             * E.g.:
+             * a=b     ==> a= b
+             * a== b   ==> a== b
+             * a="b"   ==> a= "b"
+             */
             part = findAndReplace(part, "=([^=\\s])", m -> "= " + m.group(1));
             if (part.matches(".*=$")) part += " ";
 
             /*
-            * ";"                 ==> "; "
-            *
-            * E.g.:
-            * for(i=0;i<7;i++)    ==> for(i=0; i<7; i++)
-            */
+             * ";"                 ==> "; "
+             *
+             * E.g.:
+             * for(i=0;i<7;i++)    ==> for(i=0; i<7; i++)
+             */
             part = findAndReplace(part, ";([^\\s])", m -> "; " + m.group(1));
 
             /*
-            * "<"             ==> " <"
-            *
-            * E.g.:
-            * if(a<b)         ==> if(a <b)
-            * for(;a<b;)      ==> for(;a <b;)
-            *
-            * do not change:
-            * new ArrayList<>()
-            * List<String>
-            * List<List<String>>
-            */
+             * "<"             ==> " <"
+             *
+             * E.g.:
+             * if(a<b)         ==> if(a <b)
+             * for(;a<b;)      ==> for(;a <b;)
+             *
+             * do not change:
+             * new ArrayList<>()
+             * List<String>
+             * List<List<String>>
+             */
             part = findAndReplace(part, "([^\\s])<", m -> m.group(1) + " <");
             part = findAndReplace(part, " <([A-Za-z0-9\\s,\\?<>]+)>", m -> "<" + m.group(1).replaceAll("\\s", "") + ">");
             part = part.replaceAll(" <>", "<>");
             part = findAndReplace(part, ">>([a-z])", m -> ">> " + m.group(1));
 
             /*
-            * ">"             ==> " >"
-            *
-            * E.g.:
-            * if(a>b)         ==> if(a >b)
-            * for(;a>b;)      ==> for(;a >b;)
-            *
-            * do not change:
-            * new ArrayList<>()
-            * () -> this.foo()
-            * List<String>
-            * List<List<String>>
-            */
+             * ">"             ==> " >"
+             *
+             * E.g.:
+             * if(a>b)         ==> if(a >b)
+             * for(;a>b;)      ==> for(;a >b;)
+             *
+             * do not change:
+             * new ArrayList<>()
+             * () -> this.foo()
+             * List<String>
+             * List<List<String>>
+             */
             part = findAndReplace(part, "([^\\s-<>\\?])>", m -> m.group(1) + " >");
             part = findAndReplace(part, "<([A-Za-z0-9\\s,\\?<>]*) >", m -> "<" + m.group(1) + ">");
 
             /*
-            * "->"      ==> " ->"
-            */
+             * "->"      ==> " ->"
+             */
             part = findAndReplace(part, "([^\\s])->", m -> m.group(1) + " ->");
 
             /*
-            * "{"       ==> " {"
-            */
+             * "{"       ==> " {"
+             */
             part = findAndReplace(part, "([^\\s])\\{", m -> m.group(1) + " {");
 
             /*
-            * "="       ==> " ="
-            */
+             * "="       ==> " ="
+             */
             part = findAndReplace(part, "([^><=\\s-+\\*/%\\|\\&\\!])=", m -> m.group(1) + " =");
 
             /*
-            * "+"       ==> "+ "
-            *
-            * E.g.:
-            * a+b       ==> a+ b
-            * "a"+"b"   ==> "a"+ "b"
-            *
-            * but not:
-            * a+=b
-            * a++;
-            * for(;;i++)
-            * int a = +34;
-            */
+             * "+"       ==> "+ "
+             *
+             * E.g.:
+             * a+b       ==> a+ b
+             * "a"+"b"   ==> "a"+ "b"
+             *
+             * but not:
+             * a+=b
+             * a++;
+             * for(;;i++)
+             * int a = +34;
+             */
             part = findAndReplace(part, "\\+([^\\s=\\+\\);])", m -> "+ " + m.group(1));
 
             // quite same with -
@@ -174,16 +174,16 @@ class CodeActionDeciderJava implements CodeActionDecider {
             part = findAndReplace(part, "%([^\\s=])", m -> "% " + m.group(1));
 
             /*
-            * "+"       ==> " +"
-            *
-            * E.g.:
-            * a+b       ==> a +b
-            * "a"+"b"   ==> "a" +"b"
-            * a+=b      ==> a +=b
-            *
-            * but not:
-            * a++
-            */
+             * "+"       ==> " +"
+             *
+             * E.g.:
+             * a+b       ==> a +b
+             * "a"+"b"   ==> "a" +"b"
+             * a+=b      ==> a +=b
+             *
+             * but not:
+             * a++
+             */
             part = findAndReplace(part, "([^\\s\\+])\\+([^\\+])", m -> m.group(1) + " +" + m.group(2));
             part = findAndReplace(part, "^\\+", m -> " +");
             part = findAndReplace(part, "\\+$", m -> "+ ");
@@ -203,42 +203,42 @@ class CodeActionDeciderJava implements CodeActionDecider {
             part = findAndReplace(part, "([^\\s])%", m -> m.group(1) + " %");
 
             /*
-            * "|"       ==> "| "
-            *
-            * E.g.:
-            * a||b       ==> a|| b
-            * a|b   ==> a| b
-            *
-            * but not:
-            * a|=b
-            */
+             * "|"       ==> "| "
+             *
+             * E.g.:
+             * a||b       ==> a|| b
+             * a|b   ==> a| b
+             *
+             * but not:
+             * a|=b
+             */
             part = findAndReplace(part, "\\|([^\\s=\\|])", m -> "| " + m.group(1));
 
             // quite same with &
             part = findAndReplace(part, "\\&([^\\s=\\&])", m -> "& " + m.group(1));
 
             /*
-            * "|"       ==> " |"
-            *
-            * E.g.:
-            * a||b       ==> a ||b
-            * a|b   ==> a |b
-            * a |=b
-            */
+             * "|"       ==> " |"
+             *
+             * E.g.:
+             * a||b       ==> a ||b
+             * a|b   ==> a |b
+             * a |=b
+             */
             part = findAndReplace(part, "([^\\s\\|])\\|", m -> m.group(1) + " |");
 
             // quite same with &
             part = findAndReplace(part, "([^\\s\\&])\\&", m -> m.group(1) + " &");
 
             /*
-            * "if("     ==> "if ("
-            *
-            * E.g.:
-            * if(a>b)   ==> if (a>b)
-            *
-            * but not:
-            * gif(true)
-            */
+             * "if("     ==> "if ("
+             *
+             * E.g.:
+             * if(a>b)   ==> if (a>b)
+             *
+             * but not:
+             * gif(true)
+             */
             part = findAndReplace(part, "^if\\(", m -> "if (");
 
             // quite same with "for"
@@ -255,36 +255,36 @@ class CodeActionDeciderJava implements CodeActionDecider {
             part = findAndReplace(part, "return$", m -> "return ");
 
             /*
-            * "?"             ==> " ? "
-            *
-            * E.g.:
-            * int a=b?c:d;   ==> int a=b ? c:d;
-            *
-            * but not:
-            * Foo<?> foo;
-            */
+             * "?"             ==> " ? "
+             *
+             * E.g.:
+             * int a=b?c:d;   ==> int a=b ? c:d;
+             *
+             * but not:
+             * Foo<?> foo;
+             */
             part = findAndReplace(part, "([^\\s\\<])\\?([^\\s\\>])", m -> m.group(1) + " ? " + m.group(2));
 
             /*
-            * ":"             ==> " : "
-            *
-            * E.g.:
-            * int a=b?c:d;   ==> int a=b?c : d;
-            *
-            * but not:
-            * list.stream().filter(this::bar);
-            */
+             * ":"             ==> " : "
+             *
+             * E.g.:
+             * int a=b?c:d;   ==> int a=b?c : d;
+             *
+             * but not:
+             * list.stream().filter(this::bar);
+             */
             part = findAndReplace(part, "([^\\s:])\\:([^\\s:])", m -> m.group(1) + " : " + m.group(2));
 
             /*
-            * "}"             ==> "} "
-            *
-            * E.g.:
-            * }else{      ==> } else{
-            *
-            * but not:
-            * }
-            */
+             * "}"             ==> "} "
+             *
+             * E.g.:
+             * }else{      ==> } else{
+             *
+             * but not:
+             * }
+             */
             part = findAndReplace(part, "\\}([^\\s])", m -> "} " + m.group(1));
             part = findAndReplace(part, ",([^\\s])", m -> ", " + m.group(1));
             part = findAndReplace(part, ",$", m -> ", ");
@@ -323,9 +323,10 @@ class CodeActionDeciderJava implements CodeActionDecider {
 
     @Override
     public List<String> postProcessFormattedLines(List<String> lines) {
+
         return lines.stream()
-                .map(line -> line.trim().isEmpty() ? "" : line)
-                .map(line -> line.trim().matches("^\\*.*") ? " " + line : line)
-                .collect(toList());
+        .map(line -> line.trim().isEmpty() ? "" : line)
+        .map(line -> line.trim().matches("^\\*.*") ? " " + line : line)
+        .collect(toList());
     }
 }
