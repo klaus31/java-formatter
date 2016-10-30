@@ -36,6 +36,13 @@ public class JavaDeciderDefault extends JavaDecider {
         return JavaDeciderUtil.isPackageDeclaration(line) ? 1 : 0;
     }
 
+    @Override
+    int compareImports(JavaImport importA, JavaImport importB) {
+        if(importA.isStatic()) return importB.isStatic() ? importA.toString().compareTo(importB.toString()) : 1;
+        if(importB.isStatic()) return -1;
+        return importA.toString().compareTo(importB.toString());
+    }
+
     String putInSingleSpaces(String line) {
         if (JavaDeciderUtil.isAPureDocLine(line)) return line;
         return JavaDeciderUtil.withPartsInLineNotBeingAString(line, part -> {
@@ -297,18 +304,6 @@ public class JavaDeciderDefault extends JavaDecider {
             haystack = haystack.replaceFirst(regex, exec.apply(m));
         }
         return haystack;
-    }
-
-    String killDoubleSpaces(String line) {
-        if (JavaDeciderUtil.isAPureDocLine(line)) return line;
-        return JavaDeciderUtil.withPartsInLineNotBeingAString(line, part -> {
-            String tmp;
-            do {
-                tmp = part;
-                part = part.replaceAll("\\s\\s", " ");
-            } while (!tmp.equals(part));
-            return part;
-        });
     }
 
     @Override

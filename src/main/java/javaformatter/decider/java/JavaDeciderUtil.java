@@ -29,7 +29,7 @@ class JavaDeciderUtil {
     }
 
     static boolean isImport(List<String> lines, int lineNumber) {
-        return matches(lines, lineNumber, "import\\s+(static\\s+)?\\S+\\s*;");
+        return isImport(lines.get(lineNumber));
     }
 
     private static boolean matches(String line, String regex) {
@@ -320,5 +320,9 @@ class JavaDeciderUtil {
     private static boolean isOnelinerMethod(List<String> lines, int lineNumber) {
         // FIXME idiot syntax false positive: "void foo() { if(true) { ... }"
         return isMethodDeclaration(lines, lineNumber) && lines.get(lineNumber).trim().matches(".+[\\}\\;]$");
+    }
+
+    public static boolean isImport(String line) {
+        return matches(line, "import\\s+(static\\s+)?\\S+\\s*;");
     }
 }
