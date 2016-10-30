@@ -1,40 +1,41 @@
-package javaformatter;
+package javaformatter.decider.java;
+
+import javaformatter.decider.Decider;
 
 import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static java.util.stream.Collectors.toList;
-import static javaformatter.CodeActionDeciderJavaUtil.*;
 
-class CodeActionDeciderJava implements CodeActionDecider {
+public class JavaDeciderDefault implements Decider {
 
     public int tabChangeNextLine(String line) {
-        return isBlockStart(line) ? 1 : 0;
+        return JavaDeciderUtil.isBlockStart(line) ? 1 : 0;
     }
 
     public int tabChangeThisLine(String line) {
-        return isBlockClose(line) ? -1 : 0;
+        return JavaDeciderUtil.isBlockClose(line) ? -1 : 0;
     }
 
     public int blankLinesBefore(final List<String> lines, final int lineNumber) {
-        if (isFirstLineOfDoc(lines, lineNumber)) return 1;
-        boolean hasDoc = hasDoc(lines, lineNumber);
-        if (isFirstAnnotationOfMethod(lines, lineNumber) && !hasDoc) return 1;
-        if (isFirstAnnotationOfField(lines, lineNumber) && !hasDoc) return 1;
-        if (isFirstAnnotationOfClassEnumOrInterface(lines, lineNumber) && !hasDoc) return 1;
-        boolean hasAnnotation = hasAnnotation(lines, lineNumber);
-        if (isConstructorDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
-        if (isFieldDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
-        if (isMethodDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
-        if (isClassDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
-        if (isEnumDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
-        if (isInterfaceDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
+        if (JavaDeciderUtil.isFirstLineOfDoc(lines, lineNumber)) return 1;
+        boolean hasDoc = JavaDeciderUtil.hasDoc(lines, lineNumber);
+        if (JavaDeciderUtil.isFirstAnnotationOfMethod(lines, lineNumber) && !hasDoc) return 1;
+        if (JavaDeciderUtil.isFirstAnnotationOfField(lines, lineNumber) && !hasDoc) return 1;
+        if (JavaDeciderUtil.isFirstAnnotationOfClassEnumOrInterface(lines, lineNumber) && !hasDoc) return 1;
+        boolean hasAnnotation = JavaDeciderUtil.hasAnnotation(lines, lineNumber);
+        if (JavaDeciderUtil.isConstructorDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
+        if (JavaDeciderUtil.isFieldDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
+        if (JavaDeciderUtil.isMethodDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
+        if (JavaDeciderUtil.isClassDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
+        if (JavaDeciderUtil.isEnumDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
+        if (JavaDeciderUtil.isInterfaceDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
         return 0;
     }
 
     public int blankLinesAfter(String line) {
-        return isPackageDeclaration(line) ? 1 : 0;
+        return JavaDeciderUtil.isPackageDeclaration(line) ? 1 : 0;
     }
 
     public List<String> preProcessLines(List<String> lines) {
@@ -47,8 +48,8 @@ class CodeActionDeciderJava implements CodeActionDecider {
     }
 
     private String putInSingleSpaces(String line) {
-        if (CodeActionDeciderJavaUtil.isAPureDocLine(line)) return line;
-        return withPartsInLineNotBeingAString(line, part -> {
+        if (JavaDeciderUtil.isAPureDocLine(line)) return line;
+        return JavaDeciderUtil.withPartsInLineNotBeingAString(line, part -> {
 
             /*
              * "<"             ==> "< "
@@ -310,8 +311,8 @@ class CodeActionDeciderJava implements CodeActionDecider {
     }
 
     private String killDoubleSpaces(String line) {
-        if (CodeActionDeciderJavaUtil.isAPureDocLine(line)) return line;
-        return withPartsInLineNotBeingAString(line, part -> {
+        if (JavaDeciderUtil.isAPureDocLine(line)) return line;
+        return JavaDeciderUtil.withPartsInLineNotBeingAString(line, part -> {
             String tmp;
             do {
                 tmp = part;

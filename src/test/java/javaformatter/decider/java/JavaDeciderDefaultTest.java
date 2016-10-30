@@ -1,4 +1,4 @@
-package javaformatter;
+package javaformatter.decider.java;
 
 import org.junit.Test;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.List;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class CodeActionDeciderJavaTest {
+public class JavaDeciderDefaultTest {
 
     @Test
     public void blankLinesBeforeShouldDoOnMultiMethods() {
@@ -18,7 +18,7 @@ public class CodeActionDeciderJavaTest {
         lines.add("void c() {}");
 
         // when
-        CodeActionDeciderJava decider = new CodeActionDeciderJava();
+        JavaDeciderDefault decider = new JavaDeciderDefault();
 
         // then
         assertThat(decider.blankLinesBefore(lines, 0), is(1));
@@ -111,7 +111,7 @@ public class CodeActionDeciderJavaTest {
     private String preProcessLine(String line) {
         List<String> lines = new ArrayList<>();
         lines.add(line);
-        List<String> preprocessedLines = new CodeActionDeciderJava().preProcessLines(lines);
+        List<String> preprocessedLines = new JavaDeciderDefault().preProcessLines(lines);
         return preprocessedLines.get(0);
     }
 
@@ -126,7 +126,7 @@ public class CodeActionDeciderJavaTest {
         lines.add("    */");
 
         // when
-        List<String> postProcessed = new CodeActionDeciderJava().postProcessFormattedLines(lines);
+        List<String> postProcessed = new JavaDeciderDefault().postProcessFormattedLines(lines);
 
         // then
         assertThat(postProcessed.get(0), is("    /*"));
@@ -147,14 +147,14 @@ public class CodeActionDeciderJavaTest {
         lines.add("lines.add(\"    lines.add(\\\"if(true){\\\");\");");
         lines.add("lines.add(\"lines.add(\\\"    lines.add(\\\\\\\"if(true){\\\\\\\");\\\");\");");
         lines.add("    // when");
-        lines.add("    List<String> preprocessedLines = new CodeActionDeciderJava().preProcessLines(lines);");
+        lines.add("    List<String> preprocessedLines = new JavaDeciderDefault().preProcessLines(lines);");
         lines.add("}");
 
         // when / then
-        assertThat(new CodeActionDeciderJava().blankLinesAfter(lines.get(4)), is(0));
-        assertThat(new CodeActionDeciderJava().blankLinesBefore(lines, 5), is(0));
-        assertThat(new CodeActionDeciderJava().blankLinesBefore(lines, 6), is(0));
-        assertThat(new CodeActionDeciderJava().blankLinesBefore(lines, 7), is(0));
+        assertThat(new JavaDeciderDefault().blankLinesAfter(lines.get(4)), is(0));
+        assertThat(new JavaDeciderDefault().blankLinesBefore(lines, 5), is(0));
+        assertThat(new JavaDeciderDefault().blankLinesBefore(lines, 6), is(0));
+        assertThat(new JavaDeciderDefault().blankLinesBefore(lines, 7), is(0));
     }
 
     @Test
@@ -173,7 +173,7 @@ public class CodeActionDeciderJavaTest {
         lines.add("* javadoc      => beast");
 
         // when
-        List<String> preprocessedLines = new CodeActionDeciderJava().preProcessLines(lines);
+        List<String> preprocessedLines = new JavaDeciderDefault().preProcessLines(lines);
 
         // then
         assertThat(preprocessedLines.get(0), is("final String s;"));
@@ -195,7 +195,7 @@ public class CodeActionDeciderJavaTest {
         lines.add("assertFalse(isBlockClose(\"'}'\"));");
 
         // when
-        List<String> preprocessedLines = new CodeActionDeciderJava().preProcessLines(lines);
+        List<String> preprocessedLines = new JavaDeciderDefault().preProcessLines(lines);
 
         // then no endless loop
         assertThat(preprocessedLines.get(0), is("assertFalse(isBlockClose(\"'}'\"));"));
@@ -209,7 +209,7 @@ public class CodeActionDeciderJavaTest {
         lines.add("  import com.mongodb.MongoClient;  ");
 
         // when
-        List<String> preprocessedLines = new CodeActionDeciderJava().preProcessLines(lines);
+        List<String> preprocessedLines = new JavaDeciderDefault().preProcessLines(lines);
 
         // then
         assertThat(preprocessedLines.size(), is(1));

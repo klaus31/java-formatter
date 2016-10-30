@@ -1,4 +1,4 @@
-package javaformatter;
+package javaformatter.decider.java;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +9,9 @@ import static org.apache.commons.lang3.StringUtils.join;
 /**
  * First line: lineNumber == 0 !!!
  */
-class CodeActionDeciderJavaUtil {
+class JavaDeciderUtil {
 
-    private CodeActionDeciderJavaUtil() {
+    private JavaDeciderUtil() {
     }
 
     static boolean isAnnotation(List<String> lines, int lineNumber) {

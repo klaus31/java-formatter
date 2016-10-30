@@ -1,16 +1,15 @@
-package javaformatter;
+package javaformatter.decider.java;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
-import static javaformatter.CodeActionDeciderJavaUtil.*;
+import static javaformatter.decider.java.JavaDeciderUtil.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-public class CodeActionDeciderJavaUtilTest {
+public class JavaDeciderUtilTest {
 
     @Test
     public void isAPureDocLineShouldDo() {

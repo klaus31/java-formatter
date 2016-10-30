@@ -1,10 +1,10 @@
-package javaformatter;
+package javaformatter.decider;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 
-interface CodeActionDecider {
+public interface Decider {
 
     int tabChangeThisLine(String line);
 
