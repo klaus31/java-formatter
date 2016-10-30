@@ -1,7 +1,6 @@
 package javaformatter.decider.java;
 
 import javaformatter.TestFileReadIn;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
@@ -10,16 +9,16 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-public class JavaExtractorTest {
+public class JavaFileTest {
 
     private List<String> lines = TestFileReadIn.read("java", "ExampleJavaClass");
 
     @Test
     public void extractMethodsShouldExtractMethodsOfMainClass() {
         // given
-        JavaExtractor extractor = new JavaExtractor(lines);
+        JavaFile extractor = new JavaFile(lines);
         // when
-        List<JavaMethod> javaMethods = extractor.extractMethods();
+        List<JavaMethod> javaMethods = extractor.extractClasses().get(0).extractMethods();
         // then
         assertThat(javaMethods, hasSize(4));
     }
@@ -27,9 +26,9 @@ public class JavaExtractorTest {
     @Test
     public void extractMethodsShouldExtractCorrectLines() {
         // given
-        JavaExtractor extractor = new JavaExtractor(lines);
+        JavaFile extractor = new JavaFile(lines);
         // when
-        List<JavaMethod> javaMethods = extractor.extractMethods();
+        List<JavaMethod> javaMethods = extractor.extractClasses().get(0).extractMethods();
         // when / then
         assertThat(javaMethods.get(0).extractMethodDeclaration().trim(), is("public static int fact(int n)"));
         assertThat(javaMethods.get(0).getLines().size(), is(7));

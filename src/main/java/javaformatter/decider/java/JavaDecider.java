@@ -18,8 +18,8 @@ abstract class JavaDecider implements Decider {
     }
 
     private void orderComponentsInFile(List<String> lines) {
-        JavaExtractor extractor = new JavaExtractor(lines);
-        List<JavaMethod> methods = extractor.extractMethods();
+        JavaFile extractor = new JavaFile(lines);
+        List<JavaMethod> methods = extractor.extractClasses().get(0).extractMethods();
     }
 
     abstract String putInSingleSpaces(String line);

@@ -5,10 +5,11 @@ import java.util.List;
 
 import static javaformatter.decider.java.JavaDeciderUtil.isMethodDeclaration;
 
-public class JavaExtractor {
+class JavaClass {
+
     private final List<String> lines;
 
-    public JavaExtractor(List<String> lines) {
+    public JavaClass(List<String> lines) {
         this.lines = lines;
     }
 
@@ -33,4 +34,5 @@ public class JavaExtractor {
         }
         return result;
     }
+
 }
