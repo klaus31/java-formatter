@@ -1,8 +1,8 @@
 package javaformatter.decider.java;
 
-import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Test;
 import static javaformatter.decider.java.JavaDeciderUtil.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;

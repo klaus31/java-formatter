@@ -3,6 +3,7 @@ package javaformatter.decider.java;
 import java.util.List;
 
 class JavaMethod {
+
     private final List<String> lines;
 
     public JavaMethod(List<String> lines) {
@@ -11,7 +12,7 @@ class JavaMethod {
 
     public String extractMethodDeclaration() {
         for (String line : lines) {
-            if(JavaDeciderUtil.isMethodDeclaration(line)) return line;
+            if (JavaDeciderUtil.isMethodDeclaration(line)) return line;
         }
         throw new AssertionError("Method without Method Declaration");
     }

@@ -38,8 +38,8 @@ public class JavaDeciderDefault extends JavaDecider {
 
     @Override
     int compareImports(JavaImport importA, JavaImport importB) {
-        if(importA.isStatic()) return importB.isStatic() ? importA.toString().compareTo(importB.toString()) : 1;
-        if(importB.isStatic()) return -1;
+        if (importA.isStatic()) return importB.isStatic() ? importA.toString().compareTo(importB.toString()) : 1;
+        if (importB.isStatic()) return -1;
         return importA.toString().compareTo(importB.toString());
     }
 
