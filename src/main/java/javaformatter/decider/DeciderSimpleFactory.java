@@ -1,6 +1,5 @@
 package javaformatter.decider;
 
-
 import javaformatter.decider.java.JavaDeciderDefault;
 
 public class DeciderSimpleFactory {

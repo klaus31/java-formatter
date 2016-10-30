@@ -1,7 +1,6 @@
 package javaformatter.decider;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 
 public interface Decider {

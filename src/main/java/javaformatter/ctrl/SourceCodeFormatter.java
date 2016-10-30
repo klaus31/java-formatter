@@ -17,12 +17,12 @@ public class SourceCodeFormatter {
 
     private final Decider decider;
 
-    SourceCodeFormatter(SourceCodeFile sourceCodeFile) {
+    private SourceCodeFormatter(SourceCodeFile sourceCodeFile) {
         this.sourceCodeFile = sourceCodeFile;
         this.decider = DeciderSimpleFactory.create(sourceCodeFile.getSuffix());
     }
 
-    void format() throws IOException {
+    private void format() throws IOException {
         List<String> lines = sourceCodeFile.readContentLines();
         lines = prepare(lines);
         lines = addBlankLines(lines);
@@ -71,7 +71,7 @@ public class SourceCodeFormatter {
         return resultLines;
     }
 
-    void withSource(Consumer<String> consumer) {
+    private void withSource(Consumer<String> consumer) {
         consumer.accept(sourceCodeFile.getFormattedLines().stream().collect(Collectors.joining(decider.getEol())));
     }
 
