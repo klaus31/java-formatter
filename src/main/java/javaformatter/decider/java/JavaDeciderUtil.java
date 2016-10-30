@@ -2,7 +2,9 @@ package javaformatter.decider.java;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
+
 import static org.apache.commons.lang3.StringUtils.countMatches;
 import static org.apache.commons.lang3.StringUtils.join;
 
@@ -46,11 +48,16 @@ class JavaDeciderUtil {
 
     static boolean isMethodDeclaration(String line) {
         line = killComments(line);
+        boolean isAbstract = (" " + line).contains(" abstract ");
         line = killOccurrences(line, "(public|private|protected|static|final|native|synchronized|abstract|transient|default)");
         line = killOccurrences(line, "\\[\\s*\\]");
         line = killOccurrences(line, "<[^<>]*>");
         line = killOccurrences(line, "\\.\\.\\.");
-        return matches(line.trim(), "[a-zA-Z][^\\s\\.]*\\s+\\S+\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{]*)?(\\{.*)?");
+        if (isAbstract) {
+            return matches(line.trim(), "[a-zA-Z][^\\s\\.]*\\s+\\S+\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{\\;]*)?\\;$");
+        } else {
+            return matches(line.trim(), "[a-zA-Z][^\\s\\.]*\\s+\\S+\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{\\;]*)?(\\{.*)?");
+        }
     }
 
     static boolean isConstructorDeclaration(String line) {
@@ -299,5 +306,19 @@ class JavaDeciderUtil {
             }
         }
         return join(splittedResults, "\"");
+    }
+
+    public static Optional<Integer> calculateNextEndOfMethod(List<String> lines, final int startLineNumber) {
+        int i = startLineNumber;
+        while (!isMethodDeclaration(lines.get(i)) && i < lines.size()) i++;
+        if (i == lines.size()) return Optional.empty();
+        else if(isOnelinerMethod(lines, i)) return Optional.of(++i);
+        else while (isPartOfAMethod(lines, i)) i++;
+        return Optional.of(i);
+    }
+
+    private static boolean isOnelinerMethod(List<String> lines, int lineNumber) {
+        // FIXME idiot syntax false positive: "void foo() { if(true) { ... }"
+        return isMethodDeclaration(lines, lineNumber) && lines.get(lineNumber).trim().matches(".+[\\}\\;]$");
     }
 }

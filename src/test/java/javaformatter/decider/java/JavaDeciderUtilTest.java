@@ -265,6 +265,17 @@ public class JavaDeciderUtilTest {
     }
 
     @Test
+    public void isMethodDeclarationShouldDoOnAbstract() {
+
+        // given
+        List<String> code = new ArrayList<>();
+        code.add("public abstract void a();");
+
+        // when / then
+        assertTrue(isMethodDeclaration(code, 0));
+    }
+
+    @Test
     public void isMethodDeclarationShouldDoOnOneliner() {
 
         // given

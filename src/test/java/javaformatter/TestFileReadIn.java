@@ -1,0 +1,27 @@
+package javaformatter;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+
+public class TestFileReadIn {
+
+    public static List<String> read(String lang, String fileName) {
+        try {
+            String resourceStr = String.format("testfiles/%s/%s.txt", lang, fileName);
+            URL resource = TestFileReadIn.class.getResource(resourceStr);
+            Path path = Paths.get(resource.toURI());
+            return Files.readAllLines(path, StandardCharsets.UTF_8);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+}

@@ -1,0 +1,43 @@
+package javaformatter.decider.java.testfiles;
+
+/**
+ * Read me in to test formatter.
+ *
+ * To avoid formatting me on friendly fire, I am a txt-File.
+ */
+public abstract class ExampleJavaClass {
+
+    ExampleJavaClass(){}
+    ExampleJavaClass(int i){}
+    public ExampleJavaClass(int i, String x){}
+
+    public static int fact(int n)
+    {
+        if(n == 0)
+            return 1;
+        else
+            return n * fact(n-1);
+    }
+
+
+    /**
+     * Just mammels
+     */
+    abstract void doIt(Object likeTheyDoIt);
+
+    int iAmAField;
+    boolean meToo;
+
+    public Object foo() {
+        return null;
+    }
+
+    public enum Bee {A,B,C};
+
+    // misplace comments are part of the method too
+
+    public Object bar() {
+        return null;
+    }
+
+}
