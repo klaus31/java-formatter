@@ -1,13 +1,12 @@
 package javaformatter.decider.java;
 
-import javaformatter.decider.Decider;
 import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static java.util.stream.Collectors.toList;
 
-public class JavaDeciderDefault implements Decider {
+public class JavaDeciderDefault extends JavaDecider {
 
     public int tabChangeNextLine(String line) {
         return JavaDeciderUtil.isBlockStart(line) ? 1 : 0;
@@ -37,16 +36,7 @@ public class JavaDeciderDefault implements Decider {
         return JavaDeciderUtil.isPackageDeclaration(line) ? 1 : 0;
     }
 
-    public List<String> preProcessLines(List<String> lines) {
-
-        return lines.stream()
-        .map(String::trim)
-        .map(this::killDoubleSpaces)
-        .map(this::putInSingleSpaces)
-        .collect(toList());
-    }
-
-    private String putInSingleSpaces(String line) {
+    String putInSingleSpaces(String line) {
         if (JavaDeciderUtil.isAPureDocLine(line)) return line;
         return JavaDeciderUtil.withPartsInLineNotBeingAString(line, part -> {
 
@@ -309,7 +299,7 @@ public class JavaDeciderDefault implements Decider {
         return haystack;
     }
 
-    private String killDoubleSpaces(String line) {
+    String killDoubleSpaces(String line) {
         if (JavaDeciderUtil.isAPureDocLine(line)) return line;
         return JavaDeciderUtil.withPartsInLineNotBeingAString(line, part -> {
             String tmp;
