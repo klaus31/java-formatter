@@ -97,6 +97,7 @@ public class JavaDeciderDefaultTest {
         assertThat(preProcessLine("List<List<List<List<String>>>>wtf;"), is("List<List<List<List<String>>>> wtf;"));
         assertThat(preProcessLine("foo(-1)"), is("foo(-1)"));
         assertThat(preProcessLine("foo(--1)"), is("foo(--1)"));
+
         // TODO (wtf "i am a positive numner" syntax): assertThat(preProcessLine("int a=+2"), is("int a = +2"));
         assertThat(preProcessLine("foo(++1)"), is("foo(++1)"));
         assertThat(preProcessLine("int spaceHere,int noSpaceAtEnd,"), is("int spaceHere, int noSpaceAtEnd,"));
@@ -115,7 +116,6 @@ public class JavaDeciderDefaultTest {
         assertThat(preProcessLine("foo(++i)"), is("foo(++i)"));
         assertThat(preProcessLine("foo(i--)"), is("foo(i--)"));
         assertThat(preProcessLine("foo(i++)"), is("foo(i++)"));
-
     }
 
     private String preProcessLine(String line) {
