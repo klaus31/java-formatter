@@ -1,6 +1,5 @@
 package javaformatter.decider.java;
 
-
 public class JavaImport {
 
     private final String line;

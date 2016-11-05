@@ -34,12 +34,12 @@ public class JavaDeciderDefault extends JavaDecider {
     }
 
     public int blankLinesAfter(List<String> lines, int lineNumber) {
-        if(lineNumber < lines.size()-1 && lines.get(lineNumber+1).trim().isEmpty()) return 0;
+        if (lineNumber < lines.size() - 1 && lines.get(lineNumber + 1).trim().isEmpty()) return 0;
         return isPackageDeclaration(lines.get(lineNumber)) &&
-                lineNumber < lines.size()-1 &&
-                !isFirstLineOfDoc(lines, lineNumber+1)&&
-                !isClassDeclaration(lines, lineNumber + 1)&&
-                !isInterfaceDeclaration(lines, lineNumber + 1)&&
+        lineNumber < lines.size() - 1 &&
+        !isFirstLineOfDoc(lines, lineNumber + 1) &&
+        !isClassDeclaration(lines, lineNumber + 1) &&
+        !isInterfaceDeclaration(lines, lineNumber + 1) &&
         !isEnumDeclaration(lines, lineNumber + 1) ? 1 : 0;
     }
 
@@ -316,7 +316,6 @@ public class JavaDeciderDefault extends JavaDecider {
 
     @Override
     public List<String> postProcessFormattedLines(List<String> lines) {
-
         return lines.stream()
         .map(line -> line.trim().isEmpty() ? "" : line)
         .map(line -> line.trim().matches("^\\*.*") ? " " + line : line)

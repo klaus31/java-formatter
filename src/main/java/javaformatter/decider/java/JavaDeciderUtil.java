@@ -52,10 +52,10 @@ class JavaDeciderUtil {
         line = killOccurrences(line, "\\[\\s*\\]");
         line = killOccurrences(line, "<[^<>]*>");
         line = killOccurrences(line, "\\.\\.\\.");
-        if(matches(line, ".*\\.[a-z].*\\(.*")) return false; // a method call
+        if (matches(line, ".*\\.[a-z].*\\(.*")) return false; // a method call
         if (isAbstract) {
             return matches(line.trim(), "[a-zA-Z][^\\s\\.]*\\s+\\S+\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{\\;]*)?\\;$");
-        } else {
+            } else {
             return matches(line.trim(), "[a-zA-Z][^\\s\\.]*\\s+\\S+\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{\\;]*)?(\\{.*)?");
         }
     }

@@ -3,7 +3,6 @@ package javaformatter.decider.java;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 import javaformatter.decider.Decider;
 import static java.util.stream.Collectors.toList;
 import static javax.swing.UIManager.get;
@@ -12,7 +11,6 @@ abstract class JavaDecider implements Decider {
 
     public List<String> preProcessLines(List<String> lines) {
         orderComponentsInFile(lines);
-
         return lines.stream()
         .map(String::trim)
         .map(this::killDoubleSpaces)

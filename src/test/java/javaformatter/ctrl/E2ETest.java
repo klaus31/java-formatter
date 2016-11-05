@@ -39,7 +39,7 @@ public class E2ETest {
             List<String> expectedOutputLines = read("java", expectedOutputFileName);
             List<String> actualOutputLines = Arrays.asList(actualFormattedSource.split("\n"));
             for (int i = 0; i < expectedOutputLines.size(); i++) {
-                Assert.assertThat(expectedOutputFileName + " at line " + i + ":\nActual: \"" + actualOutputLines.get(i) + "\"\nShould: \"" + expectedOutputLines.get(i)+ "\"\n\n" + actualFormattedSource, actualOutputLines.get(i), is(expectedOutputLines.get(i)));
+                Assert.assertThat(expectedOutputFileName + " at line " + i + ":\nActual: \"" + actualOutputLines.get(i) + "\"\nShould: \"" + expectedOutputLines.get(i) + "\"\n\n" + actualFormattedSource, actualOutputLines.get(i), is(expectedOutputLines.get(i)));
             }
         });
     }
