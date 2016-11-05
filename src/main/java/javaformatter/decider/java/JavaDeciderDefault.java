@@ -168,6 +168,7 @@ public class JavaDeciderDefault extends JavaDecider {
 
             // quite same with -
             part = findAndReplace(part, "([^\\-]|^)\\-([^\\s=\\-\\);>\\d])", m -> m.group(1) + "- " + m.group(2));
+            part = findAndReplace(part, "([a-zA-Z\\d])\\-([a-zA-Z\\d])", m -> m.group(1) + "- " + m.group(2));
 
             // quite same with *
             part = findAndReplace(part, "\\*([^\\s=;])", m -> "* " + m.group(1));

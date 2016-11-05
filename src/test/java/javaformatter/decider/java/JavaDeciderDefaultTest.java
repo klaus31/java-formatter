@@ -100,6 +100,11 @@ public class JavaDeciderDefaultTest {
 
         // TODO (wtf "i am a positive numner" syntax): assertThat(preProcessLine("int a=+2"), is("int a = +2"));
         assertThat(preProcessLine("foo(++1)"), is("foo(++1)"));
+        assertThat(preProcessLine("foo(n+1)"), is("foo(n + 1)"));
+        assertThat(preProcessLine("foo(n-1)"), is("foo(n - 1)"));
+        assertThat(preProcessLine("foo(n*1)"), is("foo(n * 1)"));
+        assertThat(preProcessLine("foo(n/1)"), is("foo(n / 1)"));
+        assertThat(preProcessLine("foo(n%1)"), is("foo(n % 1)"));
         assertThat(preProcessLine("int spaceHere,int noSpaceAtEnd,"), is("int spaceHere, int noSpaceAtEnd,"));
         assertThat(preProcessLine("foo(result()-12)"), is("foo(result() - 12)"));
         assertThat(preProcessLine("foo(result()*12)"), is("foo(result() * 12)"));
