@@ -1,0 +1,7 @@
+package javaformatter.testfiles.java;
+public class FooBar {
+    public List<String>foo(List<String>lines) {
+        return lines.stream()
+        .collect(toList());
+    }
+}

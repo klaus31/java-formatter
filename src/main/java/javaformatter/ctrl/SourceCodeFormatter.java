@@ -93,12 +93,12 @@ public class SourceCodeFormatter {
                 formatter.withSource(formattedSource -> {
                     try {
                         FileUtils.writeStringToFile(sourceCodeFile.getPath().toFile(), formattedSource);
-                    } catch (IOException e) {
+                        } catch (IOException e) {
                         e.printStackTrace();
                         System.exit(1610142042);
                     }
                 });
-            } catch (IOException e) {
+                } catch (IOException e) {
                 e.printStackTrace();
                 System.exit(1610122032);
             }

@@ -52,6 +52,7 @@ class JavaDeciderUtil {
         line = killOccurrences(line, "\\[\\s*\\]");
         line = killOccurrences(line, "<[^<>]*>");
         line = killOccurrences(line, "\\.\\.\\.");
+        if(matches(line, ".*\\.[a-z].*\\(.*")) return false; // a method call
         if (isAbstract) {
             return matches(line.trim(), "[a-zA-Z][^\\s\\.]*\\s+\\S+\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{\\;]*)?\\;$");
         } else {
@@ -275,7 +276,7 @@ class JavaDeciderUtil {
                 if (i + 1 < dirtySplitsAtQuotes.length) {
                     i++;
                     lineSplit += "\"" + dirtySplitsAtQuotes[i];
-                } else {
+                    } else {
                     break;
                 }
             }
@@ -286,7 +287,7 @@ class JavaDeciderUtil {
                 if (i + 1 < dirtySplitsAtQuotes.length && dirtySplitsAtQuotes[i + 1].matches("^'.*")) {
                     i++;
                     lineSplit += "\"" + dirtySplitsAtQuotes[i];
-                } else {
+                    } else {
                     falseAlarm = true;
                 }
             }
@@ -300,7 +301,7 @@ class JavaDeciderUtil {
             if (j % 2 == 0) {
                 String result = lineSplitAtStrings.get(j);
                 splittedResults.add(format.apply(result));
-            } else {
+                } else {
                 splittedResults.add(lineSplitAtStrings.get(j));
             }
         }
@@ -311,7 +312,7 @@ class JavaDeciderUtil {
         int i = startLineNumber;
         while (!isMethodDeclaration(lines.get(i)) && i < lines.size()) i++;
         if (i == lines.size()) return Optional.empty();
-        else if(isOnelinerMethod(lines, i)) return Optional.of(++ i);
+        else if(isOnelinerMethod(lines, i)) return Optional.of(++i);
         else while (isPartOfAMethod(lines, i)) i++;
         return Optional.of(i);
     }

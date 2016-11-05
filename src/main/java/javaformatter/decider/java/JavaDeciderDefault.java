@@ -37,7 +37,10 @@ public class JavaDeciderDefault extends JavaDecider {
         if(lineNumber < lines.size()-1 && lines.get(lineNumber+1).trim().isEmpty()) return 0;
         return isPackageDeclaration(lines.get(lineNumber)) &&
                 lineNumber < lines.size()-1 &&
-                !isFirstLineOfDoc(lines, lineNumber+1)? 1 : 0;
+                !isFirstLineOfDoc(lines, lineNumber+1)&&
+                !isClassDeclaration(lines, lineNumber + 1)&&
+                !isInterfaceDeclaration(lines, lineNumber + 1)&&
+        !isEnumDeclaration(lines, lineNumber + 1) ? 1 : 0;
     }
 
     @Override

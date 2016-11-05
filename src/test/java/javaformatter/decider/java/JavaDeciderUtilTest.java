@@ -1,13 +1,13 @@
 package javaformatter.decider.java;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
+
 import static javaformatter.decider.java.JavaDeciderUtil.*;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class JavaDeciderUtilTest {
 
@@ -273,6 +273,11 @@ public class JavaDeciderUtilTest {
 
         // when / then
         assertTrue(isMethodDeclaration(code, 0));
+    }
+
+    @Test
+    public void isMethodDeclarationShouldDoOnReturnStart() {
+        assertFalse(isMethodDeclaration("    return lines.stream()"));
     }
 
     @Test
