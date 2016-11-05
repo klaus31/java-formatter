@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-class SourceCodeFile {
+public class SourceCodeFile {
 
     private final Path path;
 

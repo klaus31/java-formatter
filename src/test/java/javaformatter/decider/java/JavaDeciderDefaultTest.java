@@ -161,7 +161,7 @@ public class JavaDeciderDefaultTest {
         lines.add("}");
 
         // when / then
-        assertThat(new JavaDeciderDefault().blankLinesAfter(lines.get(4)), is(0));
+        assertThat(new JavaDeciderDefault().blankLinesAfter(lines, 4), is(0));
         assertThat(new JavaDeciderDefault().blankLinesBefore(lines, 5), is(0));
         assertThat(new JavaDeciderDefault().blankLinesBefore(lines, 6), is(0));
         assertThat(new JavaDeciderDefault().blankLinesBefore(lines, 7), is(0));

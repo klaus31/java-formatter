@@ -9,7 +9,7 @@ import static org.junit.Assert.assertThat;
 
 public class JavaFileTest {
 
-    private List<String> lines = TestFileReadIn.read("java", "ExampleJavaClass");
+    private List<String> lines = TestFileReadIn.read("java", "ClassAInput");
 
     @Test
     public void extractMethodsShouldExtractMethodsOfMainClass() {

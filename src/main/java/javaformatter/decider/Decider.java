@@ -19,7 +19,7 @@ public interface Decider {
 
     int blankLinesBefore(List<String> lines, int lineNumber);
 
-    int blankLinesAfter(String line);
+    int blankLinesAfter(List<String> lines, int lineNumber);
 
     /**
      * part of the prepare process: Do want to kill before formatting the code? return true then.

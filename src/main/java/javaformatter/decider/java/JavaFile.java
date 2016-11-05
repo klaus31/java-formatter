@@ -1,7 +1,6 @@
 package javaformatter.decider.java;
 
 import java.util.*;
-
 import org.apache.commons.lang3.Validate;
 import static javaformatter.decider.java.JavaDeciderUtil.isMethodDeclaration;
 

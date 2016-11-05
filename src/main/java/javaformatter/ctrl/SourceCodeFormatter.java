@@ -17,12 +17,16 @@ public class SourceCodeFormatter {
 
     private final Decider decider;
 
-    private SourceCodeFormatter(SourceCodeFile sourceCodeFile) {
-        this.sourceCodeFile = sourceCodeFile;
-        this.decider = DeciderSimpleFactory.create(sourceCodeFile.getSuffix());
+    SourceCodeFormatter(SourceCodeFile sourceCodeFile) {
+        this(sourceCodeFile, DeciderSimpleFactory.create(sourceCodeFile.getSuffix()));
     }
 
-    private void format() throws IOException {
+    SourceCodeFormatter(SourceCodeFile sourceCodeFile, Decider decider) {
+        this.sourceCodeFile = sourceCodeFile;
+        this.decider = decider;
+    }
+
+    void format() throws IOException {
         List<String> lines = sourceCodeFile.readContentLines();
         lines = prepare(lines);
         lines = addBlankLines(lines);
@@ -64,23 +68,24 @@ public class SourceCodeFormatter {
             resultLines.add(line);
 
             // add blank lines after
-            int blankLinesAfter = decider.blankLinesAfter(line);
+            int blankLinesAfter = decider.blankLinesAfter(lines, i);
             int ai = 0;
             while (ai++ < blankLinesAfter) resultLines.add("");
         }
         return resultLines;
     }
 
-    private void withSource(Consumer<String> consumer) {
+    void withSource(Consumer<String> consumer) {
         consumer.accept(sourceCodeFile.getFormattedLines().stream().collect(Collectors.joining(decider.getEol())));
     }
 
+    // XXX omg XXX XXX XXX
     public static void start(Path inputDirectory) throws IOException {
         new SourceCodeFiles(inputDirectory, "java").forEach(process());
     }
 
     private static Consumer<SourceCodeFile> process() {
-        return (sourceCodeFile) -> {
+        return sourceCodeFile -> {
             System.out.println("next file to process: " + sourceCodeFile.getPath());
             SourceCodeFormatter formatter = new SourceCodeFormatter(sourceCodeFile);
             try {
@@ -89,10 +94,12 @@ public class SourceCodeFormatter {
                     try {
                         FileUtils.writeStringToFile(sourceCodeFile.getPath().toFile(), formattedSource);
                     } catch (IOException e) {
+                        e.printStackTrace();
                         System.exit(1610142042);
                     }
                 });
             } catch (IOException e) {
+                e.printStackTrace();
                 System.exit(1610122032);
             }
         };

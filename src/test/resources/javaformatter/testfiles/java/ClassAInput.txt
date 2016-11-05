@@ -34,7 +34,7 @@ public abstract class ExampleJavaClass {
 
     public enum Bee {A,B,C};
 
-    // misplace comments are part of the method too
+    // misplaced comments are part of the method too
 
     public Object bar() {
         return null;

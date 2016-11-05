@@ -5,35 +5,39 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static java.util.stream.Collectors.toList;
+import static javaformatter.decider.java.JavaDeciderUtil.*;
 
 public class JavaDeciderDefault extends JavaDecider {
 
     public int tabChangeNextLine(String line) {
-        return JavaDeciderUtil.isBlockStart(line) ? 1 : 0;
+        return isBlockStart(line) && !isBlockClose(line) ? 1 : 0;
     }
 
     public int tabChangeThisLine(String line) {
-        return JavaDeciderUtil.isBlockClose(line) ? -1 : 0;
+        return isBlockClose(line) && !isBlockStart(line) ? -1 : 0;
     }
 
     public int blankLinesBefore(final List<String> lines, final int lineNumber) {
-        if (JavaDeciderUtil.isFirstLineOfDoc(lines, lineNumber)) return 1;
-        boolean hasDoc = JavaDeciderUtil.hasDoc(lines, lineNumber);
-        if (JavaDeciderUtil.isFirstAnnotationOfMethod(lines, lineNumber) && !hasDoc) return 1;
-        if (JavaDeciderUtil.isFirstAnnotationOfField(lines, lineNumber) && !hasDoc) return 1;
-        if (JavaDeciderUtil.isFirstAnnotationOfClassEnumOrInterface(lines, lineNumber) && !hasDoc) return 1;
-        boolean hasAnnotation = JavaDeciderUtil.hasAnnotation(lines, lineNumber);
-        if (JavaDeciderUtil.isConstructorDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
-        if (JavaDeciderUtil.isFieldDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
-        if (JavaDeciderUtil.isMethodDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
-        if (JavaDeciderUtil.isClassDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
-        if (JavaDeciderUtil.isEnumDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
-        if (JavaDeciderUtil.isInterfaceDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
+        if (isFirstLineOfDoc(lines, lineNumber)) return 1;
+        boolean hasDoc = hasDoc(lines, lineNumber);
+        if (isFirstAnnotationOfMethod(lines, lineNumber) && !hasDoc) return 1;
+        if (isFirstAnnotationOfField(lines, lineNumber) && !hasDoc) return 1;
+        if (isFirstAnnotationOfClassEnumOrInterface(lines, lineNumber) && !hasDoc) return 1;
+        boolean hasAnnotation = hasAnnotation(lines, lineNumber);
+        if (isConstructorDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
+        if (isFieldDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
+        if (isMethodDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
+        if (isClassDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
+        if (isEnumDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
+        if (isInterfaceDeclaration(lines, lineNumber) && !hasAnnotation && !hasDoc) return 1;
         return 0;
     }
 
-    public int blankLinesAfter(String line) {
-        return JavaDeciderUtil.isPackageDeclaration(line) ? 1 : 0;
+    public int blankLinesAfter(List<String> lines, int lineNumber) {
+        if(lineNumber < lines.size()-1 && lines.get(lineNumber+1).trim().isEmpty()) return 0;
+        return isPackageDeclaration(lines.get(lineNumber)) &&
+                lineNumber < lines.size()-1 &&
+                !isFirstLineOfDoc(lines, lineNumber+1)? 1 : 0;
     }
 
     @Override
