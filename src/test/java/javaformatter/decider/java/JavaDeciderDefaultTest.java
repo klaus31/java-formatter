@@ -27,8 +27,8 @@ public class JavaDeciderDefaultTest {
         assertThat(decider.blankLinesBefore(lines, 1), is(1));
         assertThat(decider.blankLinesBefore(lines, 2), is(1));
         assertThat(decider.blankLinesBefore(lines, 3), is(0));
-
         assertThat(decider.blankLinesBefore(asList("public enum Bee {A,B,C};"), 0), is(1));
+        assertThat(decider.blankLinesBefore(asList("assertThat(decider.blankLinesBefore(asList(\"public enum Bee {A,B,C};\"), 0), is(1));"), 0), is(0));
     }
 
     @Test

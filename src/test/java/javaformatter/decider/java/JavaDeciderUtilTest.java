@@ -30,11 +30,9 @@ public class JavaDeciderUtilTest {
 
     @Test
     public void isEnumDeclarationShouldDo() {
-
         assertThat(isEnumDeclaration(asList("public enum Bee {A,B,C};"), 0), is(true));
-
+        assertThat(isEnumDeclaration(asList("assertThat(isEnumDeclaration(asList(\"public enum Bee {A,B,C};\"), 0), is(true));"), 0), is(false));
         assertThat(isEnumDeclaration(asList("enum Bee {A,B,C};"), 0), is(true));
-
         assertThat(isEnumDeclaration(asList("String[] plenum = {\"A\",\"B\",\"C\"};"), 0), is(true));
     }
 
@@ -71,7 +69,6 @@ public class JavaDeciderUtilTest {
         assertFalse(isFieldDeclaration(code, 11));
         assertFalse(isFieldDeclaration(asList("    return lines.stream()"), 0));
         assertFalse(isFieldDeclaration(asList("assertThat(preProcessLine(\"* if(true){\"), is(\"* if(true){\"));"), 0));
-
         assertFalse(isFieldDeclaration(asList("public enum Bee {A, B, C};"), 0));
     }
 
@@ -293,7 +290,6 @@ public class JavaDeciderUtilTest {
     public void isMethodDeclarationShouldDoMore() {
         assertFalse(isMethodDeclaration("    return lines.stream()"));
         assertFalse(isMethodDeclaration("assertThat(preProcessLine(\"* if(true){\"), is(\"* if(true){\"));"));
-
         assertFalse(isMethodDeclaration("public enum Bee {A, B, C};"));
     }
 

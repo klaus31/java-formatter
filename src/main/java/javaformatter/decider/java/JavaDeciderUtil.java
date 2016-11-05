@@ -223,7 +223,7 @@ class JavaDeciderUtil {
     }
 
     static boolean isEnumDeclaration(List<String> lines, int lineNumber) {
-        return matches(lines.get(lineNumber), ".*enum\\s+\\S+.*\\{.*");
+        return matches(killStringsCharsAndComments(lines.get(lineNumber)), ".*enum\\s+\\S+.*\\{.*");
     }
 
     static boolean isInterfaceDeclaration(List<String> lines, int lineNumber) {
