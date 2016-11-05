@@ -1,8 +1,11 @@
 package javaformatter.decider.java;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
+
+import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -16,6 +19,7 @@ public class JavaDeciderDefaultTest {
         lines.add("public void a() {}");
         lines.add("private static final void b(String b) {}");
         lines.add("void c() {}");
+        lines.add("assertThat(preProcessLine(\"* if(true){\"), is(\"* if(true){\"));");
 
         // when
         JavaDeciderDefault decider = new JavaDeciderDefault();
@@ -24,6 +28,8 @@ public class JavaDeciderDefaultTest {
         assertThat(decider.blankLinesBefore(lines, 0), is(1));
         assertThat(decider.blankLinesBefore(lines, 1), is(1));
         assertThat(decider.blankLinesBefore(lines, 2), is(1));
+        assertThat(decider.blankLinesBefore(lines, 3), is(0));
+        assertThat(decider.blankLinesBefore(asList("public enum Bee {A,B,C};"), 0), is(1));
     }
 
     @Test

@@ -52,6 +52,7 @@ class JavaDeciderUtil {
         line = killOccurrences(line, "\\[\\s*\\]");
         line = killOccurrences(line, "<[^<>]*>");
         line = killOccurrences(line, "\\.\\.\\.");
+        line = killStrings(line);
         if (matches(line, ".*\\.[a-z].*\\(.*")) return false; // a method call
         if (isAbstract) {
             return matches(line.trim(), "[a-zA-Z][^\\s\\.]*\\s+\\S+\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{\\;]*)?\\;$");
@@ -103,7 +104,7 @@ class JavaDeciderUtil {
 
     static boolean isFieldDeclaration(List<String> lines, final int lineNumber) {
         String line = killStringsCharsAndComments(lines.get(lineNumber)).trim();
-        return line.matches("\\S+.*;$") && !isPartOfAMethod(lines, lineNumber) && !isPackageDeclaration(line) && !isImport(lines, lineNumber) && !isPartOfAConstructor(lines, lineNumber);
+        return line.replaceAll("\\s","").matches("[a-zA-Z0-9<>\\[\\]]+(=\\S+)?;$") && !isPartOfAMethod(lines, lineNumber) && !isPackageDeclaration(line) && !isImport(lines, lineNumber) && !isPartOfAConstructor(lines, lineNumber);
     }
 
     static boolean isPartOfAMethod(List<String> lines, final int lineNumber) {
@@ -222,7 +223,7 @@ class JavaDeciderUtil {
     }
 
     static boolean isEnumDeclaration(List<String> lines, int lineNumber) {
-        return matches(lines.get(lineNumber), ".*enum\\s+\\S+.*\\{");
+        return matches(lines.get(lineNumber), ".*enum\\s+\\S+.*\\{.*");
     }
 
     static boolean isInterfaceDeclaration(List<String> lines, int lineNumber) {

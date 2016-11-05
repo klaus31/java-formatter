@@ -1,8 +1,11 @@
 package javaformatter.decider.java;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
+
+import static java.util.Arrays.asList;
 import static javaformatter.decider.java.JavaDeciderUtil.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
@@ -26,6 +29,13 @@ public class JavaDeciderUtilTest {
         assertThat(isAPureDocLine("*/"), is(true));
     }
 
+    @Test
+    public void isEnumDeclarationShouldDo() {
+        assertThat(isEnumDeclaration(asList("public enum Bee {A,B,C};"), 0), is(true));
+        assertThat(isEnumDeclaration(asList("enum Bee {A,B,C};"), 0), is(true));
+        assertThat(isEnumDeclaration(asList("String[] plenum = {\"A\",\"B\",\"C\"};"), 0), is(true));
+
+    }
     @Test
     public void isFieldDeclarationShouldDo() {
 
@@ -57,6 +67,10 @@ public class JavaDeciderUtilTest {
         assertFalse(isFieldDeclaration(code, 9));
         assertFalse(isFieldDeclaration(code, 10));
         assertFalse(isFieldDeclaration(code, 11));
+
+        assertFalse(isFieldDeclaration(asList("    return lines.stream()"), 0));
+        assertFalse(isFieldDeclaration(asList("assertThat(preProcessLine(\"* if(true){\"), is(\"* if(true){\"));"), 0));
+        assertFalse(isFieldDeclaration(asList("public enum Bee {A, B, C};"), 0));
     }
 
     @Test
@@ -274,8 +288,10 @@ public class JavaDeciderUtilTest {
     }
 
     @Test
-    public void isMethodDeclarationShouldDoOnReturnStart() {
+    public void isMethodDeclarationShouldDoMore() {
         assertFalse(isMethodDeclaration("    return lines.stream()"));
+        assertFalse(isMethodDeclaration("assertThat(preProcessLine(\"* if(true){\"), is(\"* if(true){\"));"));
+        assertFalse(isMethodDeclaration("public enum Bee {A, B, C};"));
     }
 
     @Test
