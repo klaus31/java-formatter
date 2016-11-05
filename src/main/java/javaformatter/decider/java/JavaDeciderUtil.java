@@ -210,6 +210,15 @@ class JavaDeciderUtil {
         return !isAPureDocLine(line) && killStringsCharsAndComments(line).contains("{");
     }
 
+    /**
+     * typically } else {
+     */
+    static boolean isBlockCloseBeforeStartingNextBlock(String line) {
+        return !isAPureDocLine(line) && killStringsCharsAndComments(line).matches("[^\\}]*\\}\\s*[^\\}\\{]+\\s*\\{.*");
+    }
+
+
+
     static boolean isClassDeclaration(List<String> lines, int lineNumber) {
         return matches(lines.get(lineNumber), ".*class\\s+\\S+.*\\{");
     }

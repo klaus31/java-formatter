@@ -21,7 +21,7 @@ public class JavaFileTest {
         List<JavaMethod> javaMethods = extractor.extractFirstLevelClasses().get(0).extractMethods();
 
         // then
-        assertThat(javaMethods, hasSize(4));
+        assertThat(javaMethods, hasSize(5));
     }
 
     @Test
@@ -36,7 +36,7 @@ public class JavaFileTest {
         // when / then
         assertThat(javaMethods.get(0).extractMethodDeclaration().trim(), is("public static int fact(int n)"));
         assertThat(javaMethods.get(0).getLines().size(), is(7));
-        assertThat(javaMethods.get(1).extractMethodDeclaration().trim(), is("abstract void doIt(Object likeTheyDoIt);"));
-        assertThat(javaMethods.get(1).getLines().size(), is(4));
+        assertThat(javaMethods.get(1).extractMethodDeclaration().trim(), is("public static int ifElse(int n){"));
+        assertThat(javaMethods.get(1).getLines().size(), is(7));
     }
 }

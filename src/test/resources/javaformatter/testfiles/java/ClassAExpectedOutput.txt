@@ -21,6 +21,14 @@ public abstract class ExampleJavaClass {
         return n * fact(n -1);
     }
 
+    public static int ifElse(int n) {
+        if (n == 0) {
+            return 1;
+        } else {
+            return n * fact(n -1);
+        }
+    }
+
     /**
      * Just mammels
      */
