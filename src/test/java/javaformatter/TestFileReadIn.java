@@ -16,7 +16,7 @@ public class TestFileReadIn {
             String resourceStr = String.format("testfiles/%s/%s.txt", lang, fileName);
             URL resource = TestFileReadIn.class.getResource(resourceStr);
             return Paths.get(resource.toURI());
-            } catch (URISyntaxException e) {
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
         return null;
@@ -26,7 +26,7 @@ public class TestFileReadIn {
         try {
             Path path = calcPath(lang, fileName);
             return Files.readAllLines(path, StandardCharsets.UTF_8);
-            } catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;

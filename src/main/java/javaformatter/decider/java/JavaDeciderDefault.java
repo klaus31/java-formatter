@@ -10,7 +10,7 @@ import static javaformatter.decider.java.JavaDeciderUtil.*;
 public class JavaDeciderDefault extends JavaDecider {
 
     public int tabChangeNextLine(String line) {
-        return isBlockStart(line) && !isBlockClose(line) ||   isBlockCloseBeforeStartingNextBlock(line) ? 1 : 0;
+        return isBlockStart(line) && !isBlockClose(line) || isBlockCloseBeforeStartingNextBlock(line) ? 1 : 0;
     }
 
     public int tabChangeThisLine(String line) {

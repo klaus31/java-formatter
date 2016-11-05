@@ -55,7 +55,7 @@ class JavaDeciderUtil {
         if (matches(line, ".*\\.[a-z].*\\(.*")) return false; // a method call
         if (isAbstract) {
             return matches(line.trim(), "[a-zA-Z][^\\s\\.]*\\s+\\S+\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{\\;]*)?\\;$");
-            } else {
+        } else {
             return matches(line.trim(), "[a-zA-Z][^\\s\\.]*\\s+\\S+\\([^\\(\\)]*\\)\\s*(throws\\s+[^\\{\\;]*)?(\\{.*)?");
         }
     }
@@ -217,8 +217,6 @@ class JavaDeciderUtil {
         return !isAPureDocLine(line) && killStringsCharsAndComments(line).matches("[^\\}]*\\}\\s*[^\\}\\{]+\\s*\\{.*");
     }
 
-
-
     static boolean isClassDeclaration(List<String> lines, int lineNumber) {
         return matches(lines.get(lineNumber), ".*class\\s+\\S+.*\\{");
     }
@@ -285,7 +283,7 @@ class JavaDeciderUtil {
                 if (i + 1 < dirtySplitsAtQuotes.length) {
                     i++;
                     lineSplit += "\"" + dirtySplitsAtQuotes[i];
-                    } else {
+                } else {
                     break;
                 }
             }
@@ -296,7 +294,7 @@ class JavaDeciderUtil {
                 if (i + 1 < dirtySplitsAtQuotes.length && dirtySplitsAtQuotes[i + 1].matches("^'.*")) {
                     i++;
                     lineSplit += "\"" + dirtySplitsAtQuotes[i];
-                    } else {
+                } else {
                     falseAlarm = true;
                 }
             }
@@ -310,7 +308,7 @@ class JavaDeciderUtil {
             if (j % 2 == 0) {
                 String result = lineSplitAtStrings.get(j);
                 splittedResults.add(format.apply(result));
-                } else {
+            } else {
                 splittedResults.add(lineSplitAtStrings.get(j));
             }
         }

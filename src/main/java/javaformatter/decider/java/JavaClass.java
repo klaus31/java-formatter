@@ -21,7 +21,7 @@ class JavaClass {
                 List<String> methodLines = new ArrayList<>();
                 if (JavaDeciderUtil.hasDoc(lines, lineNumber)) {
                     while (!JavaDeciderUtil.isFirstLineOfDoc(lines, -- lineNumberOfStartOfMethod));
-                    } else if (JavaDeciderUtil.hasAnnotation(lines, lineNumber)) {
+                } else if (JavaDeciderUtil.hasAnnotation(lines, lineNumber)) {
                     while (!JavaDeciderUtil.isFirstAnnotationOfMethod(lines, -- lineNumberOfStartOfMethod));
                 }
                 int lineNumberOfEndOfMethod = JavaDeciderUtil.calculateNextEndOfMethod(lines, lineNumber).orElseThrow(AssertionError::new);
