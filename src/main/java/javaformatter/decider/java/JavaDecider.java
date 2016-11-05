@@ -21,7 +21,7 @@ abstract class JavaDecider implements Decider {
         JavaFile extractor = new JavaFile(lines);
         List<JavaImport> imports = extractor.extractImports();
         Collections.sort(imports, this::compareImports);
-        lines = extractor.replaceImports(imports);
+        lines = extractor.replaceImports(imports); // XXX nicht aufgabe eines extraktors
 
         //        List<JavaMethod> methods = extractor.extractClasses().get(0).extractMethods();
     }

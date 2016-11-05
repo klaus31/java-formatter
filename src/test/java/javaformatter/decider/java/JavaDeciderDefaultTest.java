@@ -96,6 +96,9 @@ public class JavaDeciderDefaultTest {
         assertThat(preProcessLine("Optional<List<String>>findObj(String name){"), is("Optional<List<String>> findObj(String name) {"));
         assertThat(preProcessLine("List<List<List<List<String>>>>wtf;"), is("List<List<List<List<String>>>> wtf;"));
         assertThat(preProcessLine("foo(-1)"), is("foo(-1)"));
+        assertThat(preProcessLine("foo(--1)"), is("foo(--1)"));
+        // TODO (wtf "i am a positive numner" syntax): assertThat(preProcessLine("int a=+2"), is("int a = +2"));
+        assertThat(preProcessLine("foo(++1)"), is("foo(++1)"));
         assertThat(preProcessLine("int spaceHere,int noSpaceAtEnd,"), is("int spaceHere, int noSpaceAtEnd,"));
         assertThat(preProcessLine("foo(result()-12)"), is("foo(result() - 12)"));
         assertThat(preProcessLine("foo(result()*12)"), is("foo(result() * 12)"));
@@ -104,8 +107,15 @@ public class JavaDeciderDefaultTest {
         assertThat(preProcessLine("foo(result()%12)"), is("foo(result() % 12)"));
         assertThat(preProcessLine("foo(a-b)"), is("foo(a - b)"));
         assertThat(preProcessLine("foo(a-b(int c=3*a()))"), is("foo(a - b(int c = 3 * a()))"));
+        assertThat(preProcessLine("++i;"), is("++i;"));
+        assertThat(preProcessLine("--i;"), is("--i;"));
+        assertThat(preProcessLine("i++;"), is("i++;"));
+        assertThat(preProcessLine("i--;"), is("i--;"));
+        assertThat(preProcessLine("foo(--i)"), is("foo(--i)"));
+        assertThat(preProcessLine("foo(++i)"), is("foo(++i)"));
+        assertThat(preProcessLine("foo(i--)"), is("foo(i--)"));
+        assertThat(preProcessLine("foo(i++)"), is("foo(i++)"));
 
-        // TODO (wtf syntax): assertThat(preProcessLine("int a=+2"), is("int a = +2"));
     }
 
     private String preProcessLine(String line) {

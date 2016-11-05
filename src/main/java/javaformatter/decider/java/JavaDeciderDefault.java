@@ -154,12 +154,13 @@ public class JavaDeciderDefault extends JavaDecider {
              * a+=b
              * a++;
              * for(;;i++)
+             * foo(++i)
              * int a = +34;
              */
-            part = findAndReplace(part, "\\+([^\\s=\\+\\);])", m -> "+ " + m.group(1));
+            part = findAndReplace(part, "([^\\+]|^)\\+([^\\s=\\+\\);])", m -> m.group(1) + "+ " + m.group(2));
 
             // quite same with -
-            part = findAndReplace(part, "\\-([^\\s=\\-\\);>\\d])", m -> "- " + m.group(1));
+            part = findAndReplace(part, "([^\\-]|^)\\-([^\\s=\\-\\);>\\d])", m -> m.group(1) + "- " + m.group(2));
 
             // quite same with *
             part = findAndReplace(part, "\\*([^\\s=;])", m -> "* " + m.group(1));
