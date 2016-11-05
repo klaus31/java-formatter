@@ -316,7 +316,7 @@ class JavaDeciderUtil {
         return join(splittedResults, "\"");
     }
 
-    public static Optional<Integer> calculateNextEndOfMethod(List<String> lines, final int startLineNumber) {
+    static Optional<Integer> calculateNextEndOfMethod(List<String> lines, final int startLineNumber) {
         int i = startLineNumber;
         while (!isMethodDeclaration(lines.get(i)) && i < lines.size()) i++;
         if (i == lines.size()) return Optional.empty();

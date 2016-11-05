@@ -8,11 +8,11 @@ class JavaClass {
 
     private final List<String> lines;
 
-    public JavaClass(List<String> lines) {
+    JavaClass(List<String> lines) {
         this.lines = lines;
     }
 
-    public List<JavaMethod> extractMethods() {
+    List<JavaMethod> extractMethods() {
         List<JavaMethod> result = new ArrayList<>();
         for (int lineNumber = 0; lineNumber < lines.size(); lineNumber++) {
             String line = lines.get(lineNumber);
@@ -20,9 +20,9 @@ class JavaClass {
             if (isMethodDeclaration(line)) {
                 List<String> methodLines = new ArrayList<>();
                 if (JavaDeciderUtil.hasDoc(lines, lineNumber)) {
-                    while (!JavaDeciderUtil.isFirstLineOfDoc(lines, -- lineNumberOfStartOfMethod));
+                    while (!JavaDeciderUtil.isFirstLineOfDoc(lines, --lineNumberOfStartOfMethod));
                 } else if (JavaDeciderUtil.hasAnnotation(lines, lineNumber)) {
-                    while (!JavaDeciderUtil.isFirstAnnotationOfMethod(lines, -- lineNumberOfStartOfMethod));
+                    while (!JavaDeciderUtil.isFirstAnnotationOfMethod(lines, --lineNumberOfStartOfMethod));
                 }
                 int lineNumberOfEndOfMethod = JavaDeciderUtil.calculateNextEndOfMethod(lines, lineNumber).orElseThrow(AssertionError::new);
                 while (lineNumberOfStartOfMethod < lineNumberOfEndOfMethod) {

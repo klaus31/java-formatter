@@ -1,34 +1,30 @@
 package javaformatter.decider.java;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
 import org.apache.commons.lang3.Validate;
-import static javaformatter.decider.java.JavaDeciderUtil.isMethodDeclaration;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
 
 class JavaFile {
 
     private final List<String> lines;
 
-    public JavaFile(List<String> lines) {
+    JavaFile(List<String> lines) {
         this.lines = lines;
     }
 
-    public List<JavaClass> extractFirstLevelClasses() {
+    List<JavaClass> extractFirstLevelClasses() {
 
         // TODO implement me - a java file may have many classes
-        return Arrays.asList(new JavaClass(lines));
+        return singletonList(new JavaClass(lines));
     }
 
-    public List<JavaImport> extractImports() {
-        List<JavaImport> imports = new ArrayList<>();
-        for (String line : lines) {
-            if (JavaDeciderUtil.isImport(line)) {
-                imports.add(new JavaImport(line));
-            }
-        }
-        return imports;
+    List<JavaImport> extractImports() {
+        return lines.stream().filter(JavaDeciderUtil::isImport).map(JavaImport::new).collect(toList());
     }
 
-    public List<String> replaceImports(List<JavaImport> imports) {
+    List<String> replaceImports(List<JavaImport> imports) {
         Iterator<JavaImport> iterator = imports.iterator();
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i);
@@ -38,6 +34,6 @@ class JavaFile {
             }
         }
         Validate.isTrue(!iterator.hasNext());
-        return null;
+        return lines;
     }
 }

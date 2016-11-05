@@ -6,15 +6,12 @@ class JavaMethod {
 
     private final List<String> lines;
 
-    public JavaMethod(List<String> lines) {
+    JavaMethod(List<String> lines) {
         this.lines = lines;
     }
 
-    public String extractMethodDeclaration() {
-        for (String line : lines) {
-            if (JavaDeciderUtil.isMethodDeclaration(line)) return line;
-        }
-        throw new AssertionError("Method without Method Declaration");
+    String extractMethodDeclaration() {
+        return lines.stream().filter(JavaDeciderUtil::isMethodDeclaration).findFirst().orElseThrow(() -> new AssertionError("Method without Method Declaration"));
     }
 
     public List<String> getLines() {
