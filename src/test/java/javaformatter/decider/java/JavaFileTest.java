@@ -18,7 +18,7 @@ public class JavaFileTest {
         JavaFile extractor = new JavaFile(lines);
 
         // when
-        List<JavaMethod> javaMethods = extractor.extractClasses().get(0).extractMethods();
+        List<JavaMethod> javaMethods = extractor.extractFirstLevelClasses().get(0).extractMethods();
 
         // then
         assertThat(javaMethods, hasSize(4));
@@ -31,7 +31,7 @@ public class JavaFileTest {
         JavaFile extractor = new JavaFile(lines);
 
         // when
-        List<JavaMethod> javaMethods = extractor.extractClasses().get(0).extractMethods();
+        List<JavaMethod> javaMethods = extractor.extractFirstLevelClasses().get(0).extractMethods();
 
         // when / then
         assertThat(javaMethods.get(0).extractMethodDeclaration().trim(), is("public static int fact(int n)"));

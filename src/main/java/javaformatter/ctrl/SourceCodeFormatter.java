@@ -81,6 +81,7 @@ public class SourceCodeFormatter {
 
     private static Consumer<SourceCodeFile> process() {
         return (sourceCodeFile) -> {
+            System.out.println("next file to process: " + sourceCodeFile.getPath());
             SourceCodeFormatter formatter = new SourceCodeFormatter(sourceCodeFile);
             try {
                 formatter.format();

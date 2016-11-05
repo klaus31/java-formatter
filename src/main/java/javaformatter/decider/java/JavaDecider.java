@@ -2,8 +2,11 @@ package javaformatter.decider.java;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+
 import javaformatter.decider.Decider;
 import static java.util.stream.Collectors.toList;
+import static javax.swing.UIManager.get;
 
 abstract class JavaDecider implements Decider {
 
@@ -18,12 +21,14 @@ abstract class JavaDecider implements Decider {
     }
 
     private void orderComponentsInFile(List<String> lines) {
-        JavaFile extractor = new JavaFile(lines);
-        List<JavaImport> imports = extractor.extractImports();
+        JavaFile javaFile = new JavaFile(lines);
+        List<JavaImport> imports = javaFile.extractImports();
         Collections.sort(imports, this::compareImports);
-        lines = extractor.replaceImports(imports); // XXX nicht aufgabe eines extraktors
-
-        //        List<JavaMethod> methods = extractor.extractClasses().get(0).extractMethods();
+        lines = javaFile.replaceImports(imports);
+        List<JavaClass> firstLevelClasses = javaFile.extractFirstLevelClasses();
+        for (JavaClass firstLevelClass : firstLevelClasses) {
+            List<JavaMethod> methods = firstLevelClass.extractMethods();
+        }
     }
 
     abstract int compareImports(JavaImport importA, JavaImport importB);
