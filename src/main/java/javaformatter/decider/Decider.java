@@ -4,7 +4,6 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 public interface Decider {
-
     int tabChangeThisLine(String line);
 
     default String getEol() {
@@ -14,11 +13,8 @@ public interface Decider {
     default String getIndent() {
         return "    ";
     }
-
     int tabChangeNextLine(String line);
-
     int blankLinesBefore(List<String> lines, int lineNumber);
-
     int blankLinesAfter(List<String> lines, int lineNumber);
 
     /**

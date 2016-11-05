@@ -104,7 +104,7 @@ class JavaDeciderUtil {
 
     static boolean isFieldDeclaration(List<String> lines, final int lineNumber) {
         String line = killStringsCharsAndComments(lines.get(lineNumber)).trim();
-        return line.replaceAll("\\s","").matches("[a-zA-Z0-9<>\\[\\]]+(=\\S+)?;$") && !isPartOfAMethod(lines, lineNumber) && !isPackageDeclaration(line) && !isImport(lines, lineNumber) && !isPartOfAConstructor(lines, lineNumber);
+        return line.replaceAll("\\s", "").matches("[a-zA-Z0-9<>\\[\\]]+(=\\S+)?;$") && !isPartOfAMethod(lines, lineNumber) && !isPackageDeclaration(line) && !isImport(lines, lineNumber) && !isPartOfAConstructor(lines, lineNumber);
     }
 
     static boolean isPartOfAMethod(List<String> lines, final int lineNumber) {

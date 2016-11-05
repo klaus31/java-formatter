@@ -1,10 +1,8 @@
 package javaformatter.decider.java;
 
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
-
+import org.junit.Test;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -29,13 +27,13 @@ public class JavaDeciderDefaultTest {
         assertThat(decider.blankLinesBefore(lines, 1), is(1));
         assertThat(decider.blankLinesBefore(lines, 2), is(1));
         assertThat(decider.blankLinesBefore(lines, 3), is(0));
+
         assertThat(decider.blankLinesBefore(asList("public enum Bee {A,B,C};"), 0), is(1));
     }
 
     @Test
     public void preProcessLinesShouldAddSpaces() {
         assertThat(preProcessLine("if(true){"), is("if (true) {"));
-
         assertThat(preProcessLine("\"if(true){\""), is("\"if(true){\""));
         assertThat(preProcessLine("foo;bar"), is("foo; bar"));
         assertThat(preProcessLine("for(int i=0;i<a.length;i++){"), is("for (int i = 0; i < a.length; i++) {"));
@@ -50,7 +48,6 @@ public class JavaDeciderDefaultTest {
         assertThat(preProcessLine("andDo(()->hossa::dieWaldFee)"), is("andDo(() -> hossa::dieWaldFee)"));
         assertThat(preProcessLine("// if(true){"), is("// if(true){"));
         assertThat(preProcessLine("/* if(true){"), is("/* if(true){"));
-
         assertThat(preProcessLine("* if(true){"), is("* if(true){"));
         assertThat(preProcessLine("int a=3;"), is("int a = 3;"));
         assertThat(preProcessLine("List<String>c=new ArrayList<>();"), is("List<String> c = new ArrayList<>();"));

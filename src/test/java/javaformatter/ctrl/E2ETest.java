@@ -28,10 +28,15 @@ public class E2ETest {
     @Test
     @Ignore // TODO das ding ist hammerhart!
     public void exampleCInputShouldHaveExmpleCExpectedOutput() throws IOException {
+
         // Ich sollte in der preaction erst einmal alles in einer zeile schreiben, was:
+
         // 1. nicht mit einem ; endet
+
         // 2. anschließend nach Punkten trennen, wenn bestimmte Bedingungen:
+
         // 2.1 Die Zeile ist zu lang
+
         // 2.2 Schlüsselwörter kommen vor (nicht mein geschmack,aber gut)
         doItWith("java", "ExampleCInput", "ExampleCExpectedOutput");
     }

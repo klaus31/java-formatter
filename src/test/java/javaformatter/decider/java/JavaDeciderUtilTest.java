@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
-
 import static java.util.Arrays.asList;
 import static javaformatter.decider.java.JavaDeciderUtil.*;
 import static org.hamcrest.core.Is.is;
@@ -31,11 +30,14 @@ public class JavaDeciderUtilTest {
 
     @Test
     public void isEnumDeclarationShouldDo() {
-        assertThat(isEnumDeclaration(asList("public enum Bee {A,B,C};"), 0), is(true));
-        assertThat(isEnumDeclaration(asList("enum Bee {A,B,C};"), 0), is(true));
-        assertThat(isEnumDeclaration(asList("String[] plenum = {\"A\",\"B\",\"C\"};"), 0), is(true));
 
+        assertThat(isEnumDeclaration(asList("public enum Bee {A,B,C};"), 0), is(true));
+
+        assertThat(isEnumDeclaration(asList("enum Bee {A,B,C};"), 0), is(true));
+
+        assertThat(isEnumDeclaration(asList("String[] plenum = {\"A\",\"B\",\"C\"};"), 0), is(true));
     }
+
     @Test
     public void isFieldDeclarationShouldDo() {
 
@@ -67,9 +69,9 @@ public class JavaDeciderUtilTest {
         assertFalse(isFieldDeclaration(code, 9));
         assertFalse(isFieldDeclaration(code, 10));
         assertFalse(isFieldDeclaration(code, 11));
-
         assertFalse(isFieldDeclaration(asList("    return lines.stream()"), 0));
         assertFalse(isFieldDeclaration(asList("assertThat(preProcessLine(\"* if(true){\"), is(\"* if(true){\"));"), 0));
+
         assertFalse(isFieldDeclaration(asList("public enum Bee {A, B, C};"), 0));
     }
 
@@ -291,6 +293,7 @@ public class JavaDeciderUtilTest {
     public void isMethodDeclarationShouldDoMore() {
         assertFalse(isMethodDeclaration("    return lines.stream()"));
         assertFalse(isMethodDeclaration("assertThat(preProcessLine(\"* if(true){\"), is(\"* if(true){\"));"));
+
         assertFalse(isMethodDeclaration("public enum Bee {A, B, C};"));
     }
 
@@ -331,7 +334,6 @@ public class JavaDeciderUtilTest {
         assertFalse(isConstructorDeclaration("lines.add(\"if(true){\");"));
         assertTrue(isConstructorDeclaration("Foo(){"));
         assertTrue(isConstructorDeclaration("Foo(String ... args){"));
-
         assertTrue(isConstructorDeclaration("public Foo(String ... args){"));
     }
 
