@@ -37,12 +37,7 @@ public class JavaDeciderDefault extends JavaDecider {
     @Override
     public int blankLinesAfter(List<String> lines, int lineNumber) {
         if (lineNumber < lines.size() - 1 && lines.get(lineNumber + 1).trim().isEmpty()) return 0;
-        return isPackageDeclaration(lines.get(lineNumber)) &&
-        lineNumber < lines.size() - 1 &&
-        !isFirstLineOfDoc(lines, lineNumber + 1) &&
-        !isClassDeclaration(lines, lineNumber + 1) &&
-        !isInterfaceDeclaration(lines, lineNumber + 1) &&
-        !isEnumDeclaration(lines, lineNumber + 1) ? 1 : 0;
+        return isPackageDeclaration(lines.get(lineNumber)) && lineNumber < lines.size() - 1 && !isFirstLineOfDoc(lines, lineNumber + 1) && !isClassDeclaration(lines, lineNumber + 1) && !isInterfaceDeclaration(lines, lineNumber + 1) && !isEnumDeclaration(lines, lineNumber + 1) ? 1 : 0;
     }
 
     @Override
@@ -51,16 +46,17 @@ public class JavaDeciderDefault extends JavaDecider {
         StringBuilder oneLinerBuilder = new StringBuilder();
         for (String line : lines) {
             oneLinerBuilder.append(line.trim());
+
             // append " " if necessary
-            if(line.trim().matches(".*([a-zA-Z0-9\\)])$")) oneLinerBuilder.append(" ");
-            if (isEndOfStatement(line) || containsDoc(line)||line.trim().isEmpty()) {
+            if (line.trim().matches(".*([a-zA-Z0-9\\)])$")) oneLinerBuilder.append(" ");
+            if (isEndOfStatement(line) || containsDoc(line) || line.trim().isEmpty()) {
                 result.add(oneLinerBuilder.toString().trim());
                 oneLinerBuilder = new StringBuilder();
             }
         }
+
         // put last line for killing nothing (invalid end)
-        if(oneLinerBuilder.length()>0)
-            result.add(oneLinerBuilder.toString().trim());
+        if (oneLinerBuilder.length() > 0) result.add(oneLinerBuilder.toString().trim());
         return result;
     }
 
@@ -338,9 +334,6 @@ public class JavaDeciderDefault extends JavaDecider {
 
     @Override
     public List<String> postProcessFormattedLines(List<String> lines) {
-        return lines.stream()
-        .map(line -> line.trim().isEmpty() ? "" : line)
-        .map(line -> line.trim().matches("^\\*.*") ? " " + line : line)
-        .collect(toList());
+        return lines.stream() .map(line -> line.trim().isEmpty() ? "" : line) .map(line -> line.trim().matches("^\\*.*") ? " " + line : line) .collect(toList());
     }
 }

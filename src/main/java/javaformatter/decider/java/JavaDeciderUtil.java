@@ -93,12 +93,13 @@ class JavaDeciderUtil {
     }
 
     static boolean containsDoc(String line) {
-        String checkstr=killStrings(line.trim());
+        String checkstr = killStrings(line.trim());
         if (checkstr.matches(".*\\*/")) return true;
         if (checkstr.matches(".*/\\*.*")) return true;
         if (checkstr.matches(".*//.*")) return true;
         else return false;
     }
+
     // TODO inaccurate and bad performance yet
     static boolean containsDoc(List<String> lines, final int lineNumber) {
         int i = lineNumber;

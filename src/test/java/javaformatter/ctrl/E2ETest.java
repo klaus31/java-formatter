@@ -22,6 +22,7 @@ public class E2ETest {
 
     @Test
     public void formatterShouldOrderComponentsCorrectly() throws IOException {
+
         // 2. anschließend nach Punkten trennen, wenn bestimmte Bedingungen:
 
         // 2.1 Die Zeile ist zu lang
@@ -45,7 +46,7 @@ public class E2ETest {
             List<String> expectedOutputLines = read("java", expectedOutputFileName);
             List<String> actualOutputLines = Arrays.asList(actualFormattedSource.split("\n"));
             for (int i = 0; i < expectedOutputLines.size(); i++) {
-                Assert.assertThat(expectedOutputFileName + " at line " + (i+1) + ":\nActual: \"" + actualOutputLines.get(i) + "\"\nShould: \"" + expectedOutputLines.get(i) + "\"\n\n" + actualFormattedSource, actualOutputLines.get(i), is(expectedOutputLines.get(i)));
+                Assert.assertThat(expectedOutputFileName + " at line " + (i + 1) + ":\nActual: \"" + actualOutputLines.get(i) + "\"\nShould: \"" + expectedOutputLines.get(i) + "\"\n\n" + actualFormattedSource, actualOutputLines.get(i), is(expectedOutputLines.get(i)));
             }
         });
     }
