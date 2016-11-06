@@ -6,11 +6,11 @@ package javaformatter.testfiles.java;
 public class FooBar {
 
     public String foo() {
-        return lines.stream() .collect(toList());
+        return lines.stream().collect(toList());
     }
 
     public String foo() {
-        return lines.stream() .filter(oOo::oOo) .collect(toList());
+        return lines.stream().filter(oOo::oOo).collect(toList());
     }
 
     public String foo() {
@@ -21,5 +21,10 @@ public class FooBar {
 
     public String foo() {
         return 1 -2;
+    }
+
+    public String foo() {
+        if (foo) return 3;
+        else return 2;
     }
 }

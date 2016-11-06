@@ -49,8 +49,13 @@ public class JavaDeciderDefault extends JavaDecider {
 
             // append " " if necessary
             if (line.trim().matches(".*([a-zA-Z0-9\\)])$")) oneLinerBuilder.append(" ");
+            // finish melted line when line is ready
             if (isEndOfStatement(line) || containsDoc(line) || line.trim().isEmpty()) {
-                result.add(oneLinerBuilder.toString().trim());
+                String meltedLine = oneLinerBuilder.toString().trim();
+                if(!isAPureDocLine(meltedLine)) {
+                    meltedLine = withPartsInLineNotBeingAString(meltedLine, part -> findAndReplace(part, "([^a-zA-Z0-9])\\s+([^a-zA-Z0-9])", m -> m.group(1) + m.group(2)));
+                }
+                result.add(meltedLine);
                 oneLinerBuilder = new StringBuilder();
             }
         }
@@ -69,7 +74,7 @@ public class JavaDeciderDefault extends JavaDecider {
 
     String putInSingleSpaces(String line) {
         if (JavaDeciderUtil.isAPureDocLine(line)) return line;
-        return JavaDeciderUtil.withPartsInLineNotBeingAString(line, part -> {
+        return withPartsInLineNotBeingAString(line, part -> {
 
             /*
              * "<"             ==> "< "

@@ -27,4 +27,11 @@ public class FooBar {
         -
         2;
     }
+
+    public String foo() {
+        if(foo)
+        return 3;
+        else
+        return 2;
+    }
 }
