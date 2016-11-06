@@ -11,11 +11,11 @@ import static javaformatter.decider.java.JavaDeciderUtil.*;
 public class JavaDeciderDefault extends JavaDecider {
 
     public int tabChangeNextLine(String line) {
-        return isBlockStart(line) && !isBlockClose(line) || isBlockCloseBeforeStartingNextBlock(line) ? 1 : 0;
+        return isBlockStart(line) && !isBlockClose(line) || isBlockCloseBeforeStartingNextBlock(line)? 1 : 0;
     }
 
     public int tabChangeThisLine(String line) {
-        return isBlockClose(line) && !isBlockStart(line) || isBlockCloseBeforeStartingNextBlock(line) ? -1 : 0;
+        return isBlockClose(line) && !isBlockStart(line) || isBlockCloseBeforeStartingNextBlock(line)? -1 : 0;
     }
 
     public int blankLinesBefore(final List<String> lines, final int lineNumber) {
@@ -36,8 +36,8 @@ public class JavaDeciderDefault extends JavaDecider {
 
     @Override
     public int blankLinesAfter(List<String> lines, int lineNumber) {
-        if (lineNumber < lines.size() - 1 && lines.get(lineNumber + 1).trim().isEmpty()) return 0;
-        return isPackageDeclaration(lines.get(lineNumber)) && lineNumber < lines.size() - 1 && !isFirstLineOfDoc(lines, lineNumber + 1) && !isClassDeclaration(lines, lineNumber + 1) && !isInterfaceDeclaration(lines, lineNumber + 1) && !isEnumDeclaration(lines, lineNumber + 1) ? 1 : 0;
+        if (lineNumber < lines.size() -  1 && lines.get(lineNumber + 1).trim().isEmpty()) return 0;
+        return isPackageDeclaration(lines.get(lineNumber)) && lineNumber < lines.size() -  1 && !isFirstLineOfDoc(lines, lineNumber + 1) && !isClassDeclaration(lines, lineNumber + 1) && !isInterfaceDeclaration(lines, lineNumber + 1) && !isEnumDeclaration(lines, lineNumber + 1)? 1 : 0;
     }
 
     @Override
@@ -49,10 +49,11 @@ public class JavaDeciderDefault extends JavaDecider {
 
             // append " " if necessary
             if (line.trim().matches(".*([a-zA-Z0-9\\)])$")) oneLinerBuilder.append(" ");
+
             // finish melted line when line is ready
             if (isEndOfStatement(line) || containsDoc(line) || line.trim().isEmpty()) {
                 String meltedLine = oneLinerBuilder.toString().trim();
-                if(!isAPureDocLine(meltedLine)) {
+                if (!isAPureDocLine(meltedLine)) {
                     meltedLine = withPartsInLineNotBeingAString(meltedLine, part -> findAndReplace(part, "([^a-zA-Z0-9])\\s+([^a-zA-Z0-9])", m -> m.group(1) + m.group(2)));
                 }
                 result.add(meltedLine);
@@ -67,7 +68,7 @@ public class JavaDeciderDefault extends JavaDecider {
 
     @Override
     int compareImports(JavaImport importA, JavaImport importB) {
-        if (importA.isStatic()) return importB.isStatic() ? importA.toString().compareTo(importB.toString()) : 1;
+        if (importA.isStatic()) return importB.isStatic()? importA.toString().compareTo(importB.toString()): 1;
         if (importB.isStatic()) return -1;
         return importA.toString().compareTo(importB.toString());
     }
@@ -339,6 +340,6 @@ public class JavaDeciderDefault extends JavaDecider {
 
     @Override
     public List<String> postProcessFormattedLines(List<String> lines) {
-        return lines.stream() .map(line -> line.trim().isEmpty() ? "" : line) .map(line -> line.trim().matches("^\\*.*") ? " " + line : line) .collect(toList());
+        return lines.stream().map(line -> line.trim().isEmpty()? "" : line).map(line -> line.trim().matches("^\\*.*")? " " + line : line).collect(toList());
     }
 }

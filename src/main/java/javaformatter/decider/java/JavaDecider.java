@@ -12,7 +12,7 @@ abstract class JavaDecider implements Decider {
     public List<String> preProcessLines(List<String> lines) {
         lines = meltThingsTogetherInOneLine(lines);
         orderComponentsInFile(lines);
-        return lines.stream() .map(String::trim) .map(this::killDoubleSpaces) .map(this::putInSingleSpaces) .collect(toList());
+        return lines.stream().map(String::trim).map(this::killDoubleSpaces).map(this::putInSingleSpaces).collect(toList());
     }
 
     protected abstract List<String> meltThingsTogetherInOneLine(List<String> lines);

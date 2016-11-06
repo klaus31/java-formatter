@@ -41,6 +41,6 @@ public interface Decider {
      * default: do nothing
      */
     default List<String> postProcessFormattedLines(List<String> lines) {
-        return lines.stream().map(line -> line.trim().isEmpty() ? "" : line).collect(toList());
+        return lines.stream().map(line -> line.trim().isEmpty()? "" : line).collect(toList());
     }
 }
