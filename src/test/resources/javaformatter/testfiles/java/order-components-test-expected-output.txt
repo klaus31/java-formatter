@@ -1,9 +1,11 @@
 package javaformatter.decider.java.testfiles;
 
+import a;
+import b;
+import c;
+
 /**
- * Read me in to test formatter.
- *
- * To avoid formatting me on friendly fire, I am a txt-File.
+ * Test the order of things
  */
 public abstract class ExampleJavaClass {
 
@@ -13,12 +15,9 @@ public abstract class ExampleJavaClass {
 
     public ExampleJavaClass(int i, String x) {}
 
-    public static int fact(int n)
-    {
-        if (n == 0)
-        return 1;
-        else
-        return n * fact(n - 1);
+    public static int fact(int n) {
+        if (n == 0) return 1;
+        else return n * fact(n - 1);
     }
 
     public static int ifElse(int n) {

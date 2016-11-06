@@ -1,0 +1,30 @@
+package javaformatter.testfiles.java;
+
+/**
+ * Test melt things together in one line and split lines afterwise (on streams, long lines etc)
+ */
+public class FooBar {
+
+    public String foo() {
+        return lines.stream()
+        .collect(toList());
+    }
+
+    public String foo() {
+        return lines.stream()
+        .filter(oOo::oOo)
+        .collect(toList());
+    }
+
+    public String foo() {
+        return lines.stream() // not
+        .filter(oOo::oOo) // me
+        .collect(toList());
+    }
+
+    public String foo() {
+        return 1
+        -
+        2;
+    }
+}

@@ -1,5 +1,6 @@
 package javaformatter.decider.java;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -33,6 +34,7 @@ public class JavaDeciderDefault extends JavaDecider {
         return 0;
     }
 
+    @Override
     public int blankLinesAfter(List<String> lines, int lineNumber) {
         if (lineNumber < lines.size() - 1 && lines.get(lineNumber + 1).trim().isEmpty()) return 0;
         return isPackageDeclaration(lines.get(lineNumber)) &&
@@ -41,6 +43,25 @@ public class JavaDeciderDefault extends JavaDecider {
         !isClassDeclaration(lines, lineNumber + 1) &&
         !isInterfaceDeclaration(lines, lineNumber + 1) &&
         !isEnumDeclaration(lines, lineNumber + 1) ? 1 : 0;
+    }
+
+    @Override
+    protected List<String> meltThingsTogetherInOneLine(final List<String> lines) {
+        final List<String> result = new ArrayList<>();
+        StringBuilder oneLinerBuilder = new StringBuilder();
+        for (String line : lines) {
+            oneLinerBuilder.append(line.trim());
+            // append " " if necessary
+            if(line.trim().matches(".*([a-zA-Z0-9\\)])$")) oneLinerBuilder.append(" ");
+            if (isEndOfStatement(line) || containsDoc(line)||line.trim().isEmpty()) {
+                result.add(oneLinerBuilder.toString().trim());
+                oneLinerBuilder = new StringBuilder();
+            }
+        }
+        // put last line for killing nothing (invalid end)
+        if(oneLinerBuilder.length()>0)
+            result.add(oneLinerBuilder.toString().trim());
+        return result;
     }
 
     @Override

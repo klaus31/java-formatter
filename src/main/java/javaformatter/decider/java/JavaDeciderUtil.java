@@ -23,7 +23,7 @@ class JavaDeciderUtil {
         return lineNumber != 0 && !isAnnotation(lines, lineNumber) && isAnnotation(lines, lineNumber - 1);
     }
 
-    private static boolean isAnnotation(String line) {
+    static boolean isAnnotation(String line) {
         return line.matches("^\\s*@.*");
     }
 
@@ -78,6 +78,10 @@ class JavaDeciderUtil {
         return lines.get(lineNumber).trim().matches("(/\\*|//).*");
     }
 
+    static boolean isEndOfStatement(final String line) {
+        return isAnnotation(line) || isAPureDocLine(line) || line.trim().endsWith(";") || line.trim().endsWith("{") || line.trim().endsWith("}");
+    }
+
     static boolean isAPureDocLine(final String line) {
         String l = killComments(line.trim());
         return l.isEmpty() || l.matches("^\\*.*") || l.matches(".*\\*/\\s*$");
@@ -88,6 +92,13 @@ class JavaDeciderUtil {
         return i >= 0 && (isAnnotation(lines.get(i)) ? hasDoc(lines, i) : containsDoc(lines, i) && !containsDoc(lines, i + 1));
     }
 
+    static boolean containsDoc(String line) {
+        String checkstr=killStrings(line.trim());
+        if (checkstr.matches(".*\\*/")) return true;
+        if (checkstr.matches(".*/\\*.*")) return true;
+        if (checkstr.matches(".*//.*")) return true;
+        else return false;
+    }
     // TODO inaccurate and bad performance yet
     static boolean containsDoc(List<String> lines, final int lineNumber) {
         int i = lineNumber;

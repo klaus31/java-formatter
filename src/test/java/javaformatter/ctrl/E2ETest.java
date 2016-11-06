@@ -16,29 +16,18 @@ import static org.hamcrest.Matchers.is;
 public class E2ETest {
 
     @Test
-    public void classAInputShouldHaveClassAExpectedOutput() throws IOException {
-        doItWith("java", "ClassAInput", "ClassAExpectedOutput");
+    public void formatterShouldMeltLinesCorrectly() throws IOException {
+        doItWith("java", "melt-lines-together-input", "melt-lines-together-expected-output");
     }
 
     @Test
-    public void classBInputShouldHaveClassBExpectedOutput() throws IOException {
-        doItWith("java", "ClassBInput", "ClassBExpectedOutput");
-    }
-
-    @Test
-    @Ignore // TODO das ding ist hammerhart!
-    public void exampleCInputShouldHaveExmpleCExpectedOutput() throws IOException {
-
-        // Ich sollte in der preaction erst einmal alles in einer zeile schreiben, was:
-
-        // 1. nicht mit einem ; endet
-
+    public void formatterShouldOrderComponentsCorrectly() throws IOException {
         // 2. anschließend nach Punkten trennen, wenn bestimmte Bedingungen:
 
         // 2.1 Die Zeile ist zu lang
 
         // 2.2 Schlüsselwörter kommen vor (nicht mein geschmack,aber gut)
-        doItWith("java", "ExampleCInput", "ExampleCExpectedOutput");
+        doItWith("java", "order-components-test-input", "order-components-test-expected-output");
     }
 
     private void doItWith(String language, String inputFileName, String expectedOutputFileName) throws IOException {
@@ -56,7 +45,7 @@ public class E2ETest {
             List<String> expectedOutputLines = read("java", expectedOutputFileName);
             List<String> actualOutputLines = Arrays.asList(actualFormattedSource.split("\n"));
             for (int i = 0; i < expectedOutputLines.size(); i++) {
-                Assert.assertThat(expectedOutputFileName + " at line " + i + ":\nActual: \"" + actualOutputLines.get(i) + "\"\nShould: \"" + expectedOutputLines.get(i) + "\"\n\n" + actualFormattedSource, actualOutputLines.get(i), is(expectedOutputLines.get(i)));
+                Assert.assertThat(expectedOutputFileName + " at line " + (i+1) + ":\nActual: \"" + actualOutputLines.get(i) + "\"\nShould: \"" + expectedOutputLines.get(i) + "\"\n\n" + actualFormattedSource, actualOutputLines.get(i), is(expectedOutputLines.get(i)));
             }
         });
     }

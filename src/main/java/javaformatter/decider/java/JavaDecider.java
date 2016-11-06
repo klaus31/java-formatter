@@ -10,6 +10,7 @@ import static javax.swing.UIManager.get;
 abstract class JavaDecider implements Decider {
 
     public List<String> preProcessLines(List<String> lines) {
+        lines = meltThingsTogetherInOneLine(lines);
         orderComponentsInFile(lines);
         return lines.stream()
         .map(String::trim)
@@ -17,6 +18,8 @@ abstract class JavaDecider implements Decider {
         .map(this::putInSingleSpaces)
         .collect(toList());
     }
+
+    protected abstract List<String> meltThingsTogetherInOneLine(List<String> lines);
 
     private void orderComponentsInFile(List<String> lines) {
         JavaFile javaFile = new JavaFile(lines);

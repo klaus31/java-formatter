@@ -9,7 +9,7 @@ import static org.junit.Assert.assertThat;
 
 public class JavaFileTest {
 
-    private List<String> lines = TestFileReadIn.read("java", "ClassAInput");
+    private List<String> lines = TestFileReadIn.read("java", "order-components-test-input");
 
     @Test
     public void extractMethodsShouldExtractMethodsOfMainClass() {
@@ -35,8 +35,6 @@ public class JavaFileTest {
 
         // when / then
         assertThat(javaMethods.get(0).extractMethodDeclaration().trim(), is("public static int fact(int n)"));
-        assertThat(javaMethods.get(0).getLines().size(), is(7));
         assertThat(javaMethods.get(1).extractMethodDeclaration().trim(), is("public static int ifElse(int n){"));
-        assertThat(javaMethods.get(1).getLines().size(), is(7));
     }
 }

@@ -1,16 +1,16 @@
 package javaformatter.decider.java.testfiles;
 
+import b;
+import c;
+import a;
+
 /**
- * Read me in to test formatter.
- *
- * To avoid formatting me on friendly fire, I am a txt-File.
+ * Test the order of things
  */
 public abstract class ExampleJavaClass {
-
     ExampleJavaClass(){}
     ExampleJavaClass(int i){}
     public ExampleJavaClass(int i, String x){}
-
     public static int fact(int n)
     {
         if(n == 0)
@@ -18,7 +18,6 @@ public abstract class ExampleJavaClass {
         else
             return n * fact(n-1);
     }
-
     public static int ifElse(int n){
         if(n == 0) {
             return 1;
@@ -26,9 +25,6 @@ public abstract class ExampleJavaClass {
             return n * fact(n-1);
     }
     }
-
-
-
     /**
      * Just mammels
      */

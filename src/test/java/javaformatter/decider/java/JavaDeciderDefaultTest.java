@@ -183,12 +183,12 @@ public class JavaDeciderDefaultTest {
         lines.add("final     String             s;");
         lines.add("final String b = \"  \";");
         lines.add("final String c = \"  \\\"  \";");
-        lines.add("\"  \",");
-        lines.add("final String b = \"\"");
-        lines.add("doSomething('\"',     5)");
-        lines.add("// javadoc      => beast");
-        lines.add("/* javadoc      => beast");
-        lines.add("* javadoc      => beast");
+        lines.add("\"  \", //");
+        lines.add("final String b = \"\" //");
+        lines.add("doSomething('\"',     5) //");
+        lines.add("// javadoc      => beast //");
+        lines.add("/* javadoc      => beast //");
+        lines.add("* javadoc      => beast //");
 
         // when
         List<String> preprocessedLines = new JavaDeciderDefault().preProcessLines(lines);
@@ -197,12 +197,12 @@ public class JavaDeciderDefaultTest {
         assertThat(preprocessedLines.get(0), is("final String s;"));
         assertThat(preprocessedLines.get(1), is("final String b = \"  \";"));
         assertThat(preprocessedLines.get(2), is("final String c = \"  \\\"  \";"));
-        assertThat(preprocessedLines.get(3), is("\"  \","));
-        assertThat(preprocessedLines.get(4), is("final String b = \"\""));
-        assertThat(preprocessedLines.get(5), is("doSomething('\"', 5)"));
-        assertThat(preprocessedLines.get(6), is("// javadoc      => beast"));
-        assertThat(preprocessedLines.get(7), is("/* javadoc      => beast"));
-        assertThat(preprocessedLines.get(8), is("* javadoc      => beast"));
+        assertThat(preprocessedLines.get(3), is("\"  \", //"));
+        assertThat(preprocessedLines.get(4), is("final String b = \"\" //"));
+        assertThat(preprocessedLines.get(5), is("doSomething('\"', 5) //"));
+        assertThat(preprocessedLines.get(6), is("// javadoc      => beast //"));
+        assertThat(preprocessedLines.get(7), is("/* javadoc      => beast //"));
+        assertThat(preprocessedLines.get(8), is("* javadoc      => beast //"));
     }
 
     @Test
