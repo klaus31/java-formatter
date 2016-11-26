@@ -89,7 +89,7 @@ class JavaDeciderUtil {
 
     static boolean hasDoc(List<String> lines, final int lineNumber) {
         int i = lineNumber - 1;
-        return i >= 0 && (isAnnotation(lines.get(i))? hasDoc(lines, i): containsDoc(lines, i) && !containsDoc(lines, i + 1));
+        return i >= 0 && (isAnnotation(lines.get(i)) ? hasDoc(lines, i): containsDoc(lines, i) && !containsDoc(lines, i + 1));
     }
 
     static boolean containsDoc(String line) {
