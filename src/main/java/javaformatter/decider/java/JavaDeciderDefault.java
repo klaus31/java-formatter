@@ -54,7 +54,8 @@ public class JavaDeciderDefault extends JavaDecider {
             if (isEndOfStatement(line) || containsDoc(line) || line.trim().isEmpty()) {
                 String meltedLine = oneLinerBuilder.toString().trim();
                 if (!isAPureDocLine(meltedLine)) {
-                    meltedLine = withPartsInLineNotBeingAString(meltedLine, part -> findAndReplace(part, "([^a-zA-Z0-9])\\s+([^a-zA-Z0-9])", m -> m.group(1) + m.group(2)));
+                    meltedLine = withPartsInLineNotBeingAString(meltedLine, part -> part = part.replaceAll("\\s+", " "));
+                    meltedLine = withPartsInLineNotBeingAString(meltedLine, part -> findAndReplace(part, "([^a-zA-Z0-9])\\s([^a-zA-Z0-9])", m -> m.group(1) + m.group(2)));
                 }
                 result.add(meltedLine);
                 oneLinerBuilder = new StringBuilder();
@@ -191,7 +192,8 @@ public class JavaDeciderDefault extends JavaDecider {
 
             // quite same with -
             part = findAndReplace(part, "([^\\-]|^)\\-([^\\s=\\-\\);>\\d])", m -> m.group(1) + "- " + m.group(2));
-            part = findAndReplace(part, "([a-zA-Z\\d])\\-([a-zA-Z\\d])", m -> m.group(1) + "- " + m.group(2));
+            part = findAndReplace(part, "([a-zA-Z\\d])\\s?\\-([a-zA-Z\\d])", m -> m.group(1) + " - " + m.group(2));
+            part = findAndReplace(part, "return \\- ([\\d])", m -> "return -" + m.group(1));
 
             // quite same with *
             part = findAndReplace(part, "\\*([^\\s=;])", m -> "* " + m.group(1));
@@ -292,7 +294,8 @@ public class JavaDeciderDefault extends JavaDecider {
              * but not:
              * Foo<?> foo;
              */
-            part = findAndReplace(part, "([^\\s\\<])\\?([^\\s\\>])", m -> m.group(1) + " ? " + m.group(2));
+            part = findAndReplace(part, "([^\\s\\<])\\?", m -> m.group(1) + " ?");
+            part = findAndReplace(part, "\\?([^\\s\\>])", m -> "? " + m.group(1));
 
             /*
              * ":"             ==> " : "
@@ -326,6 +329,8 @@ public class JavaDeciderDefault extends JavaDecider {
             part = part.replaceAll("\\) \\}", ")}");
             part = part.replaceAll(" \\]", "]");
             part = part.replaceAll("\\[ ", "[");
+
+            part = part.replaceAll("\\s+", " ");
             return part;
         }).trim();
     }

@@ -20,7 +20,11 @@ public class FooBar {
     }
 
     public String foo() {
-        return 1 -2;
+        return 1 - 2;
+    }
+
+    public int bar() {
+        return -1;
     }
 
     public String foo() {

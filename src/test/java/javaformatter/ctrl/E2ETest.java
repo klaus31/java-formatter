@@ -21,6 +21,11 @@ public class E2ETest {
     }
 
     @Test
+    public void formatterShouldNotDoAlreadyKnownBugs() throws IOException {
+        doItWith("java", "debugging-stuff-input", "debugging-stuff-input-expected-output");
+    }
+
+    @Test
     public void formatterShouldOrderComponentsCorrectly() throws IOException {
 
         // 2. anschließend nach Punkten trennen, wenn bestimmte Bedingungen:

@@ -28,6 +28,10 @@ public class FooBar {
         2;
     }
 
+    public int    bar() {
+                return -1;
+    }
+
     public String foo() {
         if(foo)
         return 3;
