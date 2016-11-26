@@ -306,7 +306,8 @@ public class JavaDeciderDefault extends JavaDecider {
              * but not:
              * list.stream().filter(this::bar);
              */
-            part = findAndReplace(part, "([^\\s:])\\:([^\\s:])", m -> m.group(1) + " : " + m.group(2));
+            part = findAndReplace(part, "([^\\s:])\\:([^:])", m -> m.group(1) + " :" + m.group(2));
+            part = findAndReplace(part, "([^:])\\:([^\\s:])", m -> m.group(1) + ": " + m.group(2));
 
             /*
              * "}"             ==> "} "
