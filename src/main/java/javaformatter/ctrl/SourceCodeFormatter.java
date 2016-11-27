@@ -31,6 +31,7 @@ public class SourceCodeFormatter {
         lines = prepare(lines);
         lines = addBlankLines(lines);
         lines = addTabs(lines);
+        lines = decider.forceLineBreaks(lines);
         lines = decider.postProcessFormattedLines(lines);
         sourceCodeFile.setFormattedLines(lines);
     }

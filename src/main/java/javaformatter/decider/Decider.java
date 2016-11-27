@@ -43,4 +43,11 @@ public interface Decider {
     default List<String> postProcessFormattedLines(List<String> lines) {
         return lines.stream().map(line -> line.trim().isEmpty() ? "" : line).collect(toList());
     }
+
+    /**
+     * add line breaks after everything is formatted already.
+     *
+     * typically, you want to break lines being too long.
+     */
+    List<String> forceLineBreaks(List<String> lines);
 }

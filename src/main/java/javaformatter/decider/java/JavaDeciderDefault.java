@@ -96,4 +96,9 @@ public class JavaDeciderDefault extends JavaDecider {
     public List<String> postProcessFormattedLines(List<String> lines) {
         return lines.stream().map(line -> line.trim().isEmpty() ? "" : line).map(line -> line.trim().matches("^\\*.*") ? " " + line : line).collect(toList());
     }
+
+    @Override
+    public List<String> forceLineBreaks(List<String> lines) {
+        return lines; // TODO implement me
+    }
 }

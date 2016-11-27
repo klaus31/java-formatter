@@ -9,6 +9,7 @@ import static javax.swing.UIManager.get;
 
 abstract class JavaDecider implements Decider {
 
+    @Override
     public List<String> preProcessLines(List<String> lines) {
         lines = meltThingsTogetherInOneLine(lines);
         orderComponentsInFile(lines);
