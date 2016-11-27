@@ -46,6 +46,7 @@ class JavaDeciderForSpacesDefault {
         part = modifySpacesBeforeNotEqualSign(part);
 
         // TODO repair code smell
+
         // repair stuff
         part = part.replaceAll("; ;", ";;");
         part = part.replaceAll(" ;", ";");

@@ -2,7 +2,6 @@ package javaformatter.decider.java;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import static java.util.stream.Collectors.toList;
 import static javaformatter.decider.DeciderUtil.findAndReplace;
 import static javaformatter.decider.java.JavaDeciderUtil.*;
