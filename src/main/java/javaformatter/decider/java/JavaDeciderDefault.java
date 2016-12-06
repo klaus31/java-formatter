@@ -2,33 +2,22 @@ package javaformatter.decider.java;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import static java.util.stream.Collectors.toList;
-import static javaformatter.decider.DeciderUtil.findAndReplace;
 import static javaformatter.decider.java.JavaDeciderUtil.*;
 
 public class JavaDeciderDefault extends JavaDecider {
 
-    private final JavaDeciderForSpacesDefault javaDeciderForSpacesDefault;
-
-    public JavaDeciderDefault() {
-        this(new JavaDeciderForSpacesDefault());
-    }
-
-    public JavaDeciderDefault(JavaDeciderForSpacesDefault javaDeciderForSpacesDefault) {
-        this.javaDeciderForSpacesDefault = javaDeciderForSpacesDefault;
-    }
-
-    @Override
     public int tabChangeNextLine(String line) {
         return isBlockStart(line) && !isBlockClose(line) || isBlockCloseBeforeStartingNextBlock(line) ? 1 : 0;
     }
 
-    @Override
     public int tabChangeThisLine(String line) {
         return isBlockClose(line) && !isBlockStart(line) || isBlockCloseBeforeStartingNextBlock(line) ? -1 : 0;
     }
 
-    @Override
     public int blankLinesBefore(final List<String> lines, final int lineNumber) {
         if (isFirstLineOfDoc(lines, lineNumber)) return 1;
         boolean hasDoc = hasDoc(lines, lineNumber);
@@ -85,10 +74,273 @@ public class JavaDeciderDefault extends JavaDecider {
         return importA.toString().compareTo(importB.toString());
     }
 
-    @Override
     String putInSingleSpaces(String line) {
         if (JavaDeciderUtil.isAPureDocLine(line)) return line;
-        return withPartsInLineNotBeingAString(line, javaDeciderForSpacesDefault::modifySpacesInPartOfLine).trim();
+        return withPartsInLineNotBeingAString(line, part -> {
+
+            /*
+             * "<"             ==> "< "
+             *
+             * E.g.:
+             * if(a<b)         ==> if(a< b)
+             * for(;a<b;)      ==> for(;a< b;)
+             * boolean a=b<c;  ==> boolean a=b< c;
+             *
+             * do not change:
+             * List<String>
+             * a <= b
+             */
+            part = findAndReplace(part, "<([^=\\s>])", m -> "< " + m.group(1));
+            part = findAndReplace(part, "< ([A-Za-z0-9\\s,\\?]*)>", m -> "<" + m.group(1) + ">");
+
+            /*
+             * ">"                ==> "> "
+             *
+             * E.g.:
+             * if(a>b)            ==> if(a> b)
+             * for(;a>b;)         ==> for(;a> b;)
+             * foo(()->this::bar) ==> foo(()-> this::bar)
+             * List<String>a      ==> List<String> a
+             *
+             * do not change:
+             * new ArrayList<>()
+             */
+            part = findAndReplace(part, ">([^=\\s\\(])", m -> "> " + m.group(1));
+
+            /*
+             * "="     ==> "= "
+             *
+             * E.g.:
+             * a=b     ==> a= b
+             * a== b   ==> a== b
+             * a="b"   ==> a= "b"
+             */
+            part = findAndReplace(part, "=([^=\\s])", m -> "= " + m.group(1));
+            if (part.matches(".*=$")) part += " ";
+
+            /*
+             * ";"                 ==> "; "
+             *
+             * E.g.:
+             * for(i=0;i<7;i++)    ==> for(i=0; i<7; i++)
+             */
+            part = findAndReplace(part, ";([^\\s])", m -> "; " + m.group(1));
+
+            /*
+             * "<"             ==> " <"
+             *
+             * E.g.:
+             * if(a<b)         ==> if(a <b)
+             * for(;a<b;)      ==> for(;a <b;)
+             *
+             * do not change:
+             * new ArrayList<>()
+             * List<String>
+             * List<List<String>>
+             */
+            part = findAndReplace(part, "([^\\s])<", m -> m.group(1) + " <");
+            part = findAndReplace(part, " <([A-Za-z0-9\\s,\\?<>]+)>", m -> "<" + m.group(1).replaceAll("\\s", "") + ">");
+            part = part.replaceAll(" <>", "<>");
+            part = findAndReplace(part, ">>([a-z])", m -> ">> " + m.group(1));
+
+            /*
+             * ">"             ==> " >"
+             *
+             * E.g.:
+             * if(a>b)         ==> if(a >b)
+             * for(;a>b;)      ==> for(;a >b;)
+             *
+             * do not change:
+             * new ArrayList<>()
+             * () -> this.foo()
+             * List<String>
+             * List<List<String>>
+             */
+            part = findAndReplace(part, "([^\\s-<>\\?])>", m -> m.group(1) + " >");
+            part = findAndReplace(part, "<([A-Za-z0-9\\s,\\?<>]*) >", m -> "<" + m.group(1) + ">");
+
+            /*
+             * "->"      ==> " ->"
+             */
+            part = findAndReplace(part, "([^\\s])->", m -> m.group(1) + " ->");
+
+            /*
+             * "{"       ==> " {"
+             */
+            part = findAndReplace(part, "([^\\s])\\{", m -> m.group(1) + " {");
+
+            /*
+             * "="       ==> " ="
+             */
+            part = findAndReplace(part, "([^><=\\s-+\\*/%\\|\\&\\!])=", m -> m.group(1) + " =");
+
+            /*
+             * "+"       ==> "+ "
+             *
+             * E.g.:
+             * a+b       ==> a+ b
+             * "a"+"b"   ==> "a"+ "b"
+             *
+             * but not:
+             * a+=b
+             * a++;
+             * for(;;i++)
+             * foo(++i)
+             * int a = +34;
+             */
+            part = findAndReplace(part, "([^\\+]|^)\\+([^\\s=\\+\\);])", m -> m.group(1) + "+ " + m.group(2));
+
+            // quite same with -
+            part = findAndReplace(part, "([^\\-]|^)\\-([^\\s=\\-\\);>\\d])", m -> m.group(1) + "- " + m.group(2));
+            part = findAndReplace(part, "([a-zA-Z\\d])\\s?\\-([a-zA-Z\\d])", m -> m.group(1) + " - " + m.group(2));
+            part = findAndReplace(part, "return \\- ([\\d])", m -> "return -" + m.group(1));
+
+            // quite same with *
+            part = findAndReplace(part, "\\*([^\\s=;])", m -> "* " + m.group(1));
+
+            // quite same with /
+            part = findAndReplace(part, "/([^\\s=/])", m -> "/ " + m.group(1));
+
+            // quite same with %
+            part = findAndReplace(part, "%([^\\s=])", m -> "% " + m.group(1));
+
+            /*
+             * "+"       ==> " +"
+             *
+             * E.g.:
+             * a+b       ==> a +b
+             * "a"+"b"   ==> "a" +"b"
+             * a+=b      ==> a +=b
+             *
+             * but not:
+             * a++
+             */
+            part = findAndReplace(part, "([^\\s\\+])\\+([^\\+])", m -> m.group(1) + " +" + m.group(2));
+            part = findAndReplace(part, "^\\+", m -> " +");
+            part = findAndReplace(part, "\\+$", m -> "+ ");
+
+            // quite same with -
+            part = findAndReplace(part, "([^\\s\\-\\(\\)])\\-([^\\-])", m -> m.group(1) + " -" + m.group(2));
+            part = findAndReplace(part, "\\)\\-", m -> ") - ");
+
+            // quite same with *
+            part = findAndReplace(part, "([^\\s\\.])\\*", m -> m.group(1) + " *");
+
+            // quite same with /
+            part = findAndReplace(part, "([^\\s/])/", m -> m.group(1) + " /");
+            part = findAndReplace(part, "//([^\\s])", m -> "// " + m.group(1));
+
+            // quite same with %
+            part = findAndReplace(part, "([^\\s])%", m -> m.group(1) + " %");
+
+            /*
+             * "|"       ==> "| "
+             *
+             * E.g.:
+             * a||b       ==> a|| b
+             * a|b   ==> a| b
+             *
+             * but not:
+             * a|=b
+             */
+            part = findAndReplace(part, "\\|([^\\s=\\|])", m -> "| " + m.group(1));
+
+            // quite same with &
+            part = findAndReplace(part, "\\&([^\\s=\\&])", m -> "& " + m.group(1));
+
+            /*
+             * "|"       ==> " |"
+             *
+             * E.g.:
+             * a||b       ==> a ||b
+             * a|b   ==> a |b
+             * a |=b
+             */
+            part = findAndReplace(part, "([^\\s\\|])\\|", m -> m.group(1) + " |");
+
+            // quite same with &
+            part = findAndReplace(part, "([^\\s\\&])\\&", m -> m.group(1) + " &");
+
+            /*
+             * "if("     ==> "if ("
+             *
+             * E.g.:
+             * if(a>b)   ==> if (a>b)
+             *
+             * but not:
+             * gif(true)
+             */
+            part = findAndReplace(part, "^if\\(", m -> "if (");
+
+            // quite same with "for"
+            part = findAndReplace(part, "^for\\(", m -> "for (");
+
+            // quite same with "while"
+            part = findAndReplace(part, "^while\\(", m -> "while (");
+
+            // quite same with "catch"
+            part = findAndReplace(part, "catch\\(", m -> "catch (");
+
+            // quite same with "return"
+            part = findAndReplace(part, "return([^\\s])", m -> "return " + m.group(1));
+            part = findAndReplace(part, "return$", m -> "return ");
+
+            /*
+             * "?"             ==> " ? "
+             *
+             * E.g.:
+             * int a=b?c:d;   ==> int a=b ? c:d;
+             *
+             * but not:
+             * Foo<?> foo;
+             */
+            part = findAndReplace(part, "([^\\s\\<])\\?", m -> m.group(1) + " ?");
+            part = findAndReplace(part, "\\?([^\\s\\>])", m -> "? " + m.group(1));
+
+            /*
+             * ":"             ==> " : "
+             *
+             * E.g.:
+             * int a=b?c:d;   ==> int a=b?c : d;
+             *
+             * but not:
+             * list.stream().filter(this::bar);
+             */
+            part = findAndReplace(part, "([^\\s:])\\:([^:])", m -> m.group(1) + " :" + m.group(2));
+            part = findAndReplace(part, "([^:])\\:([^\\s:])", m -> m.group(1) + ": " + m.group(2));
+
+            /*
+             * "}"             ==> "} "
+             *
+             * E.g.:
+             * }else{      ==> } else{
+             *
+             * but not:
+             * }
+             */
+            part = findAndReplace(part, "\\}([^\\s])", m -> "} " + m.group(1));
+            part = findAndReplace(part, ",([^\\s])", m -> ", " + m.group(1));
+            part = findAndReplace(part, ",$", m -> ", ");
+            part = findAndReplace(part, "([^\\s])\\!=", m -> m.group(1) + " !=");
+
+            // repair stuff
+            part = part.replaceAll("; ;", ";;");
+            part = part.replaceAll(" ;", ";");
+            part = part.replaceAll("\\} \\)", "})");
+            part = part.replaceAll("\\) \\}", ")}");
+            part = part.replaceAll(" \\]", "]");
+            part = part.replaceAll("\\[ ", "[");
+            part = part.replaceAll("\\s+", " ");
+            return part;
+        }).trim();
+    }
+
+    private String findAndReplace(String haystack, String regex, Function<Matcher, String> exec) {
+        Matcher m = Pattern.compile(regex).matcher(haystack);
+        while (m.find()) {
+            haystack = haystack.replaceFirst(regex, exec.apply(m));
+        }
+        return haystack;
     }
 
     @Override
