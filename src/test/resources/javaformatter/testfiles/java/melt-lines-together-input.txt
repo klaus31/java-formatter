@@ -28,6 +28,13 @@ public class FooBar {
         2;
     }
 
+    public String leaveManualBreak() {
+        return Builder.create() //
+            .yo() //
+            .man() //
+            .build();
+    }
+
     public int    bar() {
                 return -1;
     }
