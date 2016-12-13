@@ -34,6 +34,11 @@ public class FooBar {
         return -1;
     }
 
+    public int calculatereturnCode() {
+        int returnCode = returnCode(2);
+        return returnCode;
+    }
+
     public String foo() {
         if (foo) return 3;
         else return 2;

@@ -114,7 +114,7 @@ class JavaDeciderForSpacesDefault {
     }
 
     private String modifySpacesAfterReturn(String part) {
-        part = findAndReplace(part, "return([^\\s])", m -> "return " + m.group(1));
+        part = findAndReplace(part, "return\\s+([^\\s])", m -> "return " + m.group(1));
         part = findAndReplace(part, "return$", m -> "return ");
         return part;
     }
