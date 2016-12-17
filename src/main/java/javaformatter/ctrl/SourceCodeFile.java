@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-class SourceCodeFile {
+public class SourceCodeFile {
 
     private final Path path;
 
@@ -14,11 +14,11 @@ class SourceCodeFile {
         this.path = path;
     }
 
-    List<String> readContentLines() throws IOException {
+    public List<String> readContentLines() throws IOException {
         return Files.readAllLines(path, StandardCharsets.UTF_8);
     }
 
-    Path getPath() {
+    public Path getPath() {
         return path;
     }
 

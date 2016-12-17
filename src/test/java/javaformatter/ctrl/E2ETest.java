@@ -15,32 +15,18 @@ import static org.junit.Assert.assertThat;
 public class E2ETest {
 
     @Test
-    @Ignore
-    public void formatterShouldMeltLinesCorrectly() throws IOException {
-        doItWith("java", "melt-lines-together-input", "melt-lines-together-expected-output");
-    }
-
-    @Test
-    @Ignore
-    public void formatterShouldNotDoAlreadyKnownBugs() throws IOException {
-        doItWith("java", "debugging-stuff-input", "debugging-stuff-input-expected-output");
-    }
-
-    @Test
-    @Ignore
     public void formatterShouldOrderComponentsCorrectly() throws IOException {
-        doItWith("java", "order-components-test-input", "order-components-test-expected-output");
+        doItWith("java", "example-class-1");
     }
 
-    private void doItWith(String language, String inputFileName, String expectedOutputFileName) throws IOException {
-
+    private void doItWith(String language, String fileNameKey) throws IOException {
         //given
+        String inputFileName = fileNameKey + "-input";String expectedOutputFileName = fileNameKey + "-expected-output";
         SourceCodeFile sourceCodeFile = new SourceCodeFile(calcPath(language, inputFileName));
-        SourceCodeFileFormatter formatter = new SourceCodeFileFormatter4JavaDefault();
+        SourceCodeFileFormatter formatter = new SourceCodeFileFormatter4JavaDefault(sourceCodeFile);
 
         // when
-        formatter.createOutputLines(sourceCodeFile.readContentLines());
-        List<String> actualOutputLines = formatter.createOutputLines(sourceCodeFile.readContentLines());
+        List<String> actualOutputLines = formatter.createOutputLines();
 
         //then
         List<String> expectedOutputLines = read("java", expectedOutputFileName);

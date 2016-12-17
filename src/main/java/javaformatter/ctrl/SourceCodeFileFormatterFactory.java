@@ -4,10 +4,10 @@ import javaformatter.java.SourceCodeFileFormatter4JavaDefault;
 import javaformatter.xml.SourceCodeFileFormatter4XmlDefault;
 
 class SourceCodeFileFormatterFactory {
-    public static SourceCodeFileFormatter get(KnownSourceFileType type) {
+    public static SourceCodeFileFormatter get(KnownSourceFileType type, SourceCodeFile file) {
         switch (type) {
             case JAVA:
-                return new SourceCodeFileFormatter4JavaDefault();
+                return new SourceCodeFileFormatter4JavaDefault(file);
             case XML:
                 return new SourceCodeFileFormatter4XmlDefault();
             default:

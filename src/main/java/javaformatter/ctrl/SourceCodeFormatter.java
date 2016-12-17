@@ -46,14 +46,7 @@ public class SourceCodeFormatter {
     }
 
     private static List<String> createOutputLines(SourceCodeFile sourceCodeFile, KnownSourceFileType type) {
-        SourceCodeFileFormatter formatter = SourceCodeFileFormatterFactory.get(type);
-        try {
-            return formatter.createOutputLines(sourceCodeFile.readContentLines());
-        } catch (IOException e) {
-            System.err.println("Error while read");
-            e.printStackTrace();
-            System.exit(1612170732);
-            return null;
-        }
+        SourceCodeFileFormatter formatter = SourceCodeFileFormatterFactory.get(type, sourceCodeFile);
+            return formatter.createOutputLines();
     }
 }
