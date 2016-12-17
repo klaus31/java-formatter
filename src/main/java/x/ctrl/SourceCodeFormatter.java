@@ -1,4 +1,4 @@
-package javaformatter.ctrl;
+package x.ctrl;
 
 import org.apache.commons.io.FileUtils;
 
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static java.util.stream.Collectors.joining;
-import static javaformatter.ctrl.KnownSourceFileType.JAVA;
+import static x.ctrl.KnownSourceFileType.JAVA;
 
 public class SourceCodeFormatter {
 

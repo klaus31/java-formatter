@@ -1,14 +1,15 @@
-package javaformatter.ctrl;
+package x;
 
-import javaformatter.java.SourceCodeFileFormatter4JavaDefault;
-import org.junit.Ignore;
+import x.ctrl.SourceCodeFile;
+import x.ctrl.SourceCodeFileFormatter;
+import x.java.SourceCodeFileFormatter4JavaDefault;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.List;
 
-import static javaformatter.TestFileReadIn.calcPath;
-import static javaformatter.TestFileReadIn.read;
+import static x.TestFileReadIn.calcPath;
+import static x.TestFileReadIn.read;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 

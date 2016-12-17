@@ -1,4 +1,4 @@
-package javaformatter.ctrl;
+package x.ctrl;
 
 enum KnownSourceFileType {
     JAVA("java"), XML("xml");

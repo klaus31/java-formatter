@@ -1,4 +1,4 @@
-package javaformatter.testfiles.java;
+package x.testfiles.java;
 
 import static foo.*;
 

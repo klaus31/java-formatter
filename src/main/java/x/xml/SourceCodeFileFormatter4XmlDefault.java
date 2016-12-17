@@ -1,6 +1,6 @@
-package javaformatter.xml;
+package x.xml;
 
-import javaformatter.ctrl.SourceCodeFileFormatter;
+import x.ctrl.SourceCodeFileFormatter;
 
 import java.util.List;
 

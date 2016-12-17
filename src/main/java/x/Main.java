@@ -1,15 +1,9 @@
-package javaformatter;
+package x;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import javaformatter.ctrl.SourceCodeFormatter;
-import org.antlr.v4.runtime.ANTLRFileStream;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.LexerInterpreter;
-import org.antlr.v4.runtime.ParserInterpreter;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.tool.Grammar;
+import x.ctrl.SourceCodeFormatter;
 
 public class Main {
 

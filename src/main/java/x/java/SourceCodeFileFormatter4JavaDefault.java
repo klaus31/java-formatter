@@ -1,7 +1,7 @@
-package javaformatter.java;
+package x.java;
 
-import javaformatter.ctrl.SourceCodeFile;
-import javaformatter.ctrl.SourceCodeFileFormatter;
+import x.ctrl.SourceCodeFile;
+import x.ctrl.SourceCodeFileFormatter;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.LexerInterpreter;

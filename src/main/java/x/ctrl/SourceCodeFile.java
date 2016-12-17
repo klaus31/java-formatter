@@ -1,4 +1,4 @@
-package javaformatter.ctrl;
+package x.ctrl;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

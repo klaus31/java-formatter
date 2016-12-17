@@ -1,7 +1,7 @@
-package javaformatter.ctrl;
+package x.ctrl;
 
-import javaformatter.java.SourceCodeFileFormatter4JavaDefault;
-import javaformatter.xml.SourceCodeFileFormatter4XmlDefault;
+import x.java.SourceCodeFileFormatter4JavaDefault;
+import x.xml.SourceCodeFileFormatter4XmlDefault;
 
 class SourceCodeFileFormatterFactory {
     public static SourceCodeFileFormatter get(KnownSourceFileType type, SourceCodeFile file) {

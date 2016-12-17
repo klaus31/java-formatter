@@ -11,7 +11,7 @@ def getDate() {
 
 jar {
   manifest { 
-    attributes "Main-Class": "javaformatter.Main"
+    attributes "Main-Class": "x.Main"
   }  
   from {
     configurations.compile.collect {

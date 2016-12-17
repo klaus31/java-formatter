@@ -1,4 +1,4 @@
-package javaformatter.ctrl;
+package x.ctrl;
 
 import java.util.List;
 
