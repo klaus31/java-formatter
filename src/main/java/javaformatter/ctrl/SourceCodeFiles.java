@@ -9,26 +9,26 @@ import java.util.function.Consumer;
 
 class SourceCodeFiles {
 
-    private final Iterator<Path> javaFiles;
+    private final Iterator<Path> files;
 
-    private final String suffix;
+    private final KnownSourceFileType type;
 
-    SourceCodeFiles(Path directory, String suffix) throws IOException {
+    SourceCodeFiles(Path directory, KnownSourceFileType type) throws IOException {
         if (!directory.toFile().isDirectory()) {
             System.err.println(directory + " is not a directory");
             System.exit(1610121905);
         }
-        this.javaFiles = Files.find(directory, 999, this::isFileOfInterest).iterator();
-        this.suffix = suffix;
+        this.files = Files.find(directory, 999, this::isFileOfInterest).iterator();
+        this.type = type;
     }
 
     private boolean isFileOfInterest(Path path, BasicFileAttributes basicFileAttributes) {
-        return basicFileAttributes.isRegularFile() && path.getFileName().toString().matches("^.+\\." + suffix + "$") && path.toFile().canRead() && path.toFile().canWrite();
+        return basicFileAttributes.isRegularFile() && path.getFileName().toString().matches("^.+\\." + type.getSuffix() + "$") && path.toFile().canRead() && path.toFile().canWrite();
     }
 
     void forEach(Consumer<SourceCodeFile> consumer) throws IOException {
-        while (javaFiles.hasNext()) {
-            consumer.accept(new SourceCodeFile(javaFiles.next()));
+        while (files.hasNext()) {
+            consumer.accept(new SourceCodeFile(files.next()));
         }
     }
 }

@@ -1,108 +1,59 @@
 package javaformatter.ctrl;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import javaformatter.decider.Decider;
-import javaformatter.decider.DeciderSimpleFactory;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
+
+import static java.util.stream.Collectors.joining;
+import static javaformatter.ctrl.KnownSourceFileType.JAVA;
 
 public class SourceCodeFormatter {
 
-    private final SourceCodeFile sourceCodeFile;
+    private final Path inputDirectory;
 
-    private final Decider decider;
-
-    SourceCodeFormatter(SourceCodeFile sourceCodeFile) {
-        this(sourceCodeFile, DeciderSimpleFactory.create(sourceCodeFile.getSuffix()));
+    public SourceCodeFormatter(Path inputDirectory) {
+        this.inputDirectory = inputDirectory;
     }
 
-    SourceCodeFormatter(SourceCodeFile sourceCodeFile, Decider decider) {
-        this.sourceCodeFile = sourceCodeFile;
-        this.decider = decider;
+    public static CharSequence getEol() {
+        return System.getProperty("line.separator");
     }
 
-    void format() throws IOException {
-        List<String> lines = sourceCodeFile.readContentLines();
-        lines = prepare(lines);
-        lines = addBlankLines(lines);
-        lines = addTabs(lines);
-        lines = decider.forceLineBreaks(lines);
-        lines = decider.postProcessFormattedLines(lines);
-        sourceCodeFile.setFormattedLines(lines);
+    public void start() throws IOException {
+        new SourceCodeFiles(inputDirectory, JAVA).forEach(process(JAVA));
     }
 
-    private List<String> prepare(List<String> lines) {
-        List<String> resultLines = new ArrayList<>();
-        for (int lineNumber = 0; lineNumber < lines.size(); lineNumber++) {
-            if (!decider.killLine(lines, lineNumber)) {
-                resultLines.add(lines.get(lineNumber));
-            }
-        }
-        return decider.preProcessLines(resultLines);
-    }
-
-    private List<String> addTabs(List<String> lines) {
-        List<String> resultLines = new ArrayList<>();
-        int tabLevel = 0;
-        for (String line : lines) {
-            tabLevel += decider.tabChangeThisLine(line);
-            resultLines.add(StringUtils.repeat(decider.getIndent(), tabLevel) + line);
-            tabLevel += decider.tabChangeNextLine(line);
-        }
-        return resultLines;
-    }
-
-    private List<String> addBlankLines(List<String> lines) {
-        List<String> resultLines = new ArrayList<>();
-        for (int i = 0; i < lines.size(); i++) {
-            String line = lines.get(i);
-
-            // add blank lines before
-            int blankLinesBefore = decider.blankLinesBefore(lines, i);
-            int bi = 0;
-            while (bi++ < blankLinesBefore) resultLines.add("");
-            resultLines.add(line);
-
-            // add blank lines after
-            int blankLinesAfter = decider.blankLinesAfter(lines, i);
-            int ai = 0;
-            while (ai++ < blankLinesAfter) resultLines.add("");
-        }
-        return resultLines;
-    }
-
-    void withSource(Consumer<String> consumer) {
-        consumer.accept(sourceCodeFile.getFormattedLines().stream().collect(Collectors.joining(decider.getEol())));
-    }
-
-    // XXX omg XXX XXX XXX
-    public static void start(Path inputDirectory) throws IOException {
-        new SourceCodeFiles(inputDirectory, "java").forEach(process());
-    }
-
-    private static Consumer<SourceCodeFile> process() {
+    private static Consumer<SourceCodeFile> process(KnownSourceFileType type) {
         return sourceCodeFile -> {
             System.out.println("next file to process: " + sourceCodeFile.getPath());
-            SourceCodeFormatter formatter = new SourceCodeFormatter(sourceCodeFile);
-            try {
-                formatter.format();
-                formatter.withSource(formattedSource -> {
-                    try {
-                        FileUtils.writeStringToFile(sourceCodeFile.getPath().toFile(), formattedSource);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        System.exit(1610142042);
-                    }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.exit(1610122032);
-            }
+            List<String> outputLines = createOutputLines(sourceCodeFile, type);
+            write(sourceCodeFile, outputLines);
         };
+    }
+
+    private static void write(SourceCodeFile sourceCodeFile, List<String> outputLines) {
+        try {
+            FileUtils.writeStringToFile(sourceCodeFile.getPath().toFile(), outputLines.stream().collect(joining(getEol())));
+        } catch (IOException e) {
+            System.err.println("Error while write");
+            e.printStackTrace();
+            System.exit(1610142042);
+        }
+
+    }
+
+    private static List<String> createOutputLines(SourceCodeFile sourceCodeFile, KnownSourceFileType type) {
+        SourceCodeFileFormatter formatter = SourceCodeFileFormatterFactory.get(type);
+        try {
+            return formatter.createOutputLines(sourceCodeFile.readContentLines());
+        } catch (IOException e) {
+            System.err.println("Error while read");
+            e.printStackTrace();
+            System.exit(1612170732);
+            return null;
+        }
     }
 }

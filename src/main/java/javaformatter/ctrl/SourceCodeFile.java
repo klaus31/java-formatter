@@ -6,11 +6,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-public class SourceCodeFile {
+class SourceCodeFile {
 
     private final Path path;
-
-    private List<String> formattedLines;
 
     SourceCodeFile(Path path) {
         this.path = path;
@@ -24,15 +22,4 @@ public class SourceCodeFile {
         return path;
     }
 
-    void setFormattedLines(List<String> formattedLines) {
-        this.formattedLines = formattedLines;
-    }
-
-    List<String> getFormattedLines() {
-        return formattedLines;
-    }
-
-    String getSuffix() {
-        return path.toString().replaceAll(".*\\.", "");
-    }
 }
