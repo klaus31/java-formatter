@@ -38,9 +38,7 @@ public class SourceCodeFormatter {
         try {
             FileUtils.writeStringToFile(sourceCodeFile.getPath().toFile(), outputLines.stream().collect(joining(getEol())));
         } catch (IOException e) {
-            System.err.println("Error while write");
-            e.printStackTrace();
-            System.exit(1610142042);
+            CrashStrategy.reportToUserAndExit(e, 1610142042, "Error while writing");
         }
 
     }

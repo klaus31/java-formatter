@@ -1,5 +1,6 @@
 package x.java;
 
+import x.ctrl.CrashStrategy;
 import x.ctrl.SourceCodeFile;
 import x.ctrl.SourceCodeFileFormatter;
 import org.antlr.v4.runtime.ANTLRFileStream;
@@ -25,9 +26,7 @@ public class SourceCodeFileFormatter4JavaDefault implements SourceCodeFileFormat
             parse();
             return file.readContentLines();
         } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("1612171741");
-            System.exit(1612171741);
+            CrashStrategy.reportToUserAndExit(e, 1612171741);
             return null;
         }
     }
@@ -39,9 +38,7 @@ public class SourceCodeFileFormatter4JavaDefault implements SourceCodeFileFormat
         try {
             lexEngine = g.createLexerInterpreter(new ANTLRFileStream(file.getPath().toAbsolutePath().toString()));
         } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("1612171648");
-            System.exit(1612171648);
+            CrashStrategy.reportToUserAndExit(e, 1612171648);
         }
         CommonTokenStream tokens = new CommonTokenStream(lexEngine);
         ParserInterpreter parser = g.createParserInterpreter(tokens);
