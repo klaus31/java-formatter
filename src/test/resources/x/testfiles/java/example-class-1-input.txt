@@ -2,6 +2,9 @@ package x.testfiles.java;
 
 import static foo.*;
 
+/**
+ * Yeah, Yeah, Yeah
+ */
 public class DebugThings {
 
     public void foo() {

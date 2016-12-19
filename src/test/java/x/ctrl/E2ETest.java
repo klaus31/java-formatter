@@ -1,4 +1,4 @@
-package x;
+package x.ctrl;
 
 import x.ctrl.SourceCodeFile;
 import x.ctrl.SourceCodeFileFormatter;
