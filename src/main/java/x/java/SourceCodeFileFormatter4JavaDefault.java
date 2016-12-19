@@ -39,103 +39,13 @@ public class SourceCodeFileFormatter4JavaDefault implements SourceCodeFileFormat
             System.exit(1612171648);
         }
         CommonTokenStream tokens = new CommonTokenStream(lexEngine);
-
-        // variante eigener Parser
-//        FreakyCoolParserInterpreter parser = FreakyCoolParserInterpreter.create(g, tokens);
-//        return parser.createFormattedSource();
-
-        // Variante: Use default parser mit Tree
         ParserInterpreter parser = g.createParserInterpreter(tokens);
         ParseTree t = parser.parse(g.getRule("compilationUnit").index);
-//        System.out.println(getText(t, parser));
-
         ParseTreeWalker walker = new ParseTreeWalker();
         JavaFormatter formatter = new JavaFormatter();
         ParseTreeListener listener = new MyParseTreeListener(formatter, parser.getRuleNames());
         walker.walk(listener, t);
+        formatter.getCode().forEach(System.out::println);
         return formatter.getCode();
-
-//        System.out.println("parse tree: " + t.toStringTree(parser));
-//
-//
-//        CommonTokenStream cts = new CommonTokenStream(lexEngine, 2);
-//        List<Token> tokenz = new ArrayList<Token>();
-//        while (cts.LA(1) != EOF) {
-//            tokenz.add(cts.LT(1));
-//            cts.consume();
-//        }
-//        System.out.println(tokenz);
-
-//        return parser.createFormattedSource();
-//        return Arrays.asList("nie");
-    }
-
-    private String getText(ParseTree context, ParserInterpreter parser) {
-        StringBuilder builder = new StringBuilder();
-        if (context.getChildCount() == 0) {
-            builder.append(Trees.toStringTree(context, parser) + ": " + context.getText() + "\n");
-//            builder.append(((TerminalNodeImpl)context).getPayload() + ": " + context.getText() + "\n");
-//            builder.append(((TerminalNodeImpl)context).getSourceInterval() + ": " + context.getText() + "\n");
-//            builder.append(((InterpreterRuleContext)context.getParent()).getRuleIndex() + ": " + context.getText() + "\n");
-//            builder.append(((InterpreterRuleContext)context.getParent()).getRuleContext().getText() + ": " + context.getText() + "\n");
-//            builder.append(((InterpreterRuleContext)context.getParent()).getParent().getClass() + ": " + context.getText() + "\n");
-            builder.append("--------------------\n");
-        } else {
-            for (int i = 0; i < context.getChildCount(); ++i) {
-                System.out.println("> " + Trees.toStringTree(context, parser) + context.getText() + "\n");
-                builder.append(getText(context.getChild(i), parser));
-            }
-        }
-        return builder.toString();
-    }
-
-
-}
-
-class FreakyCoolParserInterpreter extends ParserInterpreter {
-
-    private final TokenStream input;
-    private final Grammar grammar;
-
-    public FreakyCoolParserInterpreter(Grammar grammar, String grammarFileName, Vocabulary vocabulary, Collection<String> ruleNames, ATN atn, TokenStream input) {
-        super(grammarFileName, vocabulary, ruleNames, atn, input);
-        this.input = input;
-        this.grammar = grammar;
-    }
-
-    static FreakyCoolParserInterpreter create(Grammar g, TokenStream tokenStream) {
-        if (g.isLexer()) {
-            throw new IllegalStateException("A parser interpreter can only be created for a parser or combined grammar.");
-        } else {
-            char[] serializedAtn = ATNSerializer.getSerializedAsChars(g.atn);
-            ATN deserialized = (new ATNDeserializer()).deserialize(serializedAtn);
-            return new FreakyCoolParserInterpreter(g, g.fileName, g.getVocabulary(), Arrays.asList(g.getRuleNames()), deserialized, tokenStream);
-        }
-    }
-
-    public List<String> createFormattedSource() {
-        List<String> result = new ArrayList<>();
-        TokenSource tokenSource = input.getTokenSource();
-        GrammarParserInterpreter grammarParserInterpreter = grammar.createGrammarParserInterpreter(input);
-//        System.out.println(grammarParserInterpreter.getRuleNames());
-//        System.out.println(grammarParserInterpreter.getTokenTypeMap());
-        Vocabulary vocabulary = grammarParserInterpreter.getVocabulary();
-
-        Token token = tokenSource.nextToken();
-        while (token.getType() != Token.EOF) {
-            String symbolicName = vocabulary.getSymbolicName(token.getType());
-            System.out.println(symbolicName + ": " + token.getText());
-            token = tokenSource.nextToken();
-        }
-
-        //        System.out.println(grammarParserInterpreter.parse());
-
-//        int size = input.size();
-//        for(int i = 0; i<size; i++) {
-//            Token token = input.get(i);
-//            System.out.println("Line: " + token.getLine() + ", Text: " + token.getText());
-//        }
-        result.add("hallo, ne");
-        return result;
     }
 }

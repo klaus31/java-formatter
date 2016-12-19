@@ -1,6 +1,9 @@
 package x.testfiles.java;
 
+import foo.bar.Hello;
 import static foo.*;
+import static foo.Bar.MANNO;
+/* pig */ import static foo.Bar.MANNO;
 
 /**
  * Yeah, Yeah, Yeah
