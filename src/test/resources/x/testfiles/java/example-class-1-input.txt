@@ -10,4 +10,8 @@ public class DebugThings {
     public void foo() {
     return isPackageDeclaration(lines.get(lineNumber)) && lineNumber < lines.size() -  1 && !isFirstLineOfDoc(lines, lineNumber + 1) && !isClassDeclaration(lines, lineNumber + 1) && !isInterfaceDeclaration(lines, lineNumber + 1) && !isEnumDeclaration(lines, lineNumber + 1)? 1: 0;
     }
+
+    public static Map<Object, String super Foo> bar(int i) {
+        return 1 > -9;
+    }
 }
