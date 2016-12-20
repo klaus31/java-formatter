@@ -1,28 +1,31 @@
-package x;
+package x.ctrl;
 
-import x.ctrl.SourceCodeFile;
-import x.ctrl.SourceCodeFileFormatter;
-import x.java.SourceCodeFileFormatter4JavaDefault;
 import org.junit.Test;
+import x.java.SourceCodeFileFormatter4JavaDefault;
 
 import java.io.IOException;
 import java.util.List;
 
-import static x.TestFileReadIn.calcPath;
-import static x.TestFileReadIn.read;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static x.TestFileReadIn.calcPath;
+import static x.TestFileReadIn.read;
 
-public class E2ETest {
+    @ClassAnnotationA
+@WebFault(faultBean = "", messageName = "")
+public class A1 {
 
-    @Test
-    public void formatterShouldOrderComponentsCorrectly() throws IOException {
-        doItWith("java", "example-class-1");
+    @AnnotationA
+    @AnnotationB
+    @AnnotationC("a1612201340")
+    public void a2() throws A3 {
+        a4("a5", "a6");
     }
 
-    private void doItWith(String language, String fileNameKey) throws IOException {
+    private void a7(String a8, String a9) throws A10 {
         //given
-        String inputFileName = fileNameKey + "-input";String expectedOutputFileName = fileNameKey + "-expected-output";
+        String inputFileName = fileNameKey + "-input";
+        String expectedOutputFileName = fileNameKey + "-expected-output";
         SourceCodeFile sourceCodeFile = new SourceCodeFile(calcPath(language, inputFileName));
         SourceCodeFileFormatter formatter = new SourceCodeFileFormatter4JavaDefault(sourceCodeFile);
 
@@ -35,5 +38,5 @@ public class E2ETest {
             String debugMessage = expectedOutputFileName + " at line " + (i + 1) + ":\nActual: \"" + actualOutputLines.get(i) + "\"\nShould: \"" + expectedOutputLines.get(i);
             assertThat(debugMessage, actualOutputLines.get(i), is(expectedOutputLines.get(i)));
         }
-    };
+    }
 }
