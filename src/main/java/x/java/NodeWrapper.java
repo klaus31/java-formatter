@@ -1,5 +1,6 @@
 package x.java;
 
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import x.format.CodeLinePart;
@@ -122,5 +123,9 @@ public class NodeWrapper implements CodeLinePart {
     @Override
     public String toSourceString() {
         return node.getText();
+    }
+
+    public boolean isEOF() {
+        return node.getSymbol().getType() == Token.EOF;
     }
 }

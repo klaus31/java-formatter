@@ -3,6 +3,7 @@ package x.java;
 import x.format.CodeLine;
 import x.format.FormattedSourceCode;
 import x.format.Formatter;
+import x.format.SourceCodeSnippet;
 
 class JavaFormatter implements Formatter {
 
@@ -20,8 +21,21 @@ class JavaFormatter implements Formatter {
             currentLine.addWhitspace();
         } else if (node.requiresEOL()) {
             formattedSourceCode.addLine(currentLine);
-            currentLine= new CodeLine();
+            currentLine = new CodeLine();
+        } else if (node.isEOF()) {
+            formattedSourceCode.calculateIndent(this::calculateIndentChange);
         }
+    }
+
+    private Integer calculateIndentChange(SourceCodeSnippet snippet) {
+        int result = 0;
+        if (snippet.getPreviousCodeLine().isPresent() && snippet.getPreviousCodeLine().get().getLastElement().toSourceString().equals("{")) {
+            result++;
+        }
+        if (snippet.getCurrentCodeLine().getFirstElement().toSourceString().equals("}")) {
+            result--;
+        }
+        return result;
     }
 
     @Override

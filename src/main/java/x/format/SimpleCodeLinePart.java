@@ -14,10 +14,6 @@ public class SimpleCodeLinePart implements CodeLinePart {
         return new SimpleCodeLinePart(" ");
     }
 
-    public static SimpleCodeLinePart produceTab(int length) {
-        return new SimpleCodeLinePart(StringUtils.repeat(' ', length));
-    }
-
     @Override
     public String toSourceString() {
         return linePart;

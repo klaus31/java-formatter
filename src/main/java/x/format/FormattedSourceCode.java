@@ -3,6 +3,7 @@ package x.format;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import static java.util.stream.Collectors.toList;
 
@@ -24,7 +25,12 @@ public class FormattedSourceCode {
         return lines.stream().map(CodeLine::getLine).collect(toList());
     }
 
-    public int countLines() {
-        return lines.size();
+    public void calculateIndent(Function<SourceCodeSnippet, Integer> calculateIndentSize) {
+        int totalIndentSize = 0;
+        for (int i = 0; i < lines.size(); i++) {
+            CodeLine previousCodeLine = i == 0 ? null : lines.get(i - 1);
+            totalIndentSize += calculateIndentSize.apply(new SourceCodeSnippet(lines.get(i), previousCodeLine));
+            lines.get(i).setIndentSize(totalIndentSize);
+        }
     }
 }

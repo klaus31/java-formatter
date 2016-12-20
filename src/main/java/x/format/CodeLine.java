@@ -1,19 +1,31 @@
 package x.format;
 
-import x.java.NodeWrapper;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
+import static x.java.JavaConfig.INTENT;
 
 public class CodeLine {
 
     private final List<CodeLinePart> lineParts;
+    private int indentSize = 0;
 
     public CodeLine() {
         lineParts = new ArrayList<>();
+    }
+
+    public CodeLinePart getLastElement() {
+        return lineParts.get(lineParts.size()-1);
+    }
+    public CodeLinePart getFirstElement() {
+        return lineParts.get(0);
+    }
+
+    public void setIndentSize(int indentSize) {
+        this.indentSize = indentSize;
     }
 
     public void addWhitspace() {
@@ -24,19 +36,7 @@ public class CodeLine {
         lineParts.add(linePart);
     }
 
-    public boolean isEmpty() {
-        return lineParts.isEmpty();
-    }
-
-    public int countParts() {
-        return lineParts.size();
-    }
-
     String getLine() {
-        return lineParts.stream().map(part -> part.toSourceString()).collect(joining());
-    }
-
-    void clear() {
-        lineParts.clear();
+        return StringUtils.repeat(INTENT, indentSize) + lineParts.stream().map(part -> part.toSourceString()).collect(joining());
     }
 }
