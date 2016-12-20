@@ -1,4 +1,4 @@
-package x.java;
+package x.format;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,15 +8,15 @@ public class RulePath {
 
     private final List<String> rulePathNames;
 
-    RulePath() {
+    protected RulePath() {
         this.rulePathNames = new ArrayList<>();
     }
 
-    void enter(String ruleName) {
+    public void enter(String ruleName) {
         rulePathNames.add(ruleName);
     }
 
-    void exit(String ruleName) {
+    public void exit(String ruleName) {
         rulePathNames.remove(rulePathNames.size()-1);
     }
 
@@ -24,11 +24,11 @@ public class RulePath {
         return rulePathNames.get(rulePathNames.size()-1);
     }
 
-    boolean isCurrentRuleA(String ruleName) {
+    public boolean isCurrentRuleA(String ruleName) {
         return ruleName.equals(getCurrentRule());
     }
 
-    boolean isPartOf(String ruleName) {
+    public boolean isPartOf(String ruleName) {
         return rulePathNames.contains(ruleName);
     }
 

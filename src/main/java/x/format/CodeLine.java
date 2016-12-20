@@ -4,21 +4,24 @@ import x.java.NodeWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.joining;
 
 public class CodeLine {
 
-    private final List<String> lineParts;
+    private final List<CodeLinePart> lineParts;
 
     public CodeLine() {
         lineParts = new ArrayList<>();
     }
 
     public void addWhitspace() {
-        lineParts.add(" ");
+        lineParts.add(SimpleCodeLinePart.produceWhitespace());
     }
 
-    public void addPart(NodeWrapper node) {
-        lineParts.add(node.getNode().toString());
+    public void addPart(CodeLinePart linePart) {
+        lineParts.add(linePart);
     }
 
     public boolean isEmpty() {
@@ -30,7 +33,7 @@ public class CodeLine {
     }
 
     String getLine() {
-        return String.join("", lineParts);
+        return lineParts.stream().map(part -> part.toSourceString()).collect(joining());
     }
 
     void clear() {
