@@ -1,6 +1,6 @@
-package x.java;
+package x.format;
 
-import org.antlr.v4.runtime.tree.TerminalNode;
+import x.java.NodeWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,18 +8,17 @@ import java.util.List;
 public class CodeLine {
 
     private final List<String> lineParts;
-    private final RulePath rulePath;
 
-    public CodeLine(RulePath rulePath) {
-        this.rulePath = rulePath;
+    public CodeLine() {
         lineParts = new ArrayList<>();
     }
 
     public void addWhitspace() {
-lineParts.add(" ");
+        lineParts.add(" ");
     }
-    public void addPart(TerminalNode node) {
-        lineParts.add(node.toString());
+
+    public void addPart(NodeWrapper node) {
+        lineParts.add(node.getNode().toString());
     }
 
     public boolean isEmpty() {
@@ -30,7 +29,11 @@ lineParts.add(" ");
         return lineParts.size();
     }
 
-    public String getLine() {
+    String getLine() {
         return String.join("", lineParts);
+    }
+
+    void clear() {
+        lineParts.clear();
     }
 }

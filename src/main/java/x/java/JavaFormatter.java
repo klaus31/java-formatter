@@ -1,68 +1,34 @@
 package x.java;
 
-import org.antlr.v4.runtime.tree.TerminalNode;
+import x.format.CodeLine;
+import x.format.FormattedSourceCode;
+import x.format.Formatter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import static java.util.stream.Collectors.toList;
+class JavaFormatter implements Formatter {
 
-public class JavaFormatter {
-    private final List<CodeLine> result;
+    private final FormattedSourceCode formattedSourceCode;
     private CodeLine currentLine;
+    private Map<String, NodeWrapper> storage = new HashMap<>();
 
-    public JavaFormatter() {
-        result = new ArrayList<>();
+    JavaFormatter() {
+        formattedSourceCode = new FormattedSourceCode();
+        currentLine = new CodeLine();
     }
 
-    public List<String> getCode() {
-        return result.stream().map(CodeLine::getLine).collect(toList());
-    }
-
-    public void add(TerminalNode node, RulePath rulePath) {
-        if (rulePath.isPartOfPackage()) {
-            currentLine.addPart(node);
-            if (currentLine.countParts() == 1) {
-                currentLine.addWhitspace();
-            }
-        } else if (rulePath.isPartOfImport()) {
-            currentLine.addPart(node);
-            if (currentLine.countParts() == 1 || currentLine.countParts() == 3 && rulePath.isPartOfStaticImport()) {
-                currentLine.addWhitspace();
-            }
-        } else {
-            // TODO throw unkonwn rule exception
-            currentLine.addPart(node);
+    void add(NodeWrapper node) {
+        currentLine.addPart(node);
+        if (node.requiresWhitespace()) {
+            currentLine.addWhitspace();
+        } else if (node.requiresEOL()) {
+            formattedSourceCode.addLine(currentLine);
+            currentLine= new CodeLine();
         }
     }
 
-    public void endRule(RulePath rulePath) {
-        String currentRule = rulePath.getCurrentRule();
-        if (finishLineOnEndRule(rulePath)) {
-            result.add(currentLine);
-            // TODO remove
-            // System.out.println("End " + currentRule + ": " + currentLine.toString());
-        }
-    }
-
-    private boolean finishLineOnEndRule(RulePath rulePath) {
-        return rulePath.isCurrentRuleAnImport() ||
-                rulePath.isCurrentRuleAPackage() ||
-                rulePath.isCurrentRuleACompilationUnit();
-    }
-
-    private boolean startANewLine(RulePath rulePath) {
-        return rulePath.isCurrentRuleAnImport() ||
-                rulePath.isCurrentRuleAPackage() ||
-                rulePath.isCurrentRuleACompilationUnit();
-    }
-
-    public void startNewRule(RulePath rulePath) {
-        String currentRule = rulePath.getCurrentRule();
-        if(startANewLine(rulePath)) {
-        currentLine = new CodeLine(rulePath);
-        }
-        // TODO remove
-        // System.out.println("Start: " + currentRule);
+    @Override
+    public FormattedSourceCode getFormattedSourceCode() {
+        return formattedSourceCode;
     }
 }

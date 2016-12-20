@@ -24,11 +24,11 @@ public class RulePath {
         return rulePathNames.get(rulePathNames.size()-1);
     }
 
-    private boolean isCurrentRuleA(String ruleName) {
+    boolean isCurrentRuleA(String ruleName) {
         return ruleName.equals(getCurrentRule());
     }
 
-    private boolean contains(String ruleName) {
+    boolean isPartOf(String ruleName) {
         return rulePathNames.contains(ruleName);
     }
 
@@ -37,31 +37,15 @@ public class RulePath {
         return rulePathNames.toString();
     }
 
-    public boolean containsOneOf(String ... ruleNames) {
+    public boolean isPartOfAnyOf(String ... ruleNames) {
         return Stream.of(ruleNames).anyMatch(rulePathNames::contains);
     }
 
-    public boolean isPartOfPackage() {
-        return contains("packageDeclaration");
+    public boolean isCurrentRuleOneOf(String ... ruleNames) {
+        return Stream.of(ruleNames).anyMatch(this::isCurrentRuleA);
     }
 
-    public boolean isPartOfImport() {
-        return contains("importDeclaration");
-    }
-
-    public boolean isPartOfStaticImport() {
-        return containsOneOf("staticImportOnDemandDeclaration", "singleStaticImportDeclaration", "singleTypeImportDeclaration");
-    }
-
-    public boolean isCurrentRuleAnImport() {
-        return isCurrentRuleA("importDeclaration");
-    }
-
-    public boolean isCurrentRuleAPackage() {
-        return isCurrentRuleA("packageDeclaration");
-    }
-
-    public boolean isCurrentRuleACompilationUnit() {
-        return isCurrentRuleA("compilationUnit");
+    public int stepsAwayFrom(String ruleName) {
+        return rulePathNames.size() - 1 - rulePathNames.lastIndexOf(ruleName);
     }
 }

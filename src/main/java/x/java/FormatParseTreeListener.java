@@ -5,12 +5,13 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-class MyParseTreeListener implements ParseTreeListener {
+class FormatParseTreeListener implements ParseTreeListener {
+
     private final JavaFormatter formatter;
     private final String[] ruleNames;
     private final RulePath rulePath;
 
-    public MyParseTreeListener(JavaFormatter formatter, String[] ruleNames) {
+    public FormatParseTreeListener(JavaFormatter formatter, String[] ruleNames) {
         this.formatter = formatter;
         this.ruleNames = ruleNames;
         this.rulePath = new RulePath();
@@ -18,18 +19,17 @@ class MyParseTreeListener implements ParseTreeListener {
 
     @Override
     public void visitTerminal(TerminalNode node) {
-        formatter.add(node, rulePath);
+        formatter.add(new NodeWrapper(node, rulePath));
     }
 
     @Override
     public void visitErrorNode(ErrorNode node) {
-        formatter.add(node, rulePath);
+        System.err.println("TODO: Error node " + node + " / " + ruleNames);
     }
 
     @Override
     public void enterEveryRule(ParserRuleContext ctx) {
         rulePath.enter(getRuleName(ctx));
-        formatter.startNewRule(rulePath);
     }
 
     private String getRuleName(ParserRuleContext ctx) {
@@ -38,7 +38,6 @@ class MyParseTreeListener implements ParseTreeListener {
 
     @Override
     public void exitEveryRule(ParserRuleContext ctx) {
-        formatter.endRule(rulePath);
         rulePath.exit(getRuleName(ctx));
     }
 }

@@ -1,22 +1,14 @@
 package x.java;
 
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.atn.ATN;
-import org.antlr.v4.runtime.atn.ATNDeserializer;
-import org.antlr.v4.runtime.atn.ATNSerializer;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.antlr.v4.runtime.tree.Trees;
 import org.antlr.v4.tool.Grammar;
-import org.antlr.v4.tool.GrammarParserInterpreter;
 import x.ctrl.SourceCodeFile;
 import x.ctrl.SourceCodeFileFormatter;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 public class SourceCodeFileFormatter4JavaDefault implements SourceCodeFileFormatter {
@@ -43,9 +35,9 @@ public class SourceCodeFileFormatter4JavaDefault implements SourceCodeFileFormat
         ParseTree t = parser.parse(g.getRule("compilationUnit").index);
         ParseTreeWalker walker = new ParseTreeWalker();
         JavaFormatter formatter = new JavaFormatter();
-        ParseTreeListener listener = new MyParseTreeListener(formatter, parser.getRuleNames());
+        ParseTreeListener listener = new FormatParseTreeListener(formatter, parser.getRuleNames());
         walker.walk(listener, t);
-        formatter.getCode().forEach(System.out::println);
-        return formatter.getCode();
+        formatter.getFormattedSourceCode().getCode().forEach(System.out::println);
+        return formatter.getFormattedSourceCode().getCode();
     }
 }
