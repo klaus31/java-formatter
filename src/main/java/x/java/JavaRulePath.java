@@ -39,4 +39,8 @@ class JavaRulePath extends RulePath {
     boolean isPackageDeclaration() {
         return isPartOf("packageDeclaration");
     }
+
+    boolean isFieldDeclaration() {
+        return isPartOf("fieldDeclaration");
+    }
 }

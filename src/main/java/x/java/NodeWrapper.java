@@ -6,6 +6,10 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import x.format.CodeLinePart;
 
 import java.util.Arrays;
+import java.util.Optional;
+import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class NodeWrapper implements CodeLinePart {
 
@@ -22,6 +26,7 @@ public class NodeWrapper implements CodeLinePart {
     // FIXME ... until we have inner classes.
     // FIXME ... Solution: Write specific methods to be sure that we are really in a line being a ... and use something like xpath
     boolean requiresWhitespace() {
+        System.out.println("WS: " + node.getText() + ": " + javaRulePath.toString());
         if (isSemicolon()) {
             return javaRulePath.isInsideForStatement();
         } else if (javaRulePath.isPackageDeclaration()) {
@@ -32,9 +37,17 @@ public class NodeWrapper implements CodeLinePart {
             return javaRulePath.isCurrentRuleA("elementValuePairList");
         } else if (javaRulePath.isMethodInvocation()) {
             return javaRulePath.isCurrentRuleA("argumentList");
+        } else if (javaRulePath.isFieldDeclaration()) {
+            if (javaRulePath.matchesCurrentRuleAnyOf("unannClassType_lfno_unannClassOrInterfaceType", "classType_lfno_classOrInterfaceType")) {
+                return !nextNodeHasTextAnyOf("<", ">", ";");
+            }
+            return javaRulePath.isPartOfAnyOf("expression") ||
+                    javaRulePath.matchesCurrentRuleAnyOf(
+                            "fieldModifier",
+                            "variableDeclaratorId");
         } else if (javaRulePath.isLocalVariableDeclaration()) {
             return javaRulePath.isPartOfAnyOf("expression", "unannType") ||
-                    javaRulePath.isCurrentRuleOneOf(
+                    javaRulePath.matchesCurrentRuleAnyOf(
                             "unannClassType_lfno_unannClassOrInterfaceType",
                             "variableDeclaratorId",
                             "variableDeclarator",
@@ -42,14 +55,14 @@ public class NodeWrapper implements CodeLinePart {
                             "classInstanceCreationExpression_lfno_primary");
         } else if (javaRulePath.isMethodDeclaration()) {
             return javaRulePath.isCurrentRuleA("methodDeclarator") && node.getText().equals(")") ||
-                    javaRulePath.isCurrentRuleOneOf(
+                    javaRulePath.matchesCurrentRuleAnyOf(
                             "methodModifier",
                             "throws_",
                             "classType",
                             "result",
                             "unannClassType_lfno_unannClassOrInterfaceType");
         } else if (javaRulePath.isClassDeclaration()) {
-            return javaRulePath.isCurrentRuleOneOf(
+            return javaRulePath.matchesCurrentRuleAnyOf(
                     "unannClassType_lfno_unannClassOrInterfaceType",
                     "classModifier",
                     "classType",
@@ -57,6 +70,44 @@ public class NodeWrapper implements CodeLinePart {
         } else {
             return false;
         }
+    }
+
+    private boolean nextNodeMatches(Predicate<ParseTree> predicate) {
+        Optional<ParseTree> rightSibling = getRightSibling();
+        if( !rightSibling.isPresent()) {
+            return false;
+        }
+        ParseTree firstLeaf = rightSibling.get();
+        while(firstLeaf.getChildCount() > 0) {
+            firstLeaf = firstLeaf.getChild(0);
+        }
+        return predicate.test(firstLeaf);
+    }
+
+    private boolean nextNodeHasTextAnyOf(String ... nodeTexts) {
+        return nextNodeMatches(node -> Arrays.asList(nodeTexts).contains(node.getText()));
+    }
+
+    private int getNodeIndex() {
+        if (node == null || node.getParent() == null) {
+            return -1;
+        }
+        ParseTree parent = node.getParent();
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            if (parent.getChild(i) == node) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private Optional<ParseTree> getRightSibling() {
+        int index = getNodeIndex();
+        ParseTree parent = node.getParent();
+        if (index < 0 || index >= parent.getChildCount() - 1) {
+            return Optional.empty();
+        }
+        return Optional.of(parent.getChild(index + 1));
     }
 
     private boolean isWordStatic() {
