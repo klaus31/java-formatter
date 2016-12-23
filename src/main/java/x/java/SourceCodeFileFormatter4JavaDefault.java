@@ -39,6 +39,8 @@ public class SourceCodeFileFormatter4JavaDefault implements SourceCodeFileFormat
         JavaFormatter formatter = new JavaFormatter();
         ParseTreeListener listener = new FormatParseTreeListener(formatter, parser.getRuleNames());
         walker.walk(listener, t);
+        // FIXME delete me
+        formatter.getFormattedSourceCode().getCode().forEach(System.out::println);
         return formatter.getFormattedSourceCode().getCode();
     }
 }

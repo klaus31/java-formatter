@@ -1,30 +1,25 @@
 package x.java;
 
-import x.format.CodeLine;
-import x.format.FormattedSourceCode;
-import x.format.Formatter;
-import x.format.SourceCodeSnippet;
+import x.format.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 class JavaFormatter implements Formatter {
 
     private final FormattedSourceCode formattedSourceCode;
+    private List<NodeWrapper> cache;
     private CodeLine currentLine;
 
     JavaFormatter() {
+        cache = new ArrayList<>();
         formattedSourceCode = new FormattedSourceCode();
         currentLine = new CodeLine();
     }
 
     void add(NodeWrapper node) {
-        currentLine.addPart(node);
-        if (node.requiresWhitespace()) {
-            currentLine.addWhitspace();
-        } else if (node.requiresEOL()) {
-            formattedSourceCode.addLine(currentLine);
-            currentLine = new CodeLine();
-        } else if (node.isEOF()) {
-            formattedSourceCode.calculateIndent(this::calculateIndentChange);
-        }
+        cache.add(node);
     }
 
     private Integer calculateIndentChange(SourceCodeSnippet snippet) {
@@ -41,5 +36,31 @@ class JavaFormatter implements Formatter {
     @Override
     public FormattedSourceCode getFormattedSourceCode() {
         return formattedSourceCode;
+    }
+
+    public void exitRule(JavaRulePath rulePath) {
+        if (isRelevant(rulePath)) {
+            String part = cache.stream().map(node -> node.toSourceString()).collect(Collectors.joining(" "));
+            currentLine.addPart(new SimpleCodeLinePart(part));
+            if (requiresEOL()) {
+                formattedSourceCode.addLine(currentLine);
+                currentLine = new CodeLine();
+            }
+            cache = new ArrayList<>();
+            if (rulePath.isCurrentRuleA("compilationUnit")) {
+                formattedSourceCode.addLine(currentLine);
+                currentLine = new CodeLine();
+                formattedSourceCode.calculateIndent(this::calculateIndentChange);
+            }
+        }
+        System.out.println(rulePath.toString() + " " + isRelevant(rulePath));
+    }
+
+    private boolean isRelevant(JavaRulePath rulePath) {
+        return rulePath.matchesCurrentRuleAnyOf("annotation", "packageDeclaration", "importDeclaration", "compilationUnit");
+    }
+
+    public boolean requiresEOL() {
+        return cache.get(cache.size() - 1).requiresEOL();
     }
 }

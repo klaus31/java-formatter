@@ -40,6 +40,7 @@ class FormatParseTreeListener implements ParseTreeListener {
 
     @Override
     public void exitEveryRule(ParserRuleContext ctx) {
+        formatter.exitRule(javaRulePath);
         javaRulePath.exit(getRuleName(ctx));
     }
 }

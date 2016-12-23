@@ -6,7 +6,7 @@ public class SimpleCodeLinePart implements CodeLinePart {
 
     private final String linePart;
 
-    private SimpleCodeLinePart(String linePart) {
+    public SimpleCodeLinePart(String linePart) {
         this.linePart = linePart;
     }
 
