@@ -3,15 +3,14 @@ package x.java;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import x.format.CodeLinePart;
+import x.format.CodeSnippet;
+import x.format.RulePath;
 
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class NodeWrapper implements CodeLinePart {
+public class NodeWrapper {
 
     private final JavaRulePath javaRulePath;
     private final TerminalNode node;
@@ -171,12 +170,15 @@ public class NodeWrapper implements CodeLinePart {
         return node.getSymbol().getType() == 63;
     }
 
-    @Override
     public String toSourceString() {
         return node.getText();
     }
 
     public boolean isEOF() {
         return node.getSymbol().getType() == Token.EOF;
+    }
+
+    public boolean matches(Predicate<RulePath> predicate) {
+        return predicate.test(javaRulePath);
     }
 }

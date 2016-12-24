@@ -1,36 +1,33 @@
 package x.format;
 
+import x.java.JavaConfig;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 public class FormattedSourceCode {
 
-    private final List<CodeLine> lines;
+    private final List<CodeSnippet> snippets;
 
     private Map<Object, Object> code;
 
     public FormattedSourceCode() {
-        this.lines = new ArrayList<>();
+        this.snippets = new ArrayList<>();
     }
 
-    public void addLine(CodeLine line) {
-        lines.add(line);
+    public void add(CodeSnippet snippet) {
+        snippets.add(snippet);
     }
 
-    public List<String> getCode() {
-        return lines.stream().map(CodeLine::getLine).collect(toList());
-    }
-
-    public void calculateIndent(Function<SourceCodeSnippet, Integer> calculateIndentSize) {
-        int totalIndentSize = 0;
-        for (int i = 0; i < lines.size(); i++) {
-            CodeLine previousCodeLine = i == 0 ? null : lines.get(i - 1);
-            totalIndentSize += calculateIndentSize.apply(new SourceCodeSnippet(lines.get(i), previousCodeLine));
-            lines.get(i).setIndentSize(totalIndentSize);
-        }
+    public List<String> getCode(String eol) {
+        String aVeryLongString = snippets.stream().map(CodeSnippet::toSourceString).collect(joining());
+        return Arrays.asList(aVeryLongString.split(eol));
     }
 }

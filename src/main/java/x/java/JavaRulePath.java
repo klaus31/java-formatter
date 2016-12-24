@@ -2,45 +2,45 @@ package x.java;
 
 import x.format.RulePath;
 
-class JavaRulePath extends RulePath {
+public class JavaRulePath extends RulePath {
 
     JavaRulePath() {
         super();
     }
 
-    boolean isInsideForStatement() {
+    public boolean isInsideForStatement() {
         return isCurrentRuleA("basicForStatement");
     }
 
-    boolean isClassDeclaration() {
+    public boolean isClassDeclaration() {
         return isPartOf("classDeclaration");
     }
 
-    boolean isMethodDeclaration() {
+    public boolean isMethodDeclaration() {
         return isPartOf("methodDeclaration");
     }
 
-    boolean isLocalVariableDeclaration() {
+    public boolean isLocalVariableDeclaration() {
         return isPartOf("localVariableDeclaration");
     }
 
-    boolean isMethodInvocation() {
+    public boolean isMethodInvocation() {
         return isPartOf("methodInvocation");
     }
 
-    boolean isAnnotation() {
+    public boolean isAnnotation() {
         return isPartOf("annotation");
     }
 
-    boolean isImportDeclaration() {
+    public boolean isImportDeclaration() {
         return isPartOf("importDeclaration");
     }
 
-    boolean isPackageDeclaration() {
+    public boolean isPackageDeclaration() {
         return isPartOf("packageDeclaration");
     }
 
-    boolean isFieldDeclaration() {
+    public boolean isFieldDeclaration() {
         return isPartOf("fieldDeclaration");
     }
 }

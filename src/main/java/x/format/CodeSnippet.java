@@ -1,5 +1,5 @@
 package x.format;
 
-public interface CodeLinePart {
+public interface CodeSnippet {
     String toSourceString();
 }
