@@ -6,6 +6,8 @@ import x.java.NodeWrapper;
 
 import java.util.Arrays;
 
+import static java.util.Arrays.asList;
+
 public class FieldDeclaration extends SimpleNodesJavaCodeSnippet {
 
     @Override
@@ -24,12 +26,21 @@ public class FieldDeclaration extends SimpleNodesJavaCodeSnippet {
     }
 
     private boolean requiresWhitespaceAfter(NodeWrapper node) {
-        if (node.toSourceString().matches(";")) {
+        if (asList(";","(").contains(node.toSourceString())) {
             return false;
         }
+        if (asList("new").contains(node.toSourceString())) {
+            return true;
+        }
         ParseTree nextNode = node.calculateNext();
+        if(asList(";",")").contains(nextNode.getText())) {
+            return false;
+        }
+        if(")".equals(node.toSourceString())) {
+            return !asList(".").contains(nextNode.getText());
+        }
         if (node.matchesRulePath("unannClassType_lfno_unannClassOrInterfaceType")) {
-            if (Arrays.asList("<", ",", ">").contains(nextNode.getText())) {
+            if (asList("<", ",", ">").contains(nextNode.getText())) {
                 return false;
             } else if (node.toSourceString().equals(",")) {
                 return true;
@@ -42,7 +53,7 @@ public class FieldDeclaration extends SimpleNodesJavaCodeSnippet {
         if (node.matchesRulePath("classInstanceCreationExpression_lfno_primary")) {
             return false; // expecting diamond operator
         }
-        return !nextNode.getText().equals(";");
+        return true;
     }
 
 }

@@ -30,12 +30,12 @@ final List<String> q201612201919;
 final static List<String> r201612201919;
 static final List<String> s201612201919;
 List<?> t201612201919;
-Map<String, String> u201612201919 = newHashMap<>(7);
-final List<String> v201612201919 = newHashMap<>(7);
-final static List<String> w201612201919 = newHashMap<>(7);
-static final List<String> x201612201919 = newHashMap<>(7);
-List<?> y201612201919 = newHashMap<>(7);
-String str = ( 5 - 1 < 6 ) ? "hi" : ho;
+Map<String, String> u201612201919 = new HashMap<>(7);
+final List<String> v201612201919 = new HashMap<>(7);
+final static List<String> w201612201919 = new HashMap<>(7);
+static final List<String> x201612201919 = new HashMap<>(7);
+List<?> y201612201919 = new HashMap<>(7);
+String str = (5 - 1 < 6) ? "hi" : ho;
 List<Foo<Bar>, Bar<Foo<?>>> plump;
 @ AnnotationA @ AnnotationB @ AnnotationC ( "a1612201340" ) public void a2 ( ) throws A3 { a4 ( "a5" , "a6" ) ; }
 private void a7 ( String a8 , String a9 ) throws A10 { String inputFileName = fileNameKey + "-input" ; String expectedOutputFileName = fileNameKey + "-expected-output" ; SourceCodeFile sourceCodeFile = new SourceCodeFile ( calcPath ( language , inputFileName ) ) ; SourceCodeFileFormatter formatter = new SourceCodeFileFormatter4JavaDefault ( sourceCodeFile ) ; List < String > actualOutputLines = formatter . createOutputLines ( ) ; List < String > expectedOutputLines = read ( "java" , expectedOutputFileName ) ; for ( int i = 0 ; i < expectedOutputLines . size ( ) ; i ++ ) { String debugMessage = expectedOutputFileName + " at line " + ( i + 1 ) + ":\nActual: \"" + actualOutputLines . get ( i ) + "\"\nShould: \"" + expectedOutputLines . get ( i ) ; assertThat ( debugMessage , actualOutputLines . get ( i ) , is ( expectedOutputLines . get ( i ) ) ) ; }}}
