@@ -11,6 +11,7 @@ class JavaFormatter implements Formatter {
     }
 
     void add(NodeWrapper node) {
+        if(!node.isEOF())
         compilationUnit.add(node);
     }
 
@@ -28,7 +29,5 @@ class JavaFormatter implements Formatter {
     }
 
     public void exitRule(JavaRulePath javaRulePath) {
-        if(javaRulePath.isCurrentRuleA("compilationUnit")) {
-        }
     }
 }

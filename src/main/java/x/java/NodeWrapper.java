@@ -3,10 +3,9 @@ package x.java;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import x.format.CodeSnippet;
+import org.apache.commons.lang3.StringUtils;
 import x.format.RulePath;
 
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -20,75 +19,43 @@ public class NodeWrapper {
         this.node = node;
     }
 
-    // FIXME some rules are part of other rules as well (e.g. localVariableDeclaration is part of a classDeclaration) ...
-    // FIXME ... because of the given order of if ... else lines here this is fine ...
-    // FIXME ... until we have inner classes.
-    // FIXME ... Solution: Write specific methods to be sure that we are really in a line being a ... and use something like xpath
-    boolean requiresWhitespace() {
-        System.out.println("WS: " + node.getText() + ": " + javaRulePath.toString());
-        if (isSemicolon()) {
-            return javaRulePath.isInsideForStatement();
-        } else if (javaRulePath.isPackageDeclaration()) {
-            return isWordPackage();
-        } else if (javaRulePath.isImportDeclaration()) {
-            return isWordImport() || isWordStatic();
-        } else if (javaRulePath.isAnnotation()) {
-            return javaRulePath.isCurrentRuleA("elementValuePairList");
-        } else if (javaRulePath.isMethodInvocation()) {
-            return javaRulePath.isCurrentRuleA("argumentList");
-        } else if (javaRulePath.isFieldDeclaration()) {
-            if (javaRulePath.matchesCurrentRuleAnyOf("unannClassType_lfno_unannClassOrInterfaceType", "classType_lfno_classOrInterfaceType")) {
-                return !nextNodeHasTextAnyOf("<", ">", ";");
+    public ParseTree calculateNext() {
+        int nodeIndex = getNodeIndex();
+        ParseTree parent = node.getParent();
+        if(nodeIndex == parent.getChildCount() - 1) {
+            // last child at this level
+            while(parent != null && isLastNodeInLevel(parent)) {
+                parent = parent.getParent();
             }
-            return javaRulePath.isPartOfAnyOf("expression") ||
-                    javaRulePath.matchesCurrentRuleAnyOf(
-                            "fieldModifier",
-                            "variableDeclaratorId");
-        } else if (javaRulePath.isLocalVariableDeclaration()) {
-            return javaRulePath.isPartOfAnyOf("expression", "unannType") ||
-                    javaRulePath.matchesCurrentRuleAnyOf(
-                            "unannClassType_lfno_unannClassOrInterfaceType",
-                            "variableDeclaratorId",
-                            "variableDeclarator",
-                            "expressionName",
-                            "classInstanceCreationExpression_lfno_primary");
-        } else if (javaRulePath.isMethodDeclaration()) {
-            return javaRulePath.isCurrentRuleA("methodDeclarator") && node.getText().equals(")") ||
-                    javaRulePath.matchesCurrentRuleAnyOf(
-                            "methodModifier",
-                            "throws_",
-                            "classType",
-                            "result",
-                            "unannClassType_lfno_unannClassOrInterfaceType");
-        } else if (javaRulePath.isClassDeclaration()) {
-            return javaRulePath.matchesCurrentRuleAnyOf(
-                    "unannClassType_lfno_unannClassOrInterfaceType",
-                    "classModifier",
-                    "classType",
-                    "normalClassDeclaration");
+            if(parent == null) {
+                return null;
+            } else {
+                ParseTree candidate = parent.getParent().getChild(getNodeIndex(parent) + 1);
+                return getVeryFirstLeafOf(candidate);
+            }
         } else {
-            return false;
+            return getVeryFirstLeafOf(parent.getChild(nodeIndex+1));
         }
     }
 
-    private boolean nextNodeMatches(Predicate<ParseTree> predicate) {
-        Optional<ParseTree> rightSibling = getRightSibling();
-        if( !rightSibling.isPresent()) {
-            return false;
-        }
-        ParseTree firstLeaf = rightSibling.get();
-        while(firstLeaf.getChildCount() > 0) {
-            firstLeaf = firstLeaf.getChild(0);
-        }
-        return predicate.test(firstLeaf);
+    private ParseTree getVeryFirstLeafOf(ParseTree node) {
+        if(node.getChildCount() == 0) return node;
+        else return getVeryFirstLeafOf(node.getChild(0));
     }
 
-    private boolean nextNodeHasTextAnyOf(String ... nodeTexts) {
-        return nextNodeMatches(node -> Arrays.asList(nodeTexts).contains(node.getText()));
+    private boolean isLastNodeInLevel(ParseTree node) {
+        return isRoot(node) || getNodeIndex(node) == node.getParent().getChildCount()-1;
+    }
+
+    private boolean isRoot(ParseTree node) {
+        return node.getParent() == null;
     }
 
     private int getNodeIndex() {
-        if (node == null || node.getParent() == null) {
+        return getNodeIndex(node);
+    }
+    private int getNodeIndex(ParseTree node) {
+        if (node == null || isRoot(node)) {
             return -1;
         }
         ParseTree parent = node.getParent();
@@ -100,7 +67,7 @@ public class NodeWrapper {
         return -1;
     }
 
-    private Optional<ParseTree> getRightSibling() {
+    private Optional<ParseTree> getRightSibling(ParseTree node) {
         int index = getNodeIndex();
         ParseTree parent = node.getParent();
         if (index < 0 || index >= parent.getChildCount() - 1) {
@@ -121,19 +88,11 @@ public class NodeWrapper {
         return node.getText().equals("package");
     }
 
-    boolean requiresEOL() {
-        if (isEndOfAnnotation()) {
-            return true;
-        }
-        return isSemicolon() && !javaRulePath.isInsideForStatement() ||
-                Arrays.asList("{", "}").contains(node.getText());
-    }
-
     private boolean isEndOfAnnotation() {
         return isEndOf("annotation");
     }
 
-    private boolean isEndOf(String ruleName) {
+    public boolean isEndOf(String ruleName) {
         if (javaRulePath.isPartOf(ruleName)) {
             ParseTree nodeRuleStarts = getParentNodeWhereRuleStarts(ruleName);
             ParseTree lastChild = getVeryLastChildOf(nodeRuleStarts);
@@ -178,7 +137,16 @@ public class NodeWrapper {
         return node.getSymbol().getType() == Token.EOF;
     }
 
-    public boolean matches(Predicate<RulePath> predicate) {
+    public boolean matchesRulePath(Predicate<RulePath> predicate) {
         return predicate.test(javaRulePath);
+    }
+
+    public boolean matchesRulePath(String... ruleNames) {
+        return javaRulePath.matches(ruleNames);
+    }
+
+    @Override
+    public String toString() {
+        return StringUtils.rightPad(toSourceString(),20) + ": "+javaRulePath.toString();
     }
 }

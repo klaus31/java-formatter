@@ -12,6 +12,10 @@ public class RulePath {
         this.rulePathNames = new ArrayList<>();
     }
 
+    protected List<String> getRulePathNames() {
+        return rulePathNames;
+    }
+
     public void enter(String ruleName) {
         rulePathNames.add(ruleName);
     }
@@ -47,5 +51,18 @@ public class RulePath {
 
     public int stepsAwayFrom(String ruleName) {
         return rulePathNames.size() - 1 - rulePathNames.lastIndexOf(ruleName);
+    }
+
+    public boolean matches(String ... ruleNames) {
+        int index = -1;
+        for (String ruleName : ruleNames) {
+            int currentIndex = rulePathNames.indexOf(ruleName);
+            if(currentIndex < 0 || currentIndex <= index) {
+                return false;
+            } else {
+                index = currentIndex;
+            }
+        }
+        return true;
     }
 }

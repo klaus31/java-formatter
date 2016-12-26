@@ -40,6 +40,8 @@ public class A1 {
     final static List<String> w201612201919 = new HashMap<>(7);
     static final List<String> x201612201919 = new HashMap<>(7);
     List<?> y201612201919 = new HashMap<>(7);
+    String str = (5-1<6)?"hi":ho;
+    List<Foo<Bar>,Bar<Foo<?>>> plump;
 
     @AnnotationA
     @AnnotationB

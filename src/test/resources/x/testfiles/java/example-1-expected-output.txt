@@ -10,47 +10,32 @@ import static x.TestFileReadIn.read;
 @ClassAnnotationA
 @WebFault(faultBean="", messageName="")
 public class A1 {
-    private List<String> a201612201919;
-    private final List<String> b201612201919;
-    private final static List<String> c201612201919;
-    private static final List<String> d201612201919;
-    private List<?> e201612201919;
-    protected List<String> f201612201919;
-    protected final List<String> g201612201919;
-    protected final static List<String> h201612201919;
-    protected static final List<String> i201612201919;
-    protected List<?> j201612201919;
-    public Map<String, String> k201612201919;
-    public final List<String> l201612201919;
-    public final static List<String> m201612201919;
-    public static final List<String> n201612201919;
-    public List<?> o201612201919;
-    Map<String, String> p201612201919;
-    final List<String> q201612201919;
-    final static List<String> r201612201919;
-    static final List<String> s201612201919;
-    List<?> t201612201919;
-    Map<String, String> u201612201919 = new HashMap<>(7);
-    final List<String> v201612201919 = new HashMap<>(7);
-    final static List<String> w201612201919 = new HashMap<>(7);
-    static final List<String> x201612201919 = new HashMap<>(7);
-    List<?> y201612201919 = new HashMap<>(7);
-    @AnnotationA
-    @AnnotationB
-    @AnnotationC("a1612201340")
-    public void a2() throws A3 {
-        a4("a5", "a6");
-    }
-    private void a7(String a8,String a9) throws A10 {
-        String inputFileName = fileNameKey + "-input" ;
-        String expectedOutputFileName = fileNameKey + "-expected-output" ;
-        SourceCodeFile sourceCodeFile = new SourceCodeFile ( calcPath ( language , inputFileName ) ) ;
-        SourceCodeFileFormatter formatter = new SourceCodeFileFormatter4JavaDefault ( sourceCodeFile ) ;
-        List < String > actualOutputLines = formatter . createOutputLines ( ) ;
-        List < String > expectedOutputLines = read ( "java" , expectedOutputFileName ) ;
-        for(int i = 0 ; i<expectedOutputLines.size(); i++){
-            String debugMessage = expectedOutputFileName + " at line " + ( i + 1 ) + ":\nActual: \"" + actualOutputLines . get ( i ) + "\"\nShould: \"" + expectedOutputLines . get ( i ) ;
-            assertThat(debugMessage, actualOutputLines.get(i), is(expectedOutputLines.get(i)));
-        }
-    }
-}
+private List<String> a201612201919;
+private final List<String> b201612201919;
+private final static List<String> c201612201919;
+private static final List<String> d201612201919;
+private List<?> e201612201919;
+protected List<String> f201612201919;
+protected final List<String> g201612201919;
+protected final static List<String> h201612201919;
+protected static final List<String> i201612201919;
+protected List<?> j201612201919;
+public Map<String, String> k201612201919;
+public final List<String> l201612201919;
+public final static List<String> m201612201919;
+public static final List<String> n201612201919;
+public List<?> o201612201919;
+Map<String, String> p201612201919;
+final List<String> q201612201919;
+final static List<String> r201612201919;
+static final List<String> s201612201919;
+List<?> t201612201919;
+Map<String, String> u201612201919 = newHashMap<>(7);
+final List<String> v201612201919 = newHashMap<>(7);
+final static List<String> w201612201919 = newHashMap<>(7);
+static final List<String> x201612201919 = newHashMap<>(7);
+List<?> y201612201919 = newHashMap<>(7);
+String str = ( 5 - 1 < 6 ) ? "hi" : ho;
+List<Foo<Bar>, Bar<Foo<?>>> plump;
+@ AnnotationA @ AnnotationB @ AnnotationC ( "a1612201340" ) public void a2 ( ) throws A3 { a4 ( "a5" , "a6" ) ; }
+private void a7 ( String a8 , String a9 ) throws A10 { String inputFileName = fileNameKey + "-input" ; String expectedOutputFileName = fileNameKey + "-expected-output" ; SourceCodeFile sourceCodeFile = new SourceCodeFile ( calcPath ( language , inputFileName ) ) ; SourceCodeFileFormatter formatter = new SourceCodeFileFormatter4JavaDefault ( sourceCodeFile ) ; List < String > actualOutputLines = formatter . createOutputLines ( ) ; List < String > expectedOutputLines = read ( "java" , expectedOutputFileName ) ; for ( int i = 0 ; i < expectedOutputLines . size ( ) ; i ++ ) { String debugMessage = expectedOutputFileName + " at line " + ( i + 1 ) + ":\nActual: \"" + actualOutputLines . get ( i ) + "\"\nShould: \"" + expectedOutputLines . get ( i ) ; assertThat ( debugMessage , actualOutputLines . get ( i ) , is ( expectedOutputLines . get ( i ) ) ) ; }}}

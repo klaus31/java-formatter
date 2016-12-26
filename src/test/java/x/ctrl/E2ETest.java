@@ -19,7 +19,7 @@ public class E2ETest {
     }
 
     private void doItWith(String language, String fileNameKey) throws IOException {
-        //given
+        // given
         String inputFileName = fileNameKey + "-input";
         String expectedOutputFileName = fileNameKey + "-expected-output";
         SourceCodeFile sourceCodeFile = new SourceCodeFile(calcPath(language, inputFileName));

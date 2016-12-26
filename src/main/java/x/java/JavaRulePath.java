@@ -8,6 +8,11 @@ public class JavaRulePath extends RulePath {
         super();
     }
 
+    JavaRulePath(JavaRulePath javaRulePath) {
+        super();
+        javaRulePath.getRulePathNames().forEach(this::enter);
+    }
+
     public boolean isInsideForStatement() {
         return isCurrentRuleA("basicForStatement");
     }

@@ -21,7 +21,7 @@ class FormatParseTreeListener implements ParseTreeListener {
 
     @Override
     public void visitTerminal(TerminalNode node) {
-        formatter.add(new NodeWrapper(node, javaRulePath));
+        formatter.add(new NodeWrapper(node, new JavaRulePath(javaRulePath)));
     }
 
     @Override
