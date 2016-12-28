@@ -131,6 +131,10 @@ public class NodeWrapper {
         return node.getSymbol().getType() == 63 && !javaRulePath.isCurrentRuleA("basicForStatement");
     }
 
+    public boolean isSemicolonInBasicForStatement() {
+        return node.getSymbol().getType() == 63 && javaRulePath.isCurrentRuleA("basicForStatement");
+    }
+
     public String toSourceString() {
         return node.getText();
     }
