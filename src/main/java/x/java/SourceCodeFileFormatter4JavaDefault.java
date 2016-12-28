@@ -40,7 +40,8 @@ public class SourceCodeFileFormatter4JavaDefault implements SourceCodeFileFormat
         ParseTreeListener listener = new FormatParseTreeListener(formatter, parser.getRuleNames());
         walker.walk(listener, t);
         // FIXME delete me
-        formatter.getFormattedSourceCode().getCode(JavaConfig.EOL).forEach(System.out::println);
-        return formatter.getFormattedSourceCode().getCode(JavaConfig.EOL);
+        List<String> lines = formatter.getFormattedSourceCode().getCode(JavaConfig.EOL);
+        lines.forEach(System.out::println);
+        return lines;
     }
 }

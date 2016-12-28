@@ -5,9 +5,10 @@ import x.java.snippets.*;
 
 class JavaFormatter implements Formatter {
 
-    private CompilationUnit compilationUnit = new CompilationUnit();
+    private final CompilationUnit compilationUnit;
 
     JavaFormatter() {
+        compilationUnit = new CompilationUnit(new IndentService());
     }
 
     void add(NodeWrapper node) {
@@ -17,6 +18,7 @@ class JavaFormatter implements Formatter {
 
     @Override
     public FormattedSourceCode getFormattedSourceCode() {
+        // FIXME calling this multiple time will return different results
         FormattedSourceCode formattedSourceCode = new FormattedSourceCode();
         formattedSourceCode.add(compilationUnit);
         return formattedSourceCode;
@@ -26,8 +28,5 @@ class JavaFormatter implements Formatter {
 
     public void enterRule(JavaRulePath javaRulePath) {
         compilationUnit.enterRule(javaRulePath);
-    }
-
-    public void exitRule(JavaRulePath javaRulePath) {
     }
 }

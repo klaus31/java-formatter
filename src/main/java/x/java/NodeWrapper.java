@@ -9,6 +9,8 @@ import x.format.RulePath;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import static java.util.Arrays.asList;
+
 public class NodeWrapper {
 
     private final JavaRulePath javaRulePath;
@@ -125,8 +127,8 @@ public class NodeWrapper {
         return node.hashCode();
     }
 
-    public boolean isSemicolon() {
-        return node.getSymbol().getType() == 63;
+    public boolean isSemicolonAtEnd() {
+        return node.getSymbol().getType() == 63 && !javaRulePath.isCurrentRuleA("basicForStatement");
     }
 
     public String toSourceString() {
@@ -148,5 +150,9 @@ public class NodeWrapper {
     @Override
     public String toString() {
         return StringUtils.rightPad(toSourceString(),20) + ": "+javaRulePath.toString();
+    }
+
+    public boolean isBlockStartOrEnd() {
+        return asList("}", "{").contains(toSourceString());
     }
 }

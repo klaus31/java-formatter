@@ -1,18 +1,23 @@
 package x.java.snippets;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import x.java.IndentService;
 import x.java.JavaConfig;
 import x.java.NodeWrapper;
-
-import java.util.Arrays;
 
 import static java.util.Arrays.asList;
 
 public class FieldDeclaration extends SimpleNodesJavaCodeSnippet {
 
+    private final IndentService indentService;
+
+    public FieldDeclaration(IndentService indentService) {
+        this.indentService = indentService;
+    }
+
     @Override
     public String toSourceString() {
-        return super.toSourceString() + JavaConfig.EOL;
+        return super.toSourceString() + JavaConfig.EOL + indentService.indentCurrent();
     }
 
     @Override
@@ -26,17 +31,17 @@ public class FieldDeclaration extends SimpleNodesJavaCodeSnippet {
     }
 
     private boolean requiresWhitespaceAfter(NodeWrapper node) {
-        if (asList(";","(").contains(node.toSourceString())) {
+        if (asList(";", "(").contains(node.toSourceString())) {
             return false;
         }
         if (asList("new").contains(node.toSourceString())) {
             return true;
         }
         ParseTree nextNode = node.calculateNext();
-        if(asList(";",")").contains(nextNode.getText())) {
+        if (asList(";", ")").contains(nextNode.getText())) {
             return false;
         }
-        if(")".equals(node.toSourceString())) {
+        if (")".equals(node.toSourceString())) {
             return !asList(".").contains(nextNode.getText());
         }
         if (node.matchesRulePath("unannClassType_lfno_unannClassOrInterfaceType")) {
