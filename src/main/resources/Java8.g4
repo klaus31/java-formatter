@@ -248,10 +248,10 @@ packageModifier
 	;
 
 importDeclaration
-	:	singleTypeImportDeclaration
-	|	typeImportOnDemandDeclaration
-	|	singleStaticImportDeclaration
-	|	staticImportOnDemandDeclaration
+	:	comment* singleTypeImportDeclaration
+	|	comment* typeImportOnDemandDeclaration
+	|	comment* singleStaticImportDeclaration
+	|	comment* staticImportOnDemandDeclaration
 	;
 
 singleTypeImportDeclaration

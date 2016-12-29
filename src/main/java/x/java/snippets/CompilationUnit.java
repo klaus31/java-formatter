@@ -17,7 +17,7 @@ public class CompilationUnit extends DecoratedJavaCodeSnippet {
             setCurrentCodeSnippet(new PackageDeclaration());
         } else if (rulePath.isCurrentRuleA("importDeclaration")) {
             setCurrentCodeSnippet(new ImportDeclaration());
-        } else if (rulePath.isCurrentRuleA("comment")) {
+        } else if (rulePath.isCurrentRuleA("comment") && !rulePath.matches("importDeclaration")) {
             setCurrentCodeSnippet(new Comment());
         } else if (rulePath.isCurrentRuleA("typeDeclaration")) {
             setCurrentCodeSnippet(new TypeDeclaration(indentService));

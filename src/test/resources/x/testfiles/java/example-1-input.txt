@@ -4,10 +4,20 @@ import org.junit.Test;
 import x.java.SourceCodeFileFormatter4JavaDefault;
 
 import java.io.IOException;
+
+
+
+// it is a foo
 import java.util.List;
 
+// it is a bar
 import static org.hamcrest.Matchers.is;
+// it is a foo
+// and it is a bar
 import static org.junit.Assert.assertThat;
+/*
+very interesting import
+*/
 import static x.TestFileReadIn.calcPath;
 import static x.TestFileReadIn.read;
 

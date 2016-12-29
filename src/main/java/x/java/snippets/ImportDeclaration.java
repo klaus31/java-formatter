@@ -21,12 +21,18 @@ public class ImportDeclaration extends SimpleNodesJavaCodeSnippet {
 
     @Override
     protected String toSourceString(NodeWrapper node) {
+    if (node.matchesRulePath(rp->rp.isCurrentRuleA("comment"))) {
+        Comment comment=new Comment();
+        comment.add(node);
+        return comment.toSourceString();
+    }else{
         final StringBuilder result = new StringBuilder();
         result.append(node.toSourceString());
         if(WHITESPACE_WORDS.contains(node.toSourceString())) {
             result.append(" ");
         }
         return result.toString();
+    }
     }
 
 }

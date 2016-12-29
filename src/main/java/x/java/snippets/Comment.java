@@ -15,7 +15,14 @@ public class Comment extends SimpleNodesJavaCodeSnippet {
         final StringBuilder result = new StringBuilder();
         result.append(JavaConfig.EOL);
         result.append(node.toSourceString());
+        if(requiresEolAfter(node)) {
         result.append(JavaConfig.EOL);
+        }
         return result.toString();
+    }
+
+    private boolean requiresEolAfter(NodeWrapper node) {
+        String nextNodeText = node.calculateNext().getText();
+        return !nextNodeText.matches("\\\\\\*.*\\*\\\\") &&!nextNodeText.matches("//.*");
     }
 }
