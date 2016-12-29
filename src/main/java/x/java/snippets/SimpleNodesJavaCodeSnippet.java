@@ -18,7 +18,11 @@ abstract class SimpleNodesJavaCodeSnippet implements JavaCodeSnippet {
     public String toSourceString() {
         final StringBuilder builder = new StringBuilder();
         for (NodeWrapper node : nodes) {
+            if (node.matchesRulePath(rp->rp.isCurrentRuleA("comment"))) {
+                builder.append(new Comment().toSourceString(node));
+            }else{
             builder.append(toSourceString(node));
+        }
         }
         return builder.toString();
     }
