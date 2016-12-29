@@ -18,6 +18,8 @@ public class TypeDeclaration extends DecoratedJavaCodeSnippet {
             // TODO innerClasses, staticConstructor etc.
         if (rulePath.isCurrentRuleA("annotation") && !rulePath.isPartOf("classBody")) {
             setCurrentCodeSnippet(new Annotation(indentService));
+        } else if (rulePath.isCurrentRuleA("comment")) {
+            setCurrentCodeSnippet(new Comment());
         }else if (rulePath.isCurrentRuleA("fieldDeclaration")) {
             setCurrentCodeSnippet(new FieldDeclaration(indentService));
         }else if (rulePath.isCurrentRuleA("methodDeclaration")) {

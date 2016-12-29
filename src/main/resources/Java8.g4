@@ -1,4 +1,6 @@
+/* THIS FILE HAS BEEN MODIFIED BY klaus31 */
 /*
+ *
  * [The "BSD license"]
  *  Copyright (c) 2014 Terence Parr
  *  Copyright (c) 2014 Sam Harwell
@@ -228,8 +230,13 @@ ambiguousName
  * Productions from §7 (Packages)
  */
 
+comment
+	:	COMMENT
+	|   LINE_COMMENT
+	;
+
 compilationUnit
-	:	packageDeclaration? importDeclaration* typeDeclaration* EOF
+	:	packageDeclaration? importDeclaration* comment* typeDeclaration* EOF
 	;
 
 packageDeclaration
@@ -1771,9 +1778,9 @@ WS  :  [ \t\r\n\u000C]+ -> skip
     ;
 
 COMMENT
-    :   '/*' .*? '*/' -> skip
+    :   '/*' .*? '*/'
     ;
 
 LINE_COMMENT
-    :   '//' ~[\r\n]* -> skip
+    :   '//' ~[\r\n]*
     ;

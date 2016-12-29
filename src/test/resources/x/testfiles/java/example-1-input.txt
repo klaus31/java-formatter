@@ -11,6 +11,9 @@ import static org.junit.Assert.assertThat;
 import static x.TestFileReadIn.calcPath;
 import static x.TestFileReadIn.read;
 
+/**
+* another good place to allow comments
+*/
     @ClassAnnotationA
 @WebFault(faultBean = "", messageName = "")
 public class A1 {
@@ -51,16 +54,13 @@ public class A1 {
     }
 
     private void a7(String a8, String a9) throws A10 {
-        //given
         String inputFileName = fileNameKey + "-input";
         String expectedOutputFileName = fileNameKey + "-expected-output";
         SourceCodeFile sourceCodeFile = new SourceCodeFile(calcPath(language, inputFileName));
         SourceCodeFileFormatter formatter = new SourceCodeFileFormatter4JavaDefault(sourceCodeFile);
 
-        // when
         List<String> actualOutputLines = formatter.createOutputLines();
 
-        //then
         List<String> expectedOutputLines = read("java", expectedOutputFileName);
         for (int i = 0; i < expectedOutputLines.size(); i++) {
             String debugMessage = expectedOutputFileName + " at line " + (i + 1) + ":\nActual: \"" + actualOutputLines.get(i) + "\"\nShould: \"" + expectedOutputLines.get(i);
