@@ -17,6 +17,8 @@ import java.util.List;
 
 public class SourceCodeFileFormatter4JavaDefault implements SourceCodeFileFormatter {
     private final SourceCodeFile file;
+    private static final String GRAMMAR_FILE = SourceCodeFileFormatter4JavaDefault.class.getClassLoader().getResource("Java8.g4").getFile();
+    private static final Grammar GRAMMAR = Grammar.load(GRAMMAR_FILE);
 
     public SourceCodeFileFormatter4JavaDefault(SourceCodeFile file) {
         this.file = file;
@@ -24,17 +26,15 @@ public class SourceCodeFileFormatter4JavaDefault implements SourceCodeFileFormat
 
     @Override
     public List<String> createOutputLines() {
-        String combinedGrammarFileName = getClass().getClassLoader().getResource("Java8.g4").getFile();
-        final Grammar g = Grammar.load(combinedGrammarFileName);
         LexerInterpreter lexEngine = null;
         try {
-            lexEngine = g.createLexerInterpreter(new ANTLRFileStream(file.getPath().toAbsolutePath().toString()));
+            lexEngine = GRAMMAR.createLexerInterpreter(new ANTLRFileStream(file.getPath().toAbsolutePath().toString()));
         } catch (IOException e) {
             CrashStrategy.reportToUserAndExit(e, 1612171648);
         }
         CommonTokenStream tokens = new CommonTokenStream(lexEngine);
-        ParserInterpreter parser = g.createParserInterpreter(tokens);
-        ParseTree t = parser.parse(g.getRule("compilationUnit").index);
+        ParserInterpreter parser = GRAMMAR.createParserInterpreter(tokens);
+        ParseTree t = parser.parse(GRAMMAR.getRule("compilationUnit").index);
         ParseTreeWalker walker = new ParseTreeWalker();
         JavaFormatter formatter = new JavaFormatter();
         ParseTreeListener listener = new FormatParseTreeListener(formatter, parser.getRuleNames());
