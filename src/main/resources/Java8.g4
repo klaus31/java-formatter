@@ -437,6 +437,7 @@ methodDeclaration
 
 methodModifier
 	:	annotation
+	|   comment
 	|	'public'
 	|	'protected'
 	|	'private'

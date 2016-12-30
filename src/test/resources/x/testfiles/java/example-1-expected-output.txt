@@ -53,9 +53,12 @@ public class A1 {
     List<?> y201612201919 = new HashMap<>(7);
     String str = (5 - 1 < 6) ? "hi" : ho;
     List<Foo<Bar>, Bar<Foo<?>>> plump;
+    // Zwei einsame Menschen im Schnee
     @AnnotationA
+    // Wolln Schneemann baun
     @AnnotationB
     @AnnotationC("a1612201340")
+    /*Zwei einsame Menschen im Schnee wolln nicht nur Schneemann baun*/
     public void a2() throws A3 {
         a4("a5", "a6");
     }
