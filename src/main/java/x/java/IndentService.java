@@ -6,21 +6,21 @@ public class IndentService {
 
     private int indent;
 
-    public IndentService() {
+    IndentService() {
         indent = 0;
     }
 
-    public String indentCurrent() {
+    public String getCurrentIndent() {
         return StringUtils.repeat(JavaConfig.INTENT, indent);
     }
 
-    public String calculateIndentAfter(NodeWrapper node) {
+    public String calculateIndentToAppendTo(NodeWrapper node) {
         if ("{".equals(node.toSourceString())) {
             return indentPlusOne();
         } else if ("}".equals(node.calculateNext().getText())) {
             return indentMinusOne();
         } else {
-            return indentCurrent();
+            return getCurrentIndent();
         }
     }
 

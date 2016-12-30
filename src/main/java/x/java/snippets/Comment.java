@@ -1,23 +1,22 @@
 package x.java.snippets;
 
+import x.java.IndentService;
 import x.java.JavaConfig;
 import x.java.NodeWrapper;
 
 public class Comment extends SimpleNodesJavaCodeSnippet {
 
+    Comment(IndentService indentService) {
+        super(indentService);
+    }
+
     @Override
     protected String toSourceString(NodeWrapper node) {
         final StringBuilder result = new StringBuilder();
-        result.append(JavaConfig.EOL);
         result.append(node.toSourceString());
-        if(requiresEolAfter(node)) {
         result.append(JavaConfig.EOL);
-        }
+        result.append(indentCurrent());
         return result.toString();
     }
 
-    private boolean requiresEolAfter(NodeWrapper node) {
-        String nextNodeText = node.calculateNext().getText();
-        return !nextNodeText.matches("\\\\\\*.*\\*\\\\") &&!nextNodeText.matches("//.*");
-    }
 }

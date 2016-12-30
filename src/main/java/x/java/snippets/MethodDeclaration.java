@@ -33,6 +33,7 @@ class MethodBody extends SimpleNodesJavaCodeSnippet {
     private final IndentService indentService;
 
     public MethodBody(IndentService indentService) {
+        super(indentService);
         this.indentService = indentService;
     }
 
@@ -42,7 +43,7 @@ class MethodBody extends SimpleNodesJavaCodeSnippet {
         builder.append(node.toSourceString());
         if (node.isBlockStartOrEnd() || node.isSemicolonAtEnd()) {
             builder.append(JavaConfig.EOL);
-            builder.append(indentService.calculateIndentAfter(node));
+            builder.append(indentService.calculateIndentToAppendTo(node));
         } else if (requiresWhitespaceAfter(node)) {
             builder.append(" ");
         }
@@ -92,6 +93,7 @@ class MethodFirstLine extends SimpleNodesJavaCodeSnippet {
     private final IndentService indentService;
 
     public MethodFirstLine(IndentService indentService) {
+        super(indentService);
         this.indentService = indentService;
     }
 
@@ -102,7 +104,7 @@ class MethodFirstLine extends SimpleNodesJavaCodeSnippet {
         // TODO tmp solution
         if (asList("}", "{", ";").contains(node.toSourceString())) {
             builder.append(JavaConfig.EOL);
-            builder.append(indentService.calculateIndentAfter(node));
+            builder.append(indentService.calculateIndentToAppendTo(node));
         } else if (!asList("(").contains(node.toSourceString()) && !asList("(", ")", "<", ">", ",").contains(node.calculateNext().getText())) {
             builder.append(" ");
         }

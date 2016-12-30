@@ -1,9 +1,14 @@
 package x.java.snippets;
 
+import x.java.IndentService;
 import x.java.JavaConfig;
 import x.java.NodeWrapper;
 
 public class PackageDeclaration extends SimpleNodesJavaCodeSnippet {
+
+    PackageDeclaration(IndentService indentService) {
+        super(indentService);
+    }
 
     @Override
     public String toSourceString() {

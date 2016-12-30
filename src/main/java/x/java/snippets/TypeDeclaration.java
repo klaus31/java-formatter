@@ -23,7 +23,7 @@ public class TypeDeclaration extends DecoratedJavaCodeSnippet {
         }else if (rulePath.isCurrentRuleA("methodDeclaration")) {
             setCurrentCodeSnippet(new MethodDeclaration(indentService));
         } else if (rulePath.matchesCurrentRuleAnyOf("classDeclaration", "classModifier")) {
-            setCurrentCodeSnippet(new SimpleNodesJavaCodeSnippet(){
+            setCurrentCodeSnippet(new SimpleNodesJavaCodeSnippet(indentService){
 
                 @Override
                 protected String toSourceString(NodeWrapper node) {
@@ -31,7 +31,7 @@ public class TypeDeclaration extends DecoratedJavaCodeSnippet {
                     builder.append(node.toSourceString());
                     if (node.isBlockStartOrEnd() || node.isSemicolonAtEnd()) {
                         builder.append(JavaConfig.EOL);
-                        builder.append(indentService.calculateIndentAfter(node));
+                        builder.append(indentService.calculateIndentToAppendTo(node));
                     } else {
                         builder.append(" ");
                     }

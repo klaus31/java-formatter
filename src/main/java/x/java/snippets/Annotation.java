@@ -6,15 +6,13 @@ import x.java.NodeWrapper;
 
 public class Annotation extends SimpleNodesJavaCodeSnippet {
 
-    private final IndentService indentService;
-
-    public Annotation(IndentService indentService) {
-        this.indentService = indentService;
+    Annotation(IndentService indentService) {
+        super(indentService);
     }
 
     @Override
     public String toSourceString() {
-        return super.toSourceString() + JavaConfig.EOL + indentService.indentCurrent();
+        return super.toSourceString() + JavaConfig.EOL + indentCurrent();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package x.java.snippets;
 
+import x.java.IndentService;
 import x.java.JavaConfig;
 import x.java.JavaRulePath;
 import x.java.NodeWrapper;
@@ -13,6 +14,10 @@ import static java.util.stream.Collectors.joining;
 public class ImportDeclaration extends SimpleNodesJavaCodeSnippet {
 
     private static final List<String> WHITESPACE_WORDS = Arrays.asList("import", "static");
+
+    ImportDeclaration(IndentService indentService) {
+        super(indentService);
+    }
 
     @Override
     protected String toSourceString(NodeWrapper node) {

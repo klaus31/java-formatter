@@ -29,6 +29,7 @@ import static x.TestFileReadIn.read;
 public class A1 {
 
     private List<String> a201612201919;
+    // this is b
     private final List<String> b201612201919;
     private final static List<String> c201612201919;
     private static final List<String> d201612201919;

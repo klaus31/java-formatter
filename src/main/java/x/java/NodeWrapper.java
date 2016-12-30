@@ -15,6 +15,10 @@ public class NodeWrapper {
 
     private final JavaRulePath javaRulePath;
     private final TerminalNode node;
+    public boolean isNextNodeAComment() {
+        String nextNodeText = calculateNext().getText();
+        return nextNodeText.matches("\\\\\\*.*\\*\\\\") ||nextNodeText.matches("//.*");
+    }
 
     public NodeWrapper(TerminalNode node, JavaRulePath javaRulePath) {
         this.javaRulePath = javaRulePath;

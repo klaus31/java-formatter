@@ -9,15 +9,13 @@ import static java.util.Arrays.asList;
 
 public class FieldDeclaration extends SimpleNodesJavaCodeSnippet {
 
-    private final IndentService indentService;
-
     public FieldDeclaration(IndentService indentService) {
-        this.indentService = indentService;
+        super(indentService);
     }
 
     @Override
     public String toSourceString() {
-        return super.toSourceString() + JavaConfig.EOL + indentService.indentCurrent();
+        return super.toSourceString() + JavaConfig.EOL + indentCurrent();
     }
 
     @Override
