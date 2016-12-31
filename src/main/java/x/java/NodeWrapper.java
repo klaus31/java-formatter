@@ -15,6 +15,7 @@ public class NodeWrapper {
 
     private final JavaRulePath javaRulePath;
     private final TerminalNode node;
+
     public boolean isNextNodeAComment() {
         String nextNodeText = calculateNext().getText();
         return nextNodeText.matches("\\\\\\*.*\\*\\\\") ||nextNodeText.matches("//.*");
@@ -23,6 +24,19 @@ public class NodeWrapper {
     public NodeWrapper(TerminalNode node, JavaRulePath javaRulePath) {
         this.javaRulePath = javaRulePath;
         this.node = node;
+    }
+
+    private boolean occursOnSameLineAs(TerminalNode otherNode)  {
+        return node.getSymbol().getLine() == otherNode.getSymbol().getLine();
+    }
+
+    public boolean occursOnSameLineAs(ParseTree otherNode)  {
+        try {
+            return occursOnSameLineAs((TerminalNode) otherNode);
+        }catch(ClassCastException e) {
+            e.printStackTrace(); // FIXME die, evil, die
+            return false;
+        }
     }
 
     public ParseTree calculateNext() {

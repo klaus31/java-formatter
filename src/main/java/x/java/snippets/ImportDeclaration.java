@@ -1,5 +1,6 @@
 package x.java.snippets;
 
+import org.antlr.v4.runtime.tree.ParseTree;
 import x.java.IndentService;
 import x.java.JavaConfig;
 import x.java.JavaRulePath;
@@ -26,8 +27,18 @@ public class ImportDeclaration extends SimpleNodesJavaCodeSnippet {
         if(WHITESPACE_WORDS.contains(node.toSourceString())) {
             result.append(" ");
         }
+        // TODO this code must be replace every other code appending an EOL
         if(node.isSemicolonAtEnd()) {
-            result.append(JavaConfig.EOL);
+            if(node.isNextNodeAComment()) {
+                ParseTree nextNode = node.calculateNext();
+                if(node.occursOnSameLineAs(nextNode)) {
+                    result.append(" ");
+                } else {
+                    result.append(JavaConfig.EOL);
+                }
+            } else {
+                result.append(JavaConfig.EOL);
+            }
         }
         return result.toString();
     }
