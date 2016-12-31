@@ -731,6 +731,7 @@ blockStatements
 blockStatement
 	:	localVariableDeclarationStatement
 	|	classDeclaration
+	|   comment
 	|	statement
 	;
 

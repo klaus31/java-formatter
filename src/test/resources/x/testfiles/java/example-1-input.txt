@@ -77,7 +77,8 @@ public class A1 {
         String expectedOutputFileName = fileNameKey + "-expected-output";
         SourceCodeFile sourceCodeFile = new SourceCodeFile(calcPath(language, inputFileName));
         SourceCodeFileFormatter formatter = new SourceCodeFileFormatter4JavaDefault(sourceCodeFile);
-
+        // such a great line of code
+        /* <3 */
         List<String> actualOutputLines = formatter.createOutputLines();
 
         List<String> expectedOutputLines = read("java", expectedOutputFileName);
