@@ -7,6 +7,8 @@ import x.java.NodeWrapper;
 import java.util.Arrays;
 import java.util.List;
 
+import static x.java.JavaConfig.EOL;
+
 public class ImportDeclaration extends SimpleNodesJavaCodeSnippet {
 
     private static final List<String> WHITESPACE_WORDS = Arrays.asList("import", "static");
@@ -24,11 +26,7 @@ public class ImportDeclaration extends SimpleNodesJavaCodeSnippet {
         }
         if (node.isSemicolonAtEnd()) {
             // TODO this code must be replace every other code appending an EOL
-            if (node.isNextNodeACommentInSameLine()) {
-                result.append(" ");
-            } else {
-                result.append(JavaConfig.EOL);
-            }
+            result.append(node.isNextNodeACommentInSameLine() ? " " : EOL);
         }
         return result.toString();
     }
