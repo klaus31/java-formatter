@@ -177,4 +177,8 @@ public class NodeWrapper {
     public boolean isBlockStartOrEnd() {
         return asList("}", "{").contains(toSourceString());
     }
+
+    public boolean isNextNodeACommentInSameLine() {
+        return isNextNodeAComment() && occursOnSameLineAs(calculateNext());
+    }
 }

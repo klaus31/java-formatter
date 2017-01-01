@@ -5,23 +5,21 @@ Format Source Code written in Java.
 ## Yet another code formatter!
 
 Whys:
-* Code formatting independent from IDE, editors or whatever
-* Not configurable but (with Java knowledge easy) implementable to whatever needs you have
-* Code changing action (if you want to).<br>
+* Code formatting should be a part of the build process, not something, the developer must keep in mind
+* This solution is independent from IDE, editors or whatever
+* It is not configurable like you know it. But even better: With Java knowledge you can implement it to whatever needs you have
+* Thus, even code changing action is possible (if you want to).<br>
   For example if you want to kill all inline documentation or just the `@author` or `@Override` annotations
-* automatable and priceless
 
 ## How to implement a formatter
 
 1. Check out this project
-2. let CodeActionDeciderSimpleFactory return your own implementation of CodeActionDecider
+2. Change code to your needs (A more detailed second step will follow on stable release)
 3. compile and run
 
 ## What it is not (yet)
 
 * Ready to use!
-* Able to produce good looking code from Chaos.<br>
-  (However, it is up to you writing a good pre-processing method).
 * Only debugging output to sysout yet
 
 ## Usage
