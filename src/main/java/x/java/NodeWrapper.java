@@ -18,7 +18,7 @@ public class NodeWrapper {
 
     public boolean isNextNodeAComment() {
         String nextNodeText = calculateNext().getText();
-        return nextNodeText.matches("\\\\\\*.*\\*\\\\") ||nextNodeText.matches("//.*");
+        return nextNodeText.matches("/\\*.*\\*/") ||nextNodeText.matches("//.*");
     }
 
     public NodeWrapper(TerminalNode node, JavaRulePath javaRulePath) {

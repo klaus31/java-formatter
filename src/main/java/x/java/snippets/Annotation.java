@@ -4,7 +4,11 @@ import x.java.IndentService;
 import x.java.JavaConfig;
 import x.java.NodeWrapper;
 
+import static x.java.JavaConfig.EOL;
+
 public class Annotation extends SimpleNodesJavaCodeSnippet {
+
+    private boolean isNextNodeACommentInSameLine;
 
     Annotation(IndentService indentService) {
         super(indentService);
@@ -12,7 +16,7 @@ public class Annotation extends SimpleNodesJavaCodeSnippet {
 
     @Override
     public String toSourceString() {
-        return super.toSourceString() + JavaConfig.EOL + indentCurrent();
+        return super.toSourceString() + (isNextNodeACommentInSameLine ? " " : EOL + indentCurrent());
     }
 
     @Override
@@ -22,6 +26,7 @@ public class Annotation extends SimpleNodesJavaCodeSnippet {
         if (node.toSourceString().equals(",")) {
             result.append(" ");
         }
+        isNextNodeACommentInSameLine = node.isNextNodeACommentInSameLine();
         return result.toString();
     }
 }
