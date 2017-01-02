@@ -6,6 +6,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.lang3.StringUtils;
 import x.format.RulePath;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -177,8 +178,15 @@ public class NodeWrapper {
     public boolean isBlockStartOrEnd() {
         return asList("}", "{").contains(toSourceString());
     }
+    public boolean isBlockEnd() {
+        return "}".equals(toSourceString());
+    }
 
     public boolean isNextNodeACommentInSameLine() {
         return isNextNodeAComment() && occursOnSameLineAs(calculateNext());
+    }
+
+    public boolean isNextNodeElseCatchOrWhile() {
+        return asList("else", "catch", "while").contains(calculateNext().getText());
     }
 }

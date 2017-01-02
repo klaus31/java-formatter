@@ -41,10 +41,10 @@ class MethodBody extends SimpleNodesJavaCodeSnippet {
     protected String toSourceString(NodeWrapper node) {
         StringBuilder result = new StringBuilder();
         result.append(node.toSourceString());
-        if (node.isBlockStartOrEnd() || node.isSemicolonAtEnd()) {
-            if(node.isNextNodeACommentInSameLine()) {
+        if (node.isBlockStartOrEnd() || node.isSemicolonAtEnd() || ":".equals(node.toSourceString())) {
+            if (node.isNextNodeACommentInSameLine() || node.isBlockEnd() && node.isNextNodeElseCatchOrWhile()) {
                 result.append(" ");
-            }else{
+            } else {
                 result.append(JavaConfig.EOL);
                 result.append(indentService.calculateIndentToAppendTo(node));
             }
@@ -58,17 +58,17 @@ class MethodBody extends SimpleNodesJavaCodeSnippet {
         if (node.isSemicolonInBasicForStatement()) {
             return true;
         }
-        if (asList(";", "(", ".","++","--").contains(node.toSourceString())) {
+        if (asList(";", "(", ".", "++", "--").contains(node.toSourceString())) {
             return false;
         }
         if (asList("new", ",").contains(node.toSourceString())) {
             return true;
         }
         ParseTree nextNode = node.calculateNext();
-        if("(".equals(nextNode.getText())) {
-            return asList("if", "for", "while", "+","-","*","/","%").contains(node.toSourceString());
+        if ("(".equals(nextNode.getText())) {
+            return asList("catch", "switch", "if", "for", "while", "+", "-", "*", "/", "%").contains(node.toSourceString());
         }
-        if (asList(";", ")", ",", ".", "++", "--").contains(nextNode.getText())) {
+        if (asList(";", ":", ")", ",", ".", "++", "--").contains(nextNode.getText())) {
             return false;
         }
         if (")".equals(node.toSourceString())) {
