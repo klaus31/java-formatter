@@ -47,7 +47,7 @@ public class A1 {
     static final List<String> s201612201919;
     List<?> t201612201919;
     Map<String, String> u201612201919 = new HashMap<>(7);
-    final List<String> v201612201919 = new HashMap<>(7);
+    final List<String> v201612201919 = new HashMap<>(7); // a
     final static List<String> w201612201919 = new HashMap<>(7);
     static final List<String> x201612201919 = new HashMap<>(7);
     List<?> y201612201919 = new HashMap<>(7);

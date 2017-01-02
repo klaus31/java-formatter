@@ -6,16 +6,18 @@ import x.java.JavaConfig;
 import x.java.NodeWrapper;
 
 import static java.util.Arrays.asList;
+import static x.java.JavaConfig.EOL;
 
 public class FieldDeclaration extends SimpleNodesJavaCodeSnippet {
 
     public FieldDeclaration(IndentService indentService) {
         super(indentService);
     }
+    private boolean isNextNodeACommentInSameLine;
 
     @Override
     public String toSourceString() {
-        return super.toSourceString() + JavaConfig.EOL + indentCurrent();
+        return super.toSourceString() + (isNextNodeACommentInSameLine ? " " : EOL + indentCurrent());
     }
 
     @Override
@@ -25,6 +27,7 @@ public class FieldDeclaration extends SimpleNodesJavaCodeSnippet {
         if (requiresWhitespaceAfter(node)) {
             result.append(" ");
         }
+        isNextNodeACommentInSameLine = node.isNextNodeACommentInSameLine();
         return result.toString();
     }
 
