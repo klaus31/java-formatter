@@ -39,15 +39,19 @@ class MethodBody extends SimpleNodesJavaCodeSnippet {
 
     @Override
     protected String toSourceString(NodeWrapper node) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(node.toSourceString());
+        StringBuilder result = new StringBuilder();
+        result.append(node.toSourceString());
         if (node.isBlockStartOrEnd() || node.isSemicolonAtEnd()) {
-            builder.append(JavaConfig.EOL);
-            builder.append(indentService.calculateIndentToAppendTo(node));
+            if(node.isNextNodeACommentInSameLine()) {
+                result.append(" ");
+            }else{
+                result.append(JavaConfig.EOL);
+                result.append(indentService.calculateIndentToAppendTo(node));
+            }
         } else if (requiresWhitespaceAfter(node)) {
-            builder.append(" ");
+            result.append(" ");
         }
-        return builder.toString();
+        return result.toString();
     }
 
     private boolean requiresWhitespaceAfter(NodeWrapper node) {

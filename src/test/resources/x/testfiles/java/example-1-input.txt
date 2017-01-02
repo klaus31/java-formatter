@@ -74,7 +74,7 @@ public class A1 {
 
     private void a7(String a8, String a9) throws A10 {
         String inputFileName = fileNameKey + "-input";
-        String expectedOutputFileName = fileNameKey + "-expected-output";
+        String expectedOutputFileName = fileNameKey + "-expected-output"; // _
         SourceCodeFile sourceCodeFile = new SourceCodeFile(calcPath(language, inputFileName));
         SourceCodeFileFormatter formatter = new SourceCodeFileFormatter4JavaDefault(sourceCodeFile);
         // such a great line of code
