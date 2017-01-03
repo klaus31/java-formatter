@@ -29,7 +29,7 @@ abstract class DecoratedJavaCodeSnippet implements JavaCodeSnippet {
         currentCodeSnippet.ifPresent(consumer);
     }
 
-    public DecoratedJavaCodeSnippet() {
+    DecoratedJavaCodeSnippet() {
         snippets = new ArrayList<>();
         currentCodeSnippet = Optional.empty();
     }

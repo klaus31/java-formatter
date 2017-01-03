@@ -6,15 +6,10 @@ import x.java.JavaConfig;
 import x.java.NodeWrapper;
 
 import static java.util.Arrays.asList;
+import static x.java.JavaConfig.EOL;
+import static x.java.JavaConfig.getIndentService;
 
 class MethodBody extends SimpleNodesJavaCodeSnippet {
-
-    private final IndentService indentService;
-
-    public MethodBody(IndentService indentService) {
-        super(indentService);
-        this.indentService = indentService;
-    }
 
     @Override
     protected String toSourceString(NodeWrapper node) {
@@ -24,8 +19,8 @@ class MethodBody extends SimpleNodesJavaCodeSnippet {
             if (node.isNextNodeACommentInSameLine() || node.isBlockEnd() && node.isNextNodeElseCatchOrWhile()) {
                 result.append(" ");
             } else {
-                result.append(JavaConfig.EOL);
-                result.append(indentService.calculateIndentToAppendTo(node));
+                result.append(EOL);
+                result.append(getIndentService().calculateIndentToAppendTo(node));
             }
         } else if (requiresWhitespaceAfter(node)) {
             result.append(" ");

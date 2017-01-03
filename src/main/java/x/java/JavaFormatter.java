@@ -8,7 +8,7 @@ class JavaFormatter implements Formatter {
     private final CompilationUnit compilationUnit;
 
     JavaFormatter() {
-        compilationUnit = new CompilationUnit(new IndentService());
+        compilationUnit = JavaConfig.createCompilationUnit();
     }
 
     void add(NodeWrapper node) {

@@ -2,7 +2,6 @@ package x.java.snippets;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import x.java.IndentService;
-import x.java.JavaConfig;
 import x.java.NodeWrapper;
 
 import static java.util.Arrays.asList;
@@ -10,9 +9,6 @@ import static x.java.JavaConfig.EOL;
 
 public class FieldDeclaration extends SimpleNodesJavaCodeSnippet {
 
-    public FieldDeclaration(IndentService indentService) {
-        super(indentService);
-    }
     private boolean isNextNodeACommentInSameLine;
 
     @Override

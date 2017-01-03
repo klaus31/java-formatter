@@ -4,15 +4,13 @@ import x.java.IndentService;
 import x.java.JavaConfig;
 import x.java.NodeWrapper;
 
-public class PackageDeclaration extends SimpleNodesJavaCodeSnippet {
+import static x.java.JavaConfig.EOL;
 
-    PackageDeclaration(IndentService indentService) {
-        super(indentService);
-    }
+public class PackageDeclaration extends SimpleNodesJavaCodeSnippet {
 
     @Override
     public String toSourceString() {
-        return super.toSourceString() + JavaConfig.EOL;
+        return super.toSourceString() + EOL;
     }
 
     @Override

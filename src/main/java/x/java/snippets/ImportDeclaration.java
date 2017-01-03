@@ -1,7 +1,6 @@
 package x.java.snippets;
 
 import x.java.IndentService;
-import x.java.JavaConfig;
 import x.java.NodeWrapper;
 
 import java.util.Arrays;
@@ -12,10 +11,6 @@ import static x.java.JavaConfig.EOL;
 public class ImportDeclaration extends SimpleNodesJavaCodeSnippet {
 
     private static final List<String> WHITESPACE_WORDS = Arrays.asList("import", "static");
-
-    ImportDeclaration(IndentService indentService) {
-        super(indentService);
-    }
 
     @Override
     protected String toSourceString(NodeWrapper node) {

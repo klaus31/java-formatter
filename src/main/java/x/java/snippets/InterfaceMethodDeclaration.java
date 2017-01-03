@@ -1,25 +1,18 @@
 package x.java.snippets;
 
 import x.java.IndentService;
-import x.java.JavaConfig;
 import x.java.JavaRulePath;
-import x.java.NodeWrapper;
 
 class InterfaceMethodDeclaration extends DecoratedJavaCodeSnippet {
-    private final IndentService indentService;
-
-    public InterfaceMethodDeclaration(IndentService indentService) {
-        this.indentService = indentService;
-    }
 
     @Override
     public void enterRule(JavaRulePath rulePath) {
         if (rulePath.isCurrentRuleA("annotation")) {
-            setCurrentCodeSnippet(new Annotation(indentService));
+            setCurrentCodeSnippet(new Annotation());
         } else if (rulePath.isCurrentRuleA("interfaceMethodDeclaration")) {
-            setCurrentCodeSnippet(new MethodBody(indentService));
+            setCurrentCodeSnippet(new MethodBody());
         } else if (rulePath.isCurrentRuleA("methodDeclarator")) {
-            setCurrentCodeSnippet(new MethodBody(indentService));
+            setCurrentCodeSnippet(new MethodBody());
         }
         withCurrentSnippetIfPresent(s -> s.enterRule(rulePath));
     }

@@ -1,7 +1,6 @@
 package x.java.snippets;
 
 import x.java.IndentService;
-import x.java.JavaConfig;
 import x.java.NodeWrapper;
 
 import static x.java.JavaConfig.EOL;
@@ -9,10 +8,6 @@ import static x.java.JavaConfig.EOL;
 public class Annotation extends SimpleNodesJavaCodeSnippet {
 
     private boolean isNextNodeACommentInSameLine;
-
-    Annotation(IndentService indentService) {
-        super(indentService);
-    }
 
     @Override
     public String toSourceString() {

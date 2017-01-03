@@ -1,6 +1,7 @@
 package x.java.snippets;
 
 import x.java.IndentService;
+import x.java.JavaConfig;
 import x.java.JavaRulePath;
 import x.java.NodeWrapper;
 
@@ -12,9 +13,9 @@ abstract class SimpleNodesJavaCodeSnippet implements JavaCodeSnippet {
     private final List<NodeWrapper> nodes;
     private final IndentService indentService;
 
-    SimpleNodesJavaCodeSnippet(IndentService indentService) {
+    SimpleNodesJavaCodeSnippet() {
         nodes = new ArrayList<>();
-        this.indentService = indentService;
+        this.indentService = JavaConfig.getIndentService();
     }
 
     protected String indentCurrent() {
@@ -26,7 +27,7 @@ abstract class SimpleNodesJavaCodeSnippet implements JavaCodeSnippet {
         final StringBuilder builder = new StringBuilder();
         for (NodeWrapper node : nodes) {
             if (node.matchesRulePath(rp->rp.isCurrentRuleA("comment"))) {
-                builder.append(new Comment(indentService).toSourceString(node));
+                builder.append(new Comment().toSourceString(node));
             }else{
             builder.append(toSourceString(node));
         }
