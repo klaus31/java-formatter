@@ -32,7 +32,7 @@ public class MethodBody extends SimpleNodesJavaCodeSnippet {
         if (node.isSemicolonInBasicForStatement()) {
             return true;
         }
-        if (asList(";", "(", ".", "++", "--").contains(node.toSourceString())) {
+        if (asList(";", "::", "(", ".", "++", "--").contains(node.toSourceString())) {
             return false;
         }
         if (asList("new", ",").contains(node.toSourceString())) {
@@ -42,7 +42,7 @@ public class MethodBody extends SimpleNodesJavaCodeSnippet {
         if ("(".equals(nextNode.getText())) {
             return asList("catch", "switch", "if", "for", "while", "+", "-", "*", "/", "%").contains(node.toSourceString());
         }
-        if (asList(";", ":", ")", ",", ".", "++", "--").contains(nextNode.getText())) {
+        if (asList(";", ":", "::", ")", ",", ".", "++", "--").contains(nextNode.getText())) {
             return false;
         }
         if (")".equals(node.toSourceString())) {
