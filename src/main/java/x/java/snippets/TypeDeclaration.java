@@ -22,7 +22,9 @@ public class TypeDeclaration extends DecoratedJavaCodeSnippet {
             setCurrentCodeSnippet(new FieldDeclaration(indentService));
         }else if (rulePath.isCurrentRuleA("methodDeclaration")) {
             setCurrentCodeSnippet(new MethodDeclaration(indentService));
-        } else if (rulePath.matchesCurrentRuleAnyOf("classDeclaration", "classModifier")) {
+        }else if (rulePath.isCurrentRuleA("interfaceMethodDeclaration")) {
+            setCurrentCodeSnippet(new InterfaceMethodDeclaration(indentService));
+        } else if (rulePath.matchesCurrentRuleAnyOf("classDeclaration", "classModifier", "interfaceDeclaration")) {
             setCurrentCodeSnippet(new SimpleNodesJavaCodeSnippet(indentService){
 
                 @Override

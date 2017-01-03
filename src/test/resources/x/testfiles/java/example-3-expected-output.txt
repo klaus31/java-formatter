@@ -1,0 +1,8 @@
+package x.ctrl;
+interface TestInterface {
+    void aDooDooDoo();
+    public String daDaDa();
+    default void ogogog() {
+        pffpffpff();
+    }
+}

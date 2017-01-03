@@ -16,6 +16,10 @@ public class E2ETest {
     public void example2ShouldHaveExpectedOutput() throws IOException {
         doItWith("java", "example-2");
     }
+    @Test
+    public void example3ShouldHaveExpectedOutput() throws IOException {
+        doItWith("java", "example-3");
+    }
     private void doItWith(String language, String fileNameKey) throws IOException {
         // given
         String inputFileName = fileNameKey + "-input";
