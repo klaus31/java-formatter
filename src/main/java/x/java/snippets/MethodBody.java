@@ -15,6 +15,9 @@ public class MethodBody extends SimpleNodesJavaCodeSnippet {
     protected String toSourceString(NodeWrapper node) {
         StringBuilder result = new StringBuilder();
         result.append(node.toSourceString());
+        if(node.isBlockEnd() && ")".equals(node.calculateNext().getText())) {
+            return result.toString();
+        }
         if (node.isBlockStartOrEnd() || node.isSemicolonAtEnd() || ":".equals(node.toSourceString())) {
             if (node.isNextNodeACommentInSameLine() || node.isBlockEnd() && node.isNextNodeElseCatchOrWhile()) {
                 result.append(" ");

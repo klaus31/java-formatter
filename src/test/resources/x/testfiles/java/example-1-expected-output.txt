@@ -72,6 +72,9 @@ public class A1 {
         List<String> actualOutputLines = formatter.createOutputLines();
         actualOutputLines.forEach(System.out::println);
         actualOutputLines.forEach(str -> System.out.println(str + "-"));
+        actualOutputLines.forEach(str -> {
+            System.out.println(str + "-");
+        });
         List<String> expectedOutputLines = read("java", expectedOutputFileName);
         for (int i = 0; i < expectedOutputLines.size(); i++) {
             String debugMessage = expectedOutputFileName + " at line " + (i + 1) + ":\nActual: \"" + actualOutputLines.get(i) + "\"\nShould: \"" + expectedOutputLines.get(i);
