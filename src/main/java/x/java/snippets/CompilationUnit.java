@@ -2,16 +2,18 @@ package x.java.snippets;
 
 import x.java.JavaRulePath;
 
+import static x.java.JavaConfig.*;
+
 public class CompilationUnit extends DecoratedJavaCodeSnippet {
 
     @Override
     public void enterRule(JavaRulePath rulePath) {
         if (rulePath.isCurrentRuleA("packageDeclaration")) {
-            setCurrentCodeSnippet(new PackageDeclaration());
+            setCurrentCodeSnippet(createPackageDeclaration());
         } else if (rulePath.isCurrentRuleA("importDeclaration")) {
-            setCurrentCodeSnippet(new ImportDeclaration());
+            setCurrentCodeSnippet(createImportDeclaration());
         } else if (rulePath.isCurrentRuleA("typeDeclaration")) {
-            setCurrentCodeSnippet(new TypeDeclaration());
+            setCurrentCodeSnippet(createTypeDeclaration());
         }
         withCurrentSnippetIfPresent(s -> s.enterRule(rulePath));
     }

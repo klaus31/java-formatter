@@ -1,6 +1,5 @@
 package x.java.snippets;
 
-import x.java.IndentService;
 import x.java.NodeWrapper;
 
 import java.util.Arrays;

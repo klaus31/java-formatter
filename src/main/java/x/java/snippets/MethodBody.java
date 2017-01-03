@@ -9,7 +9,7 @@ import static java.util.Arrays.asList;
 import static x.java.JavaConfig.EOL;
 import static x.java.JavaConfig.getIndentService;
 
-class MethodBody extends SimpleNodesJavaCodeSnippet {
+public class MethodBody extends SimpleNodesJavaCodeSnippet {
 
     @Override
     protected String toSourceString(NodeWrapper node) {

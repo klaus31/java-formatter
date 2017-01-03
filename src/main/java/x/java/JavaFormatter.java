@@ -5,7 +5,7 @@ import x.java.snippets.*;
 
 class JavaFormatter implements Formatter {
 
-    private final CompilationUnit compilationUnit;
+    private final JavaCodeSnippet compilationUnit;
 
     JavaFormatter() {
         compilationUnit = JavaConfig.createCompilationUnit();

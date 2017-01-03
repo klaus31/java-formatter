@@ -1,6 +1,6 @@
 package x.java.snippets;
 
-import x.java.IndentService;
+import x.java.JavaConfig;
 import x.java.JavaRulePath;
 
 public class MethodDeclaration extends DecoratedJavaCodeSnippet {
@@ -8,11 +8,13 @@ public class MethodDeclaration extends DecoratedJavaCodeSnippet {
     @Override
     public void enterRule(JavaRulePath rulePath) {
         if (rulePath.isCurrentRuleA("annotation")) {
-            setCurrentCodeSnippet(new Annotation());
-        } else if (rulePath.isCurrentRuleA("methodDeclaration") || rulePath.isCurrentRuleA("methodBody")) {
-            setCurrentCodeSnippet(new MethodBody());
+            setCurrentCodeSnippet(JavaConfig.createAnnotation());
+        } else if (rulePath.isCurrentRuleA("methodDeclaration")) {
+            setCurrentCodeSnippet(JavaConfig.createMethodDeclaration());
+        } else if (rulePath.isCurrentRuleA("methodBody")) {
+            setCurrentCodeSnippet(JavaConfig.createMethodBody());
         } else if (rulePath.isCurrentRuleA("methodModifier")) {
-            setCurrentCodeSnippet(new MethodDeclarator());
+            setCurrentCodeSnippet(JavaConfig.createMethodModifier());
         }
         withCurrentSnippetIfPresent(s -> s.enterRule(rulePath));
     }

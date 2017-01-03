@@ -5,13 +5,15 @@ import org.apache.commons.lang3.StringUtils;
 public class IndentService {
 
     private int indent;
+    private final String singleIndent;
 
-    IndentService() {
+    IndentService(String singleIndent) {
         indent = 0;
+        this.singleIndent = singleIndent;
     }
 
     public String getCurrentIndent() {
-        return StringUtils.repeat(JavaConfig.INTENT, indent);
+        return StringUtils.repeat(singleIndent, indent);
     }
 
     public String calculateIndentToAppendTo(NodeWrapper node) {
@@ -25,11 +27,11 @@ public class IndentService {
     }
 
     private String indentPlusOne() {
-        return StringUtils.repeat(JavaConfig.INTENT, ++indent);
+        return StringUtils.repeat(singleIndent, ++indent);
     }
 
     private String indentMinusOne() {
-        return StringUtils.repeat(JavaConfig.INTENT, --indent);
+        return StringUtils.repeat(singleIndent, --indent);
     }
 
 }
