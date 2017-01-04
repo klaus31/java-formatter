@@ -19,10 +19,8 @@ public class TestBlockReopen {
                             doItNot();
                         }
                     }
-                }
-                ;
+                };
             }
-        }
-        ;
+        };
     }
 }
