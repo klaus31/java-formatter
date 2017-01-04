@@ -52,7 +52,7 @@ public class FieldDeclaration extends SimpleNodesJavaCodeSnippet {
                 return true;
             }
         }
-        if (node.matchesRulePath("classInstanceCreationExpression_lfno_primary")) {
+        if (node.matchesRulePath("fieldDeclaration", "classInstanceCreationExpression_lfno_primary")) {
             return false; // expecting diamond operator
         }
         return true;

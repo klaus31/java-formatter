@@ -3,15 +3,17 @@ public class TestBlockReopen {
     void foo() {
         int i = 1;
         Runnable r = new Runnable() {
-            inti=1;
+            int i = 1;
             // 1
             @Override
             public void run() {
                 int i = 2;
                 // 2
                 Runnable r = new Runnable() {
+                    int i = 3;
                     @Override
                     public void run() {
+                        int i = 4;
                         System.out.println();
                         if (false) {
                             doItNot();

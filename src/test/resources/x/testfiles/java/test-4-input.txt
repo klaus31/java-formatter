@@ -11,8 +11,10 @@ public class TestBlockReopen {
                 int i = 2;
                 // 2
                 Runnable r = new Runnable() {
+                    int i = 3;
                     @Override
                     public void run() {
+                        int i = 4;
                         System.out.println();
                         if(false) {
                             doItNot();
