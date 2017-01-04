@@ -10,26 +10,26 @@ import static x.TestFileReadIn.read;
 public class E2ETest {
     @Test
     public void example1ShouldHaveExpectedOutput() throws IOException {
-        doItWith("java", "example-1");
+        doItWith("java", 1);
     }
     @Test
     public void example2ShouldHaveExpectedOutput() throws IOException {
-        doItWith("java", "example-2");
+        doItWith("java", 2);
     }
     @Test
     public void example3ShouldHaveExpectedOutput() throws IOException {
-        doItWith("java", "example-3");
+        doItWith("java", 3);
     }
-    private void doItWith(String language, String fileNameKey) throws IOException {
+    private void doItWith(String language, int fileId) throws IOException {
         // given
-        String inputFileName = fileNameKey + "-input";
-        String expectedOutputFileName = fileNameKey + "-expected-output";
+        String inputFileName = "test-" + fileId + "-input";
+        String expectedOutputFileName = "test-" + fileId + "-output";
         SourceCodeFile sourceCodeFile = new SourceCodeFile(calcPath(language, inputFileName));
         SourceCodeFileFormatter formatter = new SourceCodeFileFormatter4JavaDefault(sourceCodeFile);
         // when
         List<String> actualOutputLines = formatter.createOutputLines();
         //then
-        List<String> expectedOutputLines = read("java", expectedOutputFileName);
+        List<String> expectedOutputLines = read(language, expectedOutputFileName);
         for (int i = 0; i < expectedOutputLines.size(); i++) {
             String debugMessage = expectedOutputFileName + " at line " + (i + 1) + ":\nActual: \"" + actualOutputLines.get(i) + "\"\nShould: \"" + expectedOutputLines.get(i);
             assertThat(debugMessage, actualOutputLines.get(i), is(expectedOutputLines.get(i)));
