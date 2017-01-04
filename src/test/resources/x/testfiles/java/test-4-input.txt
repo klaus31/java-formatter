@@ -2,6 +2,7 @@ package x.ctrl;
 
 public class TestBlockReopen {
     void foo() {
+        int i = 1;
         Runnable r = new Runnable() {
             int i = 1;
             // 1

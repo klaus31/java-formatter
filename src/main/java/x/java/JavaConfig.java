@@ -23,77 +23,37 @@ public class JavaConfig {
         return new CompilationUnit();
     }
 
-    private static JavaCodeSnippet createPackageDeclaration() {
-        return new PackageDeclaration();
-    }
-
-    private static JavaCodeSnippet createImportDeclaration() {
-        return new ImportDeclaration();
-    }
-
-    private static JavaCodeSnippet createAnnotation() {
-        return new Annotation();
-    }
-
-    private static JavaCodeSnippet createInterfaceMethodDeclaration() {
-        return createMethodBody();
-    }
-
-    private static JavaCodeSnippet createMethodDeclarator() {
-        return createMethodBody();
-    }
-
-    private static JavaCodeSnippet createMethodDeclaration() {
-        return createMethodBody();
-    }
-
-    private static JavaCodeSnippet createMethodBody() {
-        return new MethodBody();
-    }
-
-    private static JavaCodeSnippet createMethodModifier() {
-        return createMethodDeclarator();
-    }
-
     public static SimpleNodesJavaCodeSnippet createComment() {
         return new Comment();
     }
 
     public static Optional<JavaCodeSnippet> getMatchingCodeSnippetFor(JavaRulePath rulePath) {
         if (rulePath.isCurrentRuleA("annotation")) {
-            return Optional.of(createAnnotation());
+            return Optional.of(new Annotation());
         } else if (rulePath.isCurrentRuleA("methodDeclaration")) {
-            return Optional.of(createMethodDeclaration());
+            return Optional.of(new MethodBody());
         } else if (rulePath.isCurrentRuleA("methodBody")) {
-            return Optional.of(createMethodBody());
+            return Optional.of(new MethodBody());
         } else if (rulePath.isCurrentRuleA("methodModifier")) {
-            return Optional.of(createMethodModifier());
+            return Optional.of(new MethodBody());
         } else if (rulePath.isCurrentRuleA("interfaceMethodDeclaration")) {
-            return Optional.of(createInterfaceMethodDeclaration());
+            return Optional.of(new MethodBody());
         } else if (rulePath.isCurrentRuleA("methodDeclarator")) {
-            return Optional.of(createMethodDeclarator());
+            return Optional.of(new MethodBody());
         } else if (rulePath.isCurrentRuleA("packageDeclaration")) {
-            return Optional.of(createPackageDeclaration());
+            return Optional.of(new PackageDeclaration());
         } else if (rulePath.isCurrentRuleA("importDeclaration")) {
-            return Optional.of(createImportDeclaration());
-        }else if (rulePath.isCurrentRuleA("fieldDeclaration")) {
-            return Optional.of(createFieldDeclaration());
-        }else if (rulePath.isCurrentRuleA("methodDeclaration")) {
-            return Optional.of(createMethodDeclaration());
-        }else if (rulePath.isCurrentRuleA("interfaceMethodDeclaration")) {
-            return Optional.of(createInterfaceMethodDeclaration());
-        } else if (rulePath.matchesCurrentRuleAnyOf("classDeclaration", "classModifier", "interfaceDeclaration")) {
-            return Optional.of(createClassDeclaration());
+            return Optional.of(new ImportDeclaration());
+        } else if (rulePath.isCurrentRuleA("fieldDeclaration")) {
+            return Optional.of(new FieldDeclaration());
+        } else if (rulePath.isCurrentRuleA("methodDeclaration")) {
+            return Optional.of(new MethodBody());
+        } else if (rulePath.isCurrentRuleA("interfaceMethodDeclaration")) {
+            return Optional.of(new MethodBody());
+        } else if (rulePath.matchesCurrentRuleAnyOf("classDeclaration", "classModifier", "classBody", "interfaceDeclaration")) {
+            return Optional.of(new ClassDeclaration());
         } else {
             return Optional.empty();
         }
-    }
-
-    private static JavaCodeSnippet createFieldDeclaration() {
-        return new FieldDeclaration();
-    }
-
-    private static JavaCodeSnippet createClassDeclaration() {
-        return new ClassDeclaration();
     }
 }

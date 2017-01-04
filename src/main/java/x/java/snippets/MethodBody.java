@@ -62,7 +62,7 @@ public class MethodBody extends SimpleNodesJavaCodeSnippet {
                 return true;
             }
         }
-        if (node.matchesRulePath("classInstanceCreationExpression_lfno_primary")) {
+        if (node.matchesRulePath("methodDeclaration", "classInstanceCreationExpression_lfno_primary")) {
             return false; // expecting diamond operator
         }
         return true;

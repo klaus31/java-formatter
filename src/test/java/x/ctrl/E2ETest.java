@@ -22,7 +22,6 @@ public class E2ETest {
         doItWith("java", 3);
     }
     @Test
-    @Ignore // want to do a refactoring before
     public void example4ShouldHaveExpectedOutput() throws IOException {
         doItWith("java", 4);
     }

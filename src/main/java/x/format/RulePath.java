@@ -56,7 +56,7 @@ public class RulePath {
     public boolean matches(String ... ruleNames) {
         int index = -1;
         for (String ruleName : ruleNames) {
-            int currentIndex = rulePathNames.indexOf(ruleName);
+            int currentIndex = rulePathNames.lastIndexOf(ruleName);
             if(currentIndex < 0 || currentIndex <= index) {
                 return false;
             } else {
