@@ -1,0 +1,24 @@
+package x.ctrl;
+
+public class TestBlockReopen {
+    void foo() {
+        Runnable r = new Runnable() {
+            int i = 1;
+            // 1
+            @Override
+            public void run() {
+                int i = 2;
+                // 2
+                Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        System.out.println();
+                        if(false) {
+                            doItNot();
+                        }
+                    }
+                };
+            }
+        };
+    }
+}

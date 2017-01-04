@@ -1,4 +1,5 @@
 package x.ctrl;
+import org.junit.Ignore;
 import org.junit.Test;
 import x.java.SourceCodeFileFormatter4JavaDefault;
 import java.io.IOException;
@@ -19,6 +20,11 @@ public class E2ETest {
     @Test
     public void example3ShouldHaveExpectedOutput() throws IOException {
         doItWith("java", 3);
+    }
+    @Test
+    @Ignore // want to do a refactoring before
+    public void example4ShouldHaveExpectedOutput() throws IOException {
+        doItWith("java", 4);
     }
     private void doItWith(String language, int fileId) throws IOException {
         // given
