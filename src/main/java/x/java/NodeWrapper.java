@@ -181,6 +181,9 @@ public class NodeWrapper {
     public boolean isBlockEnd() {
         return "}".equals(toSourceString());
     }
+    public boolean isBlockStart() {
+        return "{".equals(toSourceString());
+    }
 
     public boolean isNextNodeACommentInSameLine() {
         return isNextNodeAComment() && occursOnSameLineAs(calculateNext());
@@ -188,5 +191,9 @@ public class NodeWrapper {
 
     public boolean isNextNodeElseCatchOrWhile() {
         return asList("else", "catch", "while").contains(calculateNext().getText());
+    }
+
+    public boolean isNextNodeText(String string) {
+        return string.equals(calculateNext().getText());
     }
 }

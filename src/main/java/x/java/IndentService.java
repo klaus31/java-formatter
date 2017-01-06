@@ -1,9 +1,14 @@
 package x.java;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class IndentService {
 
+    public static final List<String> CALCULATABLE_LINE_ENDINGS = Arrays.asList("{", "}", ":", ";");
     private int indent;
     private final String singleIndent;
 
@@ -17,9 +22,10 @@ public class IndentService {
     }
 
     public String calculateIndentToAppendTo(NodeWrapper node) {
-        if ("{".equals(node.toSourceString())) {
+        Validate.isTrue(CALCULATABLE_LINE_ENDINGS.contains(node.toSourceString()));
+        if (node.isBlockStart() && !node.isNextNodeText("}")) {
             return indentPlusOne();
-        } else if ("}".equals(node.calculateNext().getText())) {
+        } else if (node.isNextNodeText("}") && !node.isBlockStart()) {
             return indentMinusOne();
         } else {
             return getCurrentIndent();

@@ -32,7 +32,7 @@ class FormatParseTreeListener implements ParseTreeListener {
     @Override
     public void enterEveryRule(ParserRuleContext ctx) {
         javaRulePath.enter(getRuleName(ctx));
-        formatter.enterRule(javaRulePath);
+        formatter.setNewCurrentRule(javaRulePath);
     }
 
     private String getRuleName(ParserRuleContext ctx) {
@@ -42,5 +42,6 @@ class FormatParseTreeListener implements ParseTreeListener {
     @Override
     public void exitEveryRule(ParserRuleContext ctx) {
         javaRulePath.exit(getRuleName(ctx));
+        formatter.setNewCurrentRule(javaRulePath);
     }
 }

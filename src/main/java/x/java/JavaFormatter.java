@@ -24,9 +24,7 @@ class JavaFormatter implements Formatter {
         return formattedSourceCode;
     }
 
-
-
-    public void enterRule(JavaRulePath javaRulePath) {
+    public void setNewCurrentRule(JavaRulePath javaRulePath) {
         compilationUnit.enterRule(javaRulePath);
     }
 }

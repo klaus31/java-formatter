@@ -6,24 +6,25 @@ import x.java.NodeWrapper;
 
 import static java.util.Arrays.asList;
 import static x.java.JavaConfig.EOL;
+import static x.java.JavaConfig.getIndentService;
 
 public class FieldDeclaration extends SimpleNodesJavaCodeSnippet {
 
-    private boolean isNextNodeACommentInSameLine;
+    private NodeWrapper lastNode;
 
     @Override
     public String toSourceString() {
-        return super.toSourceString() + (isNextNodeACommentInSameLine ? " " : EOL + indentCurrent());
+        return super.toSourceString() + (lastNode.isNextNodeACommentInSameLine() ? " " : EOL + getIndentService().calculateIndentToAppendTo(lastNode));
     }
 
     @Override
     protected String toSourceString(NodeWrapper node) {
+        lastNode = node;
         final StringBuilder result = new StringBuilder();
         result.append(node.toSourceString());
         if (requiresWhitespaceAfter(node)) {
             result.append(" ");
         }
-        isNextNodeACommentInSameLine = node.isNextNodeACommentInSameLine();
         return result.toString();
     }
 
