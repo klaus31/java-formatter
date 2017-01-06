@@ -29,8 +29,7 @@ public class JavaConfig {
         return new Comment();
     }
 
-    public static Optional<JavaCodeSnippet> getMatchingCodeSnippetFor(JavaRulePath rulePath) {
-        List<String> rulesHavingAMatchingFormatter = Arrays.asList(
+        private static final List<String> RULES_HAVING_A_MATCHING_FORMATTER = Arrays.asList(
                 "annotation",
                 "methodBody",
                 "methodModifier",
@@ -45,7 +44,8 @@ public class JavaConfig {
                 "classBody",
                 "interfaceDeclaration"
         );
-        Optional<String> newRule = rulePath.calculateLastRuleEqualsAnyOf(rulesHavingAMatchingFormatter);
+    public static Optional<JavaCodeSnippet> getMatchingCodeSnippetFor(JavaRulePath rulePath) {
+        Optional<String> newRule = rulePath.calculateLastRuleEqualsAnyOf(RULES_HAVING_A_MATCHING_FORMATTER);
         if (!newRule.isPresent() || newRule.get().equals(ruleCurrentJavaCodeSnippetIsFor)) {
             return Optional.empty();
         } else {

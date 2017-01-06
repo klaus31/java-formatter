@@ -2,6 +2,7 @@ package x.format;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class RulePath {
@@ -64,5 +65,18 @@ public class RulePath {
             }
         }
         return true;
+    }
+
+    public Optional<String> calculateLastRuleEqualsAnyOf(List<String> rules) {
+        Optional<String> winner = Optional.empty();
+        int tmp = -1;
+        for (String rule : rules) {
+            int lastIndex = this.getRulePathNames().lastIndexOf(rule);
+            if(tmp < lastIndex) {
+                winner = Optional.of(rule);
+                tmp = lastIndex;
+            }
+        }
+        return winner;
     }
 }
