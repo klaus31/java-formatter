@@ -1,18 +1,13 @@
 package x.java.snippets;
-
 import x.java.NodeWrapper;
-
 import static x.java.JavaConfig.EOL;
-
 public class Annotation extends SimpleNodesJavaCodeSnippet {
-
     private boolean isNextNodeACommentInSameLine;
-
     @Override
     public String toSourceString() {
-        return super.toSourceString() + (isNextNodeACommentInSameLine ? " " : EOL + indentCurrent());
+        return super.toSourceString() + (isNextNodeACommentInSameLine ? " ":
+        EOL + indentCurrent());
     }
-
     @Override
     protected String toSourceString(NodeWrapper node) {
         final StringBuilder result = new StringBuilder();

@@ -20,7 +20,7 @@ import static org.mockito.Mockito.mock;
 @RunWith(MockitoJUnitRunner.class)
 public class NodeWrapperTest {
     @Test
-    public void calculateNextShouldDoOn2LevelTree() throws org . antlr . runtime . RecognitionException {
+    public void calculateNextShouldDoOn2LevelTree() throws org.antlr.runtime.RecognitionException {
         // given
         TerminalNodeImpl root = mock(TerminalNodeImpl.class);
         TerminalNodeImpl leaf1 = mock(TerminalNodeImpl.class);
@@ -35,7 +35,7 @@ public class NodeWrapperTest {
         assertThat(new NodeWrapper(leaf2, null).calculateNext(), nullValue());
     }
     @Test
-    public void calculateNextShouldDoOn3LevelTree() throws org . antlr . runtime . RecognitionException {
+    public void calculateNextShouldDoOn3LevelTree() throws org.antlr.runtime.RecognitionException {
         // given
         TerminalNodeImpl root = mock(TerminalNodeImpl.class);
         TerminalNodeImpl node1 = mock(TerminalNodeImpl.class);
@@ -68,7 +68,7 @@ public class NodeWrapperTest {
         assertThat(new NodeWrapper(leaf3, null).calculateNext(), nullValue());
     }
     @Test
-    public void calculateNextShouldDoOnMixedLevelTree() throws org . antlr . runtime . RecognitionException {
+    public void calculateNextShouldDoOnMixedLevelTree() throws org.antlr.runtime.RecognitionException {
         // given
         TerminalNodeImpl root = mock(TerminalNodeImpl.class);
         TerminalNodeImpl node = mock(TerminalNodeImpl.class);

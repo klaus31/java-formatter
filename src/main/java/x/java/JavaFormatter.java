@@ -1,21 +1,14 @@
 package x.java;
-
 import x.format.*;
 import x.java.snippets.*;
-
 class JavaFormatter implements Formatter {
-
     private final JavaCodeSnippet compilationUnit;
-
-    JavaFormatter() {
-        compilationUnit = JavaConfig.createCompilationUnit();
+    JavaFormatter ( ) {
+        compilationUnit = JavaConfig . createCompilationUnit ( ) ;
     }
-
     void add(NodeWrapper node) {
-        if(!node.isEOF())
-        compilationUnit.add(node);
+        if (! node.isEOF()) compilationUnit.add(node);
     }
-
     @Override
     public FormattedSourceCode getFormattedSourceCode() {
         // FIXME calling this multiple time will return different results
@@ -23,7 +16,6 @@ class JavaFormatter implements Formatter {
         formattedSourceCode.add(compilationUnit);
         return formattedSourceCode;
     }
-
     public void setNewCurrentRule(JavaRulePath javaRulePath) {
         compilationUnit.enterRule(javaRulePath);
     }

@@ -1,21 +1,17 @@
 package x.java.snippets;
-
 import org.antlr.v4.runtime.tree.ParseTree;
 import x.java.IndentService;
 import x.java.JavaConfig;
 import x.java.NodeWrapper;
-
 import static java.util.Arrays.asList;
 import static x.java.JavaConfig.EOL;
 import static x.java.JavaConfig.getIndentService;
-
 public class MethodBody extends SimpleNodesJavaCodeSnippet {
-
     @Override
     protected String toSourceString(NodeWrapper node) {
         StringBuilder result = new StringBuilder();
         result.append(node.toSourceString());
-        if(node.isBlockEnd() && asList(")",";").contains(node.calculateNext().getText())) {
+        if (node.isBlockEnd() && asList(")", ";").contains(node.calculateNext().getText())) {
             return result.toString();
         }
         if (node.isBlockStartOrEnd() || node.isSemicolonAtEnd() || ":".equals(node.toSourceString())) {
@@ -30,7 +26,6 @@ public class MethodBody extends SimpleNodesJavaCodeSnippet {
         }
         return result.toString();
     }
-
     private boolean requiresWhitespaceAfter(NodeWrapper node) {
         if (node.isSemicolonInBasicForStatement()) {
             return true;
@@ -49,7 +44,7 @@ public class MethodBody extends SimpleNodesJavaCodeSnippet {
             return false;
         }
         if (")".equals(node.toSourceString())) {
-            return !asList(".").contains(nextNode.getText());
+            return ! asList(".").contains(nextNode.getText());
         }
         if (node.matchesRulePath("unannClassType_lfno_unannClassOrInterfaceType")) {
             if (asList("<", ",", ">").contains(nextNode.getText())) {
