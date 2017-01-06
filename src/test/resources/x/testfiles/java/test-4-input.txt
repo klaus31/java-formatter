@@ -19,9 +19,14 @@ public class TestBlockReopen {
                         if(false) {
                             doItNot();
                         }
+                        String aaa = "Are we okay at this line?";
                     }
+                    String bbb = "Are we okay at this line?";
                 };
+                String ccc = "Are we okay at this line?";
             }
+            String ddd = "Are we okay at this line?";
         };
+        String eee = "Are we okay at this line?";
     }
 }

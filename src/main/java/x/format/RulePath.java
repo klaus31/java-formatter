@@ -45,7 +45,7 @@ public class RulePath {
         return Stream.of(ruleNames).anyMatch(rulePathNames::contains);
     }
 
-    public boolean matchesCurrentRuleAnyOf(String ... ruleNames) {
+    public boolean isCurrentRuleAnyOf(String ... ruleNames) {
         return Stream.of(ruleNames).anyMatch(this::isCurrentRuleA);
     }
 
