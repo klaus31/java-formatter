@@ -336,6 +336,7 @@ classMemberDeclaration
 	|	methodDeclaration
 	|	classDeclaration
 	|	interfaceDeclaration
+	|	comment
 	|	';'
 	;
 

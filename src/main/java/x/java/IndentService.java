@@ -8,7 +8,6 @@ import java.util.List;
 
 public class IndentService {
 
-    public static final List<String> CALCULATABLE_LINE_ENDINGS = Arrays.asList("{", "}", ":", ";");
     private int indent;
     private final String singleIndent;
 
@@ -22,7 +21,6 @@ public class IndentService {
     }
 
     public String calculateIndentToAppendTo(NodeWrapper node) {
-        Validate.isTrue(CALCULATABLE_LINE_ENDINGS.contains(node.toSourceString()));
         if (node.isBlockStart() && !node.isNextNodeText("}")) {
             return indentPlusOne();
         } else if (node.isNextNodeText("}") && !node.isBlockStart()) {
