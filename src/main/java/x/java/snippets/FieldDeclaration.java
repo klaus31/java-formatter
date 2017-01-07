@@ -1,4 +1,5 @@
 package x.java.snippets;
+
 import org.antlr.v4.runtime.tree.ParseTree;
 import x.java.IndentService;
 import x.java.NodeWrapper;
@@ -9,7 +10,7 @@ public class FieldDeclaration extends SimpleNodesJavaCodeSnippet {
     private NodeWrapper lastNode;
     @Override
     public String toSourceString() {
-        return super.toSourceString() + (lastNode.isNextNodeACommentInSameLine() ? " ":
+        return super.toSourceString() + (lastNode.isNextNodeACommentInSameLine() ? " " :
         EOL + getIndentService().calculateIndentToAppendTo(lastNode));
     }
     @Override

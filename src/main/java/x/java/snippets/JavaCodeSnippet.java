@@ -1,4 +1,5 @@
 package x.java.snippets;
+
 import x.format.CodeSnippet;
 import x.java.JavaRulePath;
 import x.java.NodeWrapper;

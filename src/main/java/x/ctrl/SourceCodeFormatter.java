@@ -1,4 +1,5 @@
 package x.ctrl;
+
 import org.apache.commons.io.FileUtils;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -19,7 +20,7 @@ public class SourceCodeFormatter {
     }
     private static Consumer<SourceCodeFile> process(KnownSourceFileType type) {
         return sourceCodeFile -> {
-            System.out.println("next file to process: " + sourceCodeFile.getPath());
+            System.out.println("Format next: " + sourceCodeFile.getPath());
             List<String> outputLines = createOutputLines(sourceCodeFile, type);
             write(sourceCodeFile, outputLines);
         };

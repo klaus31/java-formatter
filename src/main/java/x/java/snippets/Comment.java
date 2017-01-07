@@ -1,4 +1,5 @@
 package x.java.snippets;
+
 import x.java.NodeWrapper;
 import static x.java.JavaConfig.EOL;
 import static x.java.JavaConfig.getIndentService;

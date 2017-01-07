@@ -1,4 +1,5 @@
 package x.ctrl;
+
 import org.junit.Test;
 import x.java.SourceCodeFileFormatter4JavaDefault;
 import java.io.IOException;
@@ -57,6 +58,7 @@ public class E2ETest {
         List<String> actualOutputLines = formatter.createOutputLines();
         //then
         List<String> expectedOutputLines = read(language, outputFileName);
+        expectedOutputLines.forEach(System.out::println);
         for (int i = 0; i < expectedOutputLines.size(); i++) {
             String debugMessage = outputFileName + " at line " + (i + 1) + ":\nActual: \"" + actualOutputLines.get(i) + "\"\nShould: \"" + expectedOutputLines.get(i);
             assertThat(debugMessage, actualOutputLines.get(i), is(expectedOutputLines.get(i)));

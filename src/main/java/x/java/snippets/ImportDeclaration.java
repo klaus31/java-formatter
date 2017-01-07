@@ -1,4 +1,5 @@
 package x.java.snippets;
+
 import x.java.NodeWrapper;
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +14,7 @@ public class ImportDeclaration extends SimpleNodesJavaCodeSnippet {
             result.append(" ");
         }
         if (node.isSemicolonAtEnd()) {
-            result.append(node.isNextNodeACommentInSameLine() ? " ":
+            result.append(node.isNextNodeACommentInSameLine() ? " " :
             EOL);
         }
         return result.toString();

@@ -1,4 +1,5 @@
 package x.java;
+
 import x.format.*;
 import x.java.snippets.*;
 class JavaFormatter implements Formatter {

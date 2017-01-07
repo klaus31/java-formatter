@@ -1,4 +1,5 @@
 package x.java;
+
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.LexerInterpreter;
@@ -34,9 +35,6 @@ public class SourceCodeFileFormatter4JavaDefault implements SourceCodeFileFormat
         JavaFormatter formatter = new JavaFormatter();
         ParseTreeListener listener = new FormatParseTreeListener(formatter, parser.getRuleNames());
         walker.walk(listener, t);
-        List<String> lines = formatter.getFormattedSourceCode().getCode(JavaConfig.EOL);
-        // FIXME delete me
-        lines.forEach(System.out::println);
-        return lines;
+        return formatter.getFormattedSourceCode().getCode(JavaConfig.EOL);
     }
 }

@@ -1,4 +1,5 @@
 package x.java.snippets;
+
 import x.java.JavaConfig;
 import x.java.JavaRulePath;
 import x.java.NodeWrapper;
@@ -16,7 +17,7 @@ public abstract class SimpleNodesJavaCodeSnippet implements JavaCodeSnippet {
     @Override
     public String toSourceString() {
         final StringBuilder builder = new StringBuilder();
-        for (NodeWrapper node:
+        for (NodeWrapper node :
         nodes) {
             if (node.matchesRulePath(rp -> rp.isCurrentRuleA("comment"))) {
                 builder.append(JavaConfig.createComment().toSourceString(node));

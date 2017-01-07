@@ -1,4 +1,5 @@
 package x.format;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +42,7 @@ public class RulePath {
     }
     public boolean matches(String ... ruleNames) {
         int index = - 1;
-        for (String ruleName:
+        for (String ruleName :
         ruleNames) {
             int currentIndex = rulePathNames.lastIndexOf(ruleName);
             if (currentIndex < 0 || currentIndex <= index) {
@@ -55,7 +56,7 @@ public class RulePath {
     public Optional<String> calculateLastRuleEqualsAnyOf(List<String> rules) {
         Optional<String> winner = Optional.empty();
         int tmp = - 1;
-        for (String rule:
+        for (String rule :
         rules) {
             int lastIndex = this.getRulePathNames().lastIndexOf(rule);
             if (tmp < lastIndex) {

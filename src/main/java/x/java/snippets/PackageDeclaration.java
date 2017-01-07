@@ -1,4 +1,5 @@
 package x.java.snippets;
+
 import x.java.NodeWrapper;
 import static x.java.JavaConfig.EOL;
 public class PackageDeclaration extends SimpleNodesJavaCodeSnippet {

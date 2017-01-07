@@ -1,4 +1,5 @@
 package x.java.snippets;
+
 import org.antlr.v4.runtime.tree.ParseTree;
 import x.java.IndentService;
 import x.java.JavaConfig;
@@ -43,9 +44,9 @@ public class MethodBody extends SimpleNodesJavaCodeSnippet {
         if (asList(";", "::", ")", ",", ".", "++", "--", "[", "]").contains(nextNode.getText())) {
             return false;
         }
-        if(nextNode.getText().equals(":")) {
+        if (nextNode.getText().equals(":")) {
             // TODO for each in case block and named statements
-            return !node.matchesRulePath("switchBlock");
+            return ! node.matchesRulePath("switchBlock");
         }
         if (")".equals(node.toSourceString())) {
             return ! asList(".").contains(nextNode.getText());
