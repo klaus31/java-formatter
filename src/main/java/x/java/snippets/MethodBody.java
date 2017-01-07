@@ -40,8 +40,12 @@ public class MethodBody extends SimpleNodesJavaCodeSnippet {
         if ("(".equals(nextNode.getText())) {
             return asList("catch", "switch", "if", "for", "while", "+", "-", "*", "/", "%").contains(node.toSourceString());
         }
-        if (asList(";", ":", "::", ")", ",", ".", "++", "--").contains(nextNode.getText())) {
+        if (asList(";", "::", ")", ",", ".", "++", "--", "[", "]").contains(nextNode.getText())) {
             return false;
+        }
+        if(nextNode.getText().equals(":")) {
+            // TODO for each in case block and named statements
+            return !node.matchesRulePath("switchBlock");
         }
         if (")".equals(node.toSourceString())) {
             return ! asList(".").contains(nextNode.getText());
