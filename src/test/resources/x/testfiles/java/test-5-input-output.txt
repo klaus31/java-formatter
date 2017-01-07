@@ -1,4 +1,5 @@
 package x.ctrl;
+
 public class Test {
     void foo() {
     }

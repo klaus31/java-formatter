@@ -18,7 +18,7 @@ public class E2ETest {
     }
     @Test
     public void example3ShouldHaveExpectedOutput() throws IOException {
-        expectInputFileEqualsOutputFile("java", 3);
+        expectFormatterNotChangingFile("java", 3);
     }
     @Test
     public void example4ShouldHaveExpectedOutput() throws IOException {

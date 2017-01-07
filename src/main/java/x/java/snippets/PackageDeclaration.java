@@ -4,7 +4,7 @@ import static x.java.JavaConfig.EOL;
 public class PackageDeclaration extends SimpleNodesJavaCodeSnippet {
     @Override
     public String toSourceString() {
-        return super.toSourceString() + EOL;
+        return super.toSourceString() + EOL + EOL;
     }
     @Override
     protected String toSourceString(NodeWrapper node) {
