@@ -1,33 +1,45 @@
 package x.java.snippets;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import x.java.IndentService;
-import x.java.JavaConfig;
 import x.java.NodeWrapper;
+
 import static java.util.Arrays.asList;
 import static x.java.JavaConfig.EOL;
 import static x.java.JavaConfig.getIndentService;
+
 public class MethodBody extends SimpleNodesJavaCodeSnippet {
     @Override
     protected String toSourceString(NodeWrapper node) {
         StringBuilder result = new StringBuilder();
         result.append(node.toSourceString());
-        if (node.isBlockEnd() && asList(")", ";").contains(node.calculateNext().getText())) {
-            return result.toString();
-        }
-        if (node.isBlockStartOrEnd() || node.isSemicolonAtEnd() || ":".equals(node.toSourceString())) {
-            if (node.isNextNodeACommentInSameLine() || node.isBlockEnd() && node.isNextNodeElseCatchOrWhile()) {
+        if (!onlyPureNodeValueIsRequired(node)) {
+            if (requiresSingleBlankAfter(node)) {
                 result.append(" ");
-            } else {
+            } else if (isAEolCandidate(node)) {
                 result.append(EOL);
                 result.append(getIndentService().calculateIndentToAppendTo(node));
             }
-        } else if (requiresWhitespaceAfter(node)) {
-            result.append(" ");
         }
         return result.toString();
     }
-    private boolean requiresWhitespaceAfter(NodeWrapper node) {
+
+    private boolean isAEolCandidate(NodeWrapper node) {
+        return node.isBlockStartOrEnd() || node.isSemicolonAtEnd() || ":".equals(node.toSourceString());
+    }
+
+    private boolean onlyPureNodeValueIsRequired(NodeWrapper node) {
+        return node.isBlockEnd() && asList(")", ";").contains(node.calculateNext().getText())
+                || node.isBlockStart() && node.matchesRulePath("arrayInitializer");
+    }
+
+    private boolean requiresSingleBlankAfter(NodeWrapper node) {
+        if (isAEolCandidate(node)) {
+            if (node.isNextNodeACommentInSameLine() || node.isBlockEnd() && node.isNextNodeElseCatchOrWhile()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
         if (node.isSemicolonInBasicForStatement()) {
             return true;
         }
@@ -46,10 +58,10 @@ public class MethodBody extends SimpleNodesJavaCodeSnippet {
         }
         if (nextNode.getText().equals(":")) {
             // TODO for each in case block and named statements
-            return ! node.matchesRulePath("switchBlock");
+            return !node.matchesRulePath("switchBlock");
         }
         if (")".equals(node.toSourceString())) {
-            return ! asList(".").contains(nextNode.getText());
+            return !asList(".").contains(nextNode.getText());
         }
         if (node.matchesRulePath("unannClassType_lfno_unannClassOrInterfaceType")) {
             if (asList("<", ",", ">").contains(nextNode.getText())) {

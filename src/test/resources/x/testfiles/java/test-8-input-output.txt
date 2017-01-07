@@ -2,32 +2,33 @@ package x.ctrl;
 
 class TestDoublePoints {
     void c() {
-        String[] strs = {
-            "a", "b" };
-            for (String str :
-            strs) {
-            }
-            for (String str :
-            strs) {
-                switch (str) {
-                    case "a":
-                    return "a";
-                }
-            }
+        String[] strs = {"a", "b" };
+        for (String str :
+        strs) {
+        }
+        for (String str :
+        strs) {
             switch (str) {
                 case "a":
-                for (String str:
-                strs) {
-                }
-            }
-            b :
-            for (int i :
-            is) {
-                c :
-                switch (str) {
-                    case "a":
-                    return "a";
-                }
+                return "a";
             }
         }
+        switch (str) {
+            case "a":
+            for (String str:
+            strs) {
+            }
+        }
+        b :
+        for (int i :
+        is) {
+            c :
+            switch (str) {
+                case "a":
+                return "a";
+            }
+        }
+        int i = 1 < 2 ? 3 :
+        4;
     }
+}

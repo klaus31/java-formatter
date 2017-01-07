@@ -56,9 +56,9 @@ public class E2ETest {
         SourceCodeFileFormatter formatter = new SourceCodeFileFormatter4JavaDefault(sourceCodeFile);
         // when
         List<String> actualOutputLines = formatter.createOutputLines();
+        actualOutputLines.forEach(System.out::println);
         //then
         List<String> expectedOutputLines = read(language, outputFileName);
-        expectedOutputLines.forEach(System.out::println);
         for (int i = 0; i < expectedOutputLines.size(); i++) {
             String debugMessage = outputFileName + " at line " + (i + 1) + ":\nActual: \"" + actualOutputLines.get(i) + "\"\nShould: \"" + expectedOutputLines.get(i);
             assertThat(debugMessage, actualOutputLines.get(i), is(expectedOutputLines.get(i)));
