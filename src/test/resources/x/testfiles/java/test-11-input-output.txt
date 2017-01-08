@@ -4,16 +4,27 @@ public class A {
     public A() {
         switch (b) {
             case AA:
-            doIt();
-            break;
+                doIt();
+        }
+        switch (b) {
+            case AA:
+                doIt();
+                break;
             case BB:
             case DD:
-            for (int doIt : doIts) {
-                doIt(doIt);
-            }
-            break;
+                for (int doIt : doIts) {
+                    doIt(doIt);
+                }
+                break;
             default:
-            doNot();
+                doNot();
+        }
+        // WTF 1
+        switch (getText()) {
+        }
+        // WTF 2
+        switch (getText()) {
+            default:;
         }
     }
 }

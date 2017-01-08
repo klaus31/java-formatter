@@ -130,10 +130,10 @@ public class NodeWrapper {
         return node.hashCode();
     }
     public boolean isSemicolonAtEnd() {
-        return node.getSymbol().getType() == 63 && !javaRulePath.isCurrentRuleA("basicForStatement");
+        return node.getSymbol().getType() == 63 && !isCurrentRuleA("basicForStatement");
     }
     public boolean isSemicolonInBasicForStatement() {
-        return node.getSymbol().getType() == 63 && javaRulePath.isCurrentRuleA("basicForStatement");
+        return node.getSymbol().getType() == 63 && isCurrentRuleA("basicForStatement");
     }
     public String getText() {
         return node.getText();
@@ -154,19 +154,22 @@ public class NodeWrapper {
         return isNextADoublePoint() && "enhancedForStatement".equals(javaRulePath.getRuleNameFromEnd(1));
     }
     public boolean isNextADoublePointInSwitchStatement() {
-        return isNextADoublePoint() &&(javaRulePath.isCurrentRuleA("switchLabel") || prevNodeMatchesRulePath(jrp -> jrp.isCurrentRuleA("switchLabel")));
+        return isNextADoublePoint() &&(isCurrentRuleA("switchLabel") || prevNodeMatchesRulePath(jrp -> jrp.isCurrentRuleA("switchLabel")));
     }
     public boolean isNextADoublePointInLabeledStatement() {
-        return isNextADoublePoint() && javaRulePath.isCurrentRuleA("labeledStatement");
+        return isNextADoublePoint() && isCurrentRuleA("labeledStatement");
     }
     public boolean isDoublePointInEnhancedForStatement() {
-        return isDoublePoint() && javaRulePath.isCurrentRuleA("enhancedForStatement");
+        return isDoublePoint() && isCurrentRuleA("enhancedForStatement");
     }
     public boolean isDoublePointInSwitchStatement() {
-        return isDoublePoint() && javaRulePath.isCurrentRuleA("switchLabel");
+        return isDoublePoint() && isCurrentRuleA("switchLabel");
+    }
+    public boolean isCurrentRuleA(String ruleName) {
+        return javaRulePath.isCurrentRuleA(ruleName);
     }
     public boolean isDoublePointInLabeledStatement() {
-        return isDoublePoint() && javaRulePath.isCurrentRuleA("labeledStatement");
+        return isDoublePoint() && isCurrentRuleA("labeledStatement");
     }
     private boolean isNextADoublePoint() {
         return ":".equals(calculateNext().getText());
@@ -207,5 +210,13 @@ public class NodeWrapper {
     }
     public boolean isNodeTextAnyOf(String ... texts) {
         return Stream.of(texts).anyMatch(this::isNodeText);
+    }
+
+    boolean isLastNodeInSwitchStatement() {
+        return isNextNodeText("}") && isCurrentRuleAnyOf("returnStatement","expressionStatement") && "switchBlockStatementGroup".equals(javaRulePath.getRuleNameFromEnd(5));
+    }
+
+    private boolean isCurrentRuleAnyOf(String ... ruleNames) {
+        return Stream.of(ruleNames).anyMatch(this::isCurrentRuleA);
     }
 }

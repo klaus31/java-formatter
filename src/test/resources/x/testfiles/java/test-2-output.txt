@@ -23,13 +23,13 @@ public class TestBlockReopen {
     void switchCase() {
         switch (FOO) {
             case 1:
-            bla();
-            break;
+                bla();
+                break;
             case 2:
             case 3:
-            return 5;
+                return 5;
             default:
-            huhu();
+                huhu();
         }
     }
 }

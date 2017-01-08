@@ -8,20 +8,20 @@ class TestDoublePoints {
         for (String str : strs) {
             switch (str) {
                 case "a":
-                return "a";
+                    return "a";
             }
         }
         switch (str) {
             case "a":
-            for (String str : strs) {
-            }
+                for (String str : strs) {
+                }
             default:
-            return;
+                return;
         }
         b: for (int i : is) {
             c: switch (str) {
                 case "a":
-                return !"a".equals("b");
+                    return !"a".equals("b");
             }
         }
         int i = 1 < 2 ? 3 : (4 != 3 ? 4 : 2);
