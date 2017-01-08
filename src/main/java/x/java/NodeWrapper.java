@@ -135,7 +135,7 @@ public class NodeWrapper {
     public boolean isSemicolonInBasicForStatement() {
         return node.getSymbol().getType() == 63 && javaRulePath.isCurrentRuleA("basicForStatement");
     }
-    public String toSourceString() {
+    public String getText() {
         return node.getText();
     }
     public boolean isEOF() {
@@ -176,16 +176,16 @@ public class NodeWrapper {
     }
     @Override
     public String toString() {
-        return StringUtils.rightPad(toSourceString(), 20) + ": " + javaRulePath.toString();
+        return StringUtils.rightPad(getText(), 20) + ": " + javaRulePath.toString();
     }
     public boolean isBlockStartOrEnd() {
-        return asList("}", "{").contains(toSourceString());
+        return asList("}", "{").contains(getText());
     }
     public boolean isBlockEnd() {
-        return "}".equals(toSourceString());
+        return "}".equals(getText());
     }
     public boolean isBlockStart() {
-        return "{".equals(toSourceString());
+        return "{".equals(getText());
     }
     public boolean isNextNodeACommentInSameLine() {
         return isNextNodeAComment() && occursOnSameLineAs(calculateNext());
@@ -202,5 +202,9 @@ public class NodeWrapper {
 
     public boolean isNextNodeTextOneOf(String ... ruleNames) {
         return Stream.of(ruleNames).anyMatch(this::isNextNodeText);
+    }
+
+    public boolean isNodeText(String text) {
+        return text.equals(getText());
     }
 }

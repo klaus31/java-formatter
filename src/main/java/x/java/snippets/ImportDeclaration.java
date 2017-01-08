@@ -9,8 +9,8 @@ public class ImportDeclaration extends SimpleNodesJavaCodeSnippet {
     @Override
     protected String toSourceString(NodeWrapper node) {
         final StringBuilder result = new StringBuilder();
-        result.append(node.toSourceString());
-        if (WHITESPACE_WORDS.contains(node.toSourceString())) {
+        result.append(node.getText());
+        if (WHITESPACE_WORDS.contains(node.getText())) {
             result.append(" ");
         }
         if (node.isSemicolonAtEnd()) {

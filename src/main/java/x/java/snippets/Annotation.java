@@ -11,8 +11,8 @@ public class Annotation extends SimpleNodesJavaCodeSnippet {
     @Override
     protected String toSourceString(NodeWrapper node) {
         final StringBuilder result = new StringBuilder();
-        result.append(node.toSourceString());
-        if (node.toSourceString().equals(",")) {
+        result.append(node.getText());
+        if (node.getText().equals(",")) {
             result.append(" ");
         }
         isNextNodeACommentInSameLine = node.isNextNodeACommentInSameLine();

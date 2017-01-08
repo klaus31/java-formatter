@@ -1,6 +1,5 @@
 package x.java.snippets;
 
-import org.antlr.v4.runtime.tree.ParseTree;
 import x.java.NodeWrapper;
 import static java.util.Arrays.asList;
 import static x.java.JavaConfig.EOL;
@@ -9,7 +8,7 @@ public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
     @Override
     protected String toSourceString(NodeWrapper node) {
         StringBuilder builder = new StringBuilder();
-        builder.append(node.toSourceString());
+        builder.append(node.getText());
         if (requiresSingleEolAfterNode(node)) {
             builder.append(EOL);
             builder.append(getIndentService().calculateIndentToAppendTo(node));
@@ -31,17 +30,17 @@ public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
         if (node.isSemicolonInBasicForStatement()) {
             return true;
         }
-        if (asList(";", "::", "(", ".", "++", "--").contains(node.toSourceString())) {
+        if (asList(";", "::", "(", ".", "++", "--").contains(node.getText())) {
             return false;
         }
-        if (asList("new", ",", "=").contains(node.toSourceString())) {
+        if (asList("new", ",", "=").contains(node.getText())) {
             return true;
         }
         if (node.isBlockStart() && node.matchesRulePath("arrayInitializer")) {
             return false;
         }
         if(node.isNextNodeText("(")) {
-            return asList("catch", "switch", "if", "for", "while", "+", "-", "*", "/", "%").contains(node.toSourceString());
+            return asList("catch", "switch", "if", "for", "while", "+", "-", "*", "/", "%", ":").contains(node.getText());
         }
         if (node.isNextNodeTextOneOf(";", "::", ")", ",", ".", "++", "--", "[", "]", "}")) {
             return false;
@@ -64,15 +63,18 @@ public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
         if (node.isNextADoublePointInSwitchStatement()) {
             return false;
         }
-        if (")".equals(node.toSourceString())) {
+        if (")".equals(node.getText())) {
             return ! node.isNextNodeText(".");
+        }
+        if(node.isNodeText("!")) {
+            return false;
         }
         if (node.isInGenericTypeDeclaration()) {
             if (node.isNextNodeTextOneOf("<", ",", ">")) {
                 return false;
-            } else if (node.toSourceString().equals(",")) {
+            } else if (node.getText().equals(",")) {
                 return true;
-            } else if (node.toSourceString().equals("<")) {
+            } else if (node.getText().equals("<")) {
                 return false;
             } else {
                 return true;

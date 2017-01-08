@@ -10,8 +10,8 @@ public class PackageDeclaration extends SimpleNodesJavaCodeSnippet {
     @Override
     protected String toSourceString(NodeWrapper node) {
         final StringBuilder result = new StringBuilder();
-        result.append(node.toSourceString());
-        if (node.toSourceString().equals("package")) {
+        result.append(node.getText());
+        if (node.getText().equals("package")) {
             result.append(" ");
         }
         return result.toString();
