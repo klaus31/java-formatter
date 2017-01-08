@@ -31,7 +31,7 @@ public class BlankService {
         if (asList("new", ",", "=").contains(node.toSourceString())) {
             return Optional.of(true);
         }
-        if(node.isBlockStart() && node.matchesRulePath("arrayInitializer")) {
+        if (node.isBlockStart() && node.matchesRulePath("arrayInitializer")) {
             return Optional.of(false);
         }
         ParseTree nextNode = node.calculateNext();

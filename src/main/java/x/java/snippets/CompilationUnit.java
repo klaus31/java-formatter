@@ -28,7 +28,7 @@ public class CompilationUnit implements JavaCodeSnippet {
     }
     @Override
     public void add(NodeWrapper node) {
-        currentCodeSnippet.orElseThrow(() -> new AssertionError("Sorry for X-Formatter is unable to format valid but unexpected: "+node)).add(node);
+        currentCodeSnippet.orElseThrow(() -> new AssertionError("Sorry for X-Formatter is unable to format valid but unexpected: " + node)).add(node);
     }
     @Override
     public String toSourceString() {

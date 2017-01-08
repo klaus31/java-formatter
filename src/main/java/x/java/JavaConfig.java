@@ -66,7 +66,7 @@ public class JavaConfig {
             case "interfaceDeclaration":
             return new MethodBodyOrClassDeclaration();
             default:
-            throw new AssertionError(ruleName+" does not have a matching code snippet formatter");
+            throw new AssertionError(ruleName + " does not have a matching code snippet formatter");
         }
     }
 }

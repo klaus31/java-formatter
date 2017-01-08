@@ -11,7 +11,7 @@ public class EolService {
         if (node.isBlockEnd() && node.isNextNodeElseCatchOrWhile() || node.isNextNodeText(";") || node.isNextNodeText(")")) {
             return Optional.of(false);
         }
-        if(node.isBlockStart() && node.matchesRulePath("arrayInitializer")) {
+        if (node.isBlockStart() && node.matchesRulePath("arrayInitializer")) {
             return Optional.of(false);
         }
         if (node.isBlockStartOrEnd() || node.isSemicolonAtEnd() || node.isDoublePointInSwitchStatement()) {

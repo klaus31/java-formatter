@@ -4,7 +4,6 @@ import x.java.JavaConfig;
 import x.java.NodeWrapper;
 import static java.util.Arrays.asList;
 import static x.java.JavaConfig.*;
-
 public class MethodBodyOrClassDeclaration extends SimpleNodesJavaCodeSnippet {
     @Override
     protected String toSourceString(NodeWrapper node) {
