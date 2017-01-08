@@ -21,12 +21,15 @@ public class MethodBody extends SimpleNodesJavaCodeSnippet {
         return result.toString();
     }
     private boolean isAEolCandidate(NodeWrapper node) {
-        return node.isBlockStartOrEnd() || node.isSemicolonAtEnd() || ":".equals(node.toSourceString());
+        return node.isBlockStartOrEnd() || node.isSemicolonAtEnd() || node.isDoublePointInSwitchStatement();
     }
     private boolean onlyPureNodeValueIsRequired(NodeWrapper node) {
         return node.isBlockEnd() && asList(")", ";").contains(node.calculateNext().getText()) || node.isBlockStart() && node.matchesRulePath("arrayInitializer");
     }
     private boolean requiresSingleBlankAfter(NodeWrapper node) {
+        if("}".equals(node.calculateNext().getText())) {
+            return false;
+        }
         if (isAEolCandidate(node)) {
             return node.isNextNodeACommentInSameLine() || node.isBlockEnd() && node.isNextNodeElseCatchOrWhile();
         }

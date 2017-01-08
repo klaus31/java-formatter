@@ -7,7 +7,9 @@ import org.antlr.v4.runtime.tree.Trees;
 import org.antlr.v4.tool.Grammar;
 import org.antlr.v4.tool.LexerGrammar;
 import org.apache.commons.io.IOUtils;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -20,6 +22,10 @@ import static org.mockito.Mockito.mock;
 // TODO "do mock behaviour, not data". I could not found an easy way.
 @RunWith(MockitoJUnitRunner.class)
 public class NodeWrapperTest {
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
     @Test
     public void calculateNextShouldDoOn2LevelTree() throws org.antlr.runtime.RecognitionException {
         // given
@@ -33,7 +39,8 @@ public class NodeWrapperTest {
         given(root.getChildCount()).willReturn(2);
         // when / then
         assertThat(new NodeWrapper(leaf1, null, null).calculateNext(), is(leaf2));
-        assertThat(new NodeWrapper(leaf2, null, null).calculateNext(), nullValue());
+        expectedException.expect(AssertionError.class);
+        new NodeWrapper(leaf2, null, null).calculateNext();
     }
     @Test
     public void calculateNextShouldDoOn3LevelTree() throws org.antlr.runtime.RecognitionException {
@@ -66,7 +73,8 @@ public class NodeWrapperTest {
         // when / then
         assertThat(new NodeWrapper(leaf1, null, null).calculateNext(), is(leaf2));
         assertThat(new NodeWrapper(leaf2, null, null).calculateNext(), is(leaf3));
-        assertThat(new NodeWrapper(leaf3, null, null).calculateNext(), nullValue());
+        expectedException.expect(AssertionError.class);
+        new NodeWrapper(leaf3, null, null).calculateNext();
     }
     @Test
     public void calculateNextShouldDoOnMixedLevelTree() throws org.antlr.runtime.RecognitionException {
@@ -94,6 +102,7 @@ public class NodeWrapperTest {
         // when / then
         assertThat(new NodeWrapper(leaf1, null, null).calculateNext(), is(leaf2));
         assertThat(new NodeWrapper(leaf2, null, null).calculateNext(), is(leaf3));
-        assertThat(new NodeWrapper(leaf3, null, null).calculateNext(), nullValue());
+        expectedException.expect(AssertionError.class);
+        new NodeWrapper(leaf3, null, null).calculateNext();
     }
 }
