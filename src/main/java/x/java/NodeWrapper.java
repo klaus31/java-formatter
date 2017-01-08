@@ -18,6 +18,7 @@ public class NodeWrapper {
         String nextNodeText = calculateNext().getText();
         return nextNodeText.matches("/\\*.*\\*/") || nextNodeText.matches("//.*");
     }
+    // TODO prevNode makes it very slow. Try to find a more efficient solution for what it is used for.
     public NodeWrapper(TerminalNode node, JavaRulePath javaRulePath, NodeWrapper prevNode) {
         this.javaRulePath = javaRulePath;
         this.node = node;
