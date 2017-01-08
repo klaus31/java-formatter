@@ -18,6 +18,9 @@ public abstract class SimpleNodesJavaCodeSnippet implements JavaCodeSnippet {
     }
     @Override
     public String toSourceString() {
+        if(nodes.isEmpty()) {
+            return "";
+        }
         final StringBuilder builder = new StringBuilder();
         for (NodeWrapper node :
         nodes) {

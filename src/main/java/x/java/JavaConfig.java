@@ -4,6 +4,9 @@ import x.java.snippets.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import static x.ctrl.MiserableLogger.logDebug;
+
 public class JavaConfig {
     public static final String EOL = "\n";
     private static IndentService indentService;
@@ -33,6 +36,7 @@ public class JavaConfig {
         }
     }
     private static JavaCodeSnippet getMatchingCodeSnippetFor(String ruleName) {
+        logDebug("Using new CodeSnippet for " + ruleName);
         switch (ruleName) {
             case "annotation":
             return new Annotation();

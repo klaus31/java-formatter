@@ -1,18 +1,26 @@
 package x.java.snippets;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import x.java.IndentService;
 import x.java.NodeWrapper;
+
 import static java.util.Arrays.asList;
 import static x.java.JavaConfig.EOL;
 import static x.java.JavaConfig.getIndentService;
+
 public class FieldDeclaration extends SimpleNodesJavaCodeSnippet {
     private NodeWrapper lastNode;
+
     @Override
     public String toSourceString() {
-        return super.toSourceString() + (lastNode.isNextNodeACommentInSameLine() ? " " :
-        EOL + getIndentService().calculateIndentToAppendTo(lastNode));
+        String superResult = super.toSourceString();
+        if (superResult.isEmpty()) {
+            return "";
+        } else {
+            return superResult + (lastNode.isNextNodeACommentInSameLine() ? " " :
+                    EOL + getIndentService().calculateIndentToAppendTo(lastNode));
+        }
     }
+
     @Override
     protected String toSourceString(NodeWrapper node) {
         lastNode = node;
@@ -23,6 +31,7 @@ public class FieldDeclaration extends SimpleNodesJavaCodeSnippet {
         }
         return result.toString();
     }
+
     private boolean requiresWhitespaceAfter(NodeWrapper node) {
         if (asList(";", "(").contains(node.toSourceString())) {
             return false;
@@ -35,7 +44,7 @@ public class FieldDeclaration extends SimpleNodesJavaCodeSnippet {
             return false;
         }
         if (")".equals(node.toSourceString())) {
-            return ! asList(".").contains(nextNode.getText());
+            return !asList(".").contains(nextNode.getText());
         }
         if (node.matchesRulePath("unannClassType_lfno_unannClassOrInterfaceType")) {
             if (asList("<", ",", ">").contains(nextNode.getText())) {
