@@ -8,7 +8,7 @@ public class EolService {
         if (node.isNextNodeACommentInSameLine()) {
             return Optional.of(false);
         }
-        if (node.isBlockEnd() && node.isNextNodeElseCatchOrWhile()) {
+        if (node.isBlockEnd() && node.isNextNodeElseCatchOrWhile() || node.isNextNodeText(";") || node.isNextNodeText(")")) {
             return Optional.of(false);
         }
         if (node.isBlockStartOrEnd() || node.isSemicolonAtEnd() || node.isDoublePointInSwitchStatement()) {

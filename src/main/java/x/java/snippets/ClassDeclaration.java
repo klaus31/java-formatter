@@ -10,9 +10,6 @@ public class ClassDeclaration extends SimpleNodesJavaCodeSnippet {
     protected String toSourceString(NodeWrapper node) {
         StringBuilder builder = new StringBuilder();
         builder.append(node.toSourceString());
-        if (node.isBlockEnd() && asList(")", ";").contains(node.calculateNext().getText())) {
-            return builder.toString();
-        }
         if (getEolService().requiresSingleEolAfterNodeInAnyCase(node).orElse(false)) {
             builder.append(EOL);
             builder.append(getIndentService().calculateIndentToAppendTo(node));
