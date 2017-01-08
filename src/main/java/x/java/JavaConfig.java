@@ -8,16 +8,8 @@ import static x.ctrl.MiserableLogger.logDebug;
 public class JavaConfig {
     public static final String EOL = "\n";
     private static final IndentService indentService = new IndentService("    ");
-    private static final EolService eolService = new EolService();
-    private static final BlankService blankService = new BlankService(getEolService());
     private static String ruleCurrentJavaCodeSnippetIsFor;
     private JavaConfig() {
-    }
-    public static BlankService getBlankService() {
-        return blankService;
-    }
-    public static EolService getEolService() {
-        return eolService;
     }
     public static IndentService getIndentService() {
         return indentService;
@@ -52,7 +44,7 @@ public class JavaConfig {
             case "interfaceMethodDeclaration":
             case "classDeclaration":
             case "interfaceDeclaration":
-            return new MethodBodyOrClassDeclaration();
+            return new WhateverDeclaration();
             default:
             throw new AssertionError(ruleName + " does not have a matching code snippet formatter");
         }
