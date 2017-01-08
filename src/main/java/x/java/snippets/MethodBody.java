@@ -28,11 +28,7 @@ public class MethodBody extends SimpleNodesJavaCodeSnippet {
     }
     private boolean requiresSingleBlankAfter(NodeWrapper node) {
         if (isAEolCandidate(node)) {
-            if (node.isNextNodeACommentInSameLine() || node.isBlockEnd() && node.isNextNodeElseCatchOrWhile()) {
-                return true;
-            } else {
-                return false;
-            }
+            return node.isNextNodeACommentInSameLine() || node.isBlockEnd() && node.isNextNodeElseCatchOrWhile();
         }
         if (node.isSemicolonInBasicForStatement()) {
             return true;
@@ -50,9 +46,23 @@ public class MethodBody extends SimpleNodesJavaCodeSnippet {
         if (asList(";", "::", ")", ",", ".", "++", "--", "[", "]").contains(nextNode.getText())) {
             return false;
         }
-        if (nextNode.getText().equals(":")) {
-            // TODO for each in case block and named statements
-            return ! node.matchesRulePath("switchBlock");
+        if (node.isDoublePointInEnhancedForStatement()) {
+            return true;
+        }
+        if (node.isNextADoublePointInEnhancedForStatement()) {
+            return true;
+        }
+        if (node.isDoublePointInLabeledStatement()) {
+            return true;
+        }
+        if (node.isNextADoublePointInLabeledStatement()) {
+            return false;
+        }
+        if (node.isDoublePointInSwitchStatement()) {
+            return true;
+        }
+        if (node.isNextADoublePointInSwitchStatement()) {
+            return false;
         }
         if (")".equals(node.toSourceString())) {
             return ! asList(".").contains(nextNode.getText());

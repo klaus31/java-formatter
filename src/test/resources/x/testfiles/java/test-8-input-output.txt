@@ -15,14 +15,16 @@ class TestDoublePoints {
         }
         switch (str) {
             case "a":
-            for (String str:
+            for (String str :
             strs) {
             }
+            default:
+            return;
         }
-        b :
+        b:
         for (int i :
         is) {
-            c :
+            c:
             switch (str) {
                 case "a":
                 return "a";

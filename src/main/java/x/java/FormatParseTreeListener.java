@@ -9,6 +9,8 @@ class FormatParseTreeListener implements ParseTreeListener {
     private final JavaFormatter formatter;
     private final String [ ] ruleNames;
     private final JavaRulePath javaRulePath;
+    private NodeWrapper prevNodeWrapper = null;
+
     FormatParseTreeListener ( JavaFormatter formatter , String [ ] ruleNames ) {
         this . formatter = formatter ;
         this . ruleNames = ruleNames ;
@@ -16,7 +18,9 @@ class FormatParseTreeListener implements ParseTreeListener {
     }
     @Override
     public void visitTerminal(TerminalNode node) {
-        formatter.add(new NodeWrapper(node, new JavaRulePath(javaRulePath)));
+        NodeWrapper nodeWrapper = new NodeWrapper(node, new JavaRulePath(javaRulePath), prevNodeWrapper);
+        formatter.add(nodeWrapper);
+        prevNodeWrapper = nodeWrapper;
     }
     @Override
     public void visitErrorNode(ErrorNode node) {

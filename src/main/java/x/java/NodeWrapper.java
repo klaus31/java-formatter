@@ -5,20 +5,23 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.lang3.StringUtils;
 import x.format.RulePath;
-import java.util.Arrays;
+
 import java.util.Optional;
 import java.util.function.Predicate;
 import static java.util.Arrays.asList;
 public class NodeWrapper {
     private final JavaRulePath javaRulePath;
     private final TerminalNode node;
+    private final NodeWrapper prevNode;
+    private ParseTree nextNode;
     public boolean isNextNodeAComment() {
         String nextNodeText = calculateNext().getText();
         return nextNodeText.matches("/\\*.*\\*/") || nextNodeText.matches("//.*");
     }
-    public NodeWrapper ( TerminalNode node , JavaRulePath javaRulePath ) {
+    public NodeWrapper ( TerminalNode node , JavaRulePath javaRulePath, NodeWrapper prevNode ) {
         this . javaRulePath = javaRulePath ;
         this . node = node ;
+        this.prevNode=prevNode;
     }
     private boolean occursOnSameLineAs(TerminalNode otherNode) {
         return node.getSymbol().getLine() == otherNode.getSymbol().getLine();
@@ -32,6 +35,8 @@ public class NodeWrapper {
         }
     }
     public ParseTree calculateNext() {
+        if(nextNode == null) {
+
         int nodeIndex = getNodeIndex();
         ParseTree parent = node.getParent();
         if (nodeIndex == parent.getChildCount() - 1) {
@@ -40,14 +45,16 @@ public class NodeWrapper {
                 parent = parent.getParent();
             }
             if (parent == null) {
-                return null;
+                throw new AssertionError("Should never been called on <EOF> node");
             } else {
                 ParseTree candidate = parent.getParent().getChild(getNodeIndex(parent) + 1);
-                return getVeryFirstLeafOf(candidate);
+                nextNode= getVeryFirstLeafOf(candidate);
             }
         } else {
-            return getVeryFirstLeafOf(parent.getChild(nodeIndex + 1));
+            nextNode= getVeryFirstLeafOf(parent.getChild(nodeIndex + 1));
         }
+        }
+        return nextNode;
     }
     private ParseTree getVeryFirstLeafOf(ParseTree node) {
         if (node.getChildCount() == 0) return node;
@@ -137,9 +144,42 @@ public class NodeWrapper {
     public boolean matchesRulePath(Predicate<RulePath> predicate) {
         return predicate.test(javaRulePath);
     }
+    public boolean prevNodeMatchesRulePath(Predicate<RulePath> predicate) {
+        return prevNode != null && predicate.test(prevNode.javaRulePath);
+    }
     public boolean matchesRulePath(String ... ruleNames) {
         return javaRulePath.matches(ruleNames);
     }
+
+
+    public boolean isNextADoublePointInEnhancedForStatement() {
+        return isNextADoublePoint() && "enhancedForStatement".equals(javaRulePath.getRuleNameFromEnd(1));
+    }
+    public boolean isNextADoublePointInSwitchStatement() {
+        return isNextADoublePoint() && (javaRulePath.isCurrentRuleA("switchLabel") ||
+                prevNodeMatchesRulePath(jrp -> jrp.isCurrentRuleA("switchLabel")));
+    }
+    public boolean isNextADoublePointInLabeledStatement() {
+        return isNextADoublePoint() && javaRulePath.isCurrentRuleA("labeledStatement");
+    }
+
+    public boolean isDoublePointInEnhancedForStatement() {
+        return isDoublePoint() && javaRulePath.isCurrentRuleA("enhancedForStatement");
+    }
+    public boolean isDoublePointInSwitchStatement() {
+        return isDoublePoint() && javaRulePath.isCurrentRuleA("switchLabel");
+    }
+    public boolean isDoublePointInLabeledStatement() {
+        return isDoublePoint() && javaRulePath.isCurrentRuleA("labeledStatement");
+    }
+
+    private boolean isNextADoublePoint() {
+        return ":".equals(calculateNext().getText());
+    }
+    private boolean isDoublePoint() {
+        return ":".equals(node.getText());
+    }
+
     @Override
     public String toString() {
         return StringUtils.rightPad(toSourceString(), 20) + ": " + javaRulePath.toString();

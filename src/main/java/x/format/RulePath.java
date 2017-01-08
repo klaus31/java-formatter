@@ -6,8 +6,13 @@ import java.util.Optional;
 import java.util.stream.Stream;
 public class RulePath {
     private final List<String> rulePathNames;
+
     protected RulePath ( ) {
-        this . rulePathNames = new ArrayList < > ( ) ;
+        rulePathNames = new ArrayList < > ( ) ;
+    }
+
+    public String getRuleNameFromEnd(int stepsBackward) {
+        return rulePathNames.get(rulePathNames.size()-1-stepsBackward);
     }
     protected List<String> getRulePathNames() {
         return rulePathNames;
@@ -18,8 +23,8 @@ public class RulePath {
     public void exit(String ruleName) {
         rulePathNames.remove(rulePathNames.size() - 1);
     }
-    String getCurrentRule() {
-        return rulePathNames.get(rulePathNames.size() - 1);
+    protected String getCurrentRule() {
+        return rulePathNames.isEmpty() ? null : rulePathNames.get(rulePathNames.size() - 1);
     }
     public boolean isCurrentRuleA(String ruleName) {
         return ruleName.equals(getCurrentRule());

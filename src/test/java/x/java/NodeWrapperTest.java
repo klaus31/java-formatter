@@ -32,8 +32,8 @@ public class NodeWrapperTest {
         given(root.getChild(1)).willReturn(leaf2);
         given(root.getChildCount()).willReturn(2);
         // when / then
-        assertThat(new NodeWrapper(leaf1, null).calculateNext(), is(leaf2));
-        assertThat(new NodeWrapper(leaf2, null).calculateNext(), nullValue());
+        assertThat(new NodeWrapper(leaf1, null, null).calculateNext(), is(leaf2));
+        assertThat(new NodeWrapper(leaf2, null, null).calculateNext(), nullValue());
     }
     @Test
     public void calculateNextShouldDoOn3LevelTree() throws org.antlr.runtime.RecognitionException {
@@ -64,9 +64,9 @@ public class NodeWrapperTest {
         given(node1.getChild(1)).willReturn(leaf2);
         given(node2.getChild(0)).willReturn(leaf3);
         // when / then
-        assertThat(new NodeWrapper(leaf1, null).calculateNext(), is(leaf2));
-        assertThat(new NodeWrapper(leaf2, null).calculateNext(), is(leaf3));
-        assertThat(new NodeWrapper(leaf3, null).calculateNext(), nullValue());
+        assertThat(new NodeWrapper(leaf1, null, null).calculateNext(), is(leaf2));
+        assertThat(new NodeWrapper(leaf2, null, null).calculateNext(), is(leaf3));
+        assertThat(new NodeWrapper(leaf3, null, null).calculateNext(), nullValue());
     }
     @Test
     public void calculateNextShouldDoOnMixedLevelTree() throws org.antlr.runtime.RecognitionException {
@@ -92,8 +92,8 @@ public class NodeWrapperTest {
         given(node.getChild(0)).willReturn(leaf1);
         given(node.getChild(1)).willReturn(leaf2);
         // when / then
-        assertThat(new NodeWrapper(leaf1, null).calculateNext(), is(leaf2));
-        assertThat(new NodeWrapper(leaf2, null).calculateNext(), is(leaf3));
-        assertThat(new NodeWrapper(leaf3, null).calculateNext(), nullValue());
+        assertThat(new NodeWrapper(leaf1, null, null).calculateNext(), is(leaf2));
+        assertThat(new NodeWrapper(leaf2, null, null).calculateNext(), is(leaf3));
+        assertThat(new NodeWrapper(leaf3, null, null).calculateNext(), nullValue());
     }
 }
