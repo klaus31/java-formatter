@@ -28,7 +28,7 @@ public class JavaConfig {
     public static SimpleNodesJavaCodeSnippet createComment() {
         return new Comment();
     }
-    private static final List<String> RULES_HAVING_A_MATCHING_FORMATTER = Arrays.asList("annotation", "methodDeclarator", "packageDeclaration", "importDeclaration", "fieldDeclaration", "methodDeclaration", "interfaceMethodDeclaration", "classDeclaration", "interfaceDeclaration");
+    private static final List<String> RULES_HAVING_A_MATCHING_FORMATTER = Arrays.asList("annotation", "packageDeclaration", "importDeclaration", "fieldDeclaration", "methodDeclaration", "interfaceMethodDeclaration", "classDeclaration", "interfaceDeclaration");
     public static Optional<JavaCodeSnippet> getMatchingCodeSnippetFor(JavaRulePath rulePath) {
         Optional<String> newRule = rulePath.calculateLastRuleEqualsAnyOf(RULES_HAVING_A_MATCHING_FORMATTER);
         if (! newRule.isPresent() || newRule.get().equals(ruleCurrentJavaCodeSnippetIsFor)) {
@@ -43,20 +43,15 @@ public class JavaConfig {
         switch (ruleName) {
             case "annotation":
             return new Annotation();
-            case "methodDeclaration":
-            return new MethodBodyOrClassDeclaration();
-            case "methodDeclarator":
-            return new MethodBodyOrClassDeclaration();
             case "packageDeclaration":
             return new PackageDeclaration();
             case "importDeclaration":
             return new ImportDeclaration();
             case "fieldDeclaration":
             return new FieldDeclaration();
+            case "methodDeclaration":
             case "interfaceMethodDeclaration":
-            return new MethodBodyOrClassDeclaration();
             case "classDeclaration":
-            return new MethodBodyOrClassDeclaration();
             case "interfaceDeclaration":
             return new MethodBodyOrClassDeclaration();
             default:
