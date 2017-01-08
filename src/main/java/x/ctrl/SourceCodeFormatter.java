@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import static java.util.stream.Collectors.joining;
 import static x.ctrl.KnownSourceFileType.JAVA;
+import static x.ctrl.MiserableLogger.logInfo;
 public class SourceCodeFormatter {
     private final Path inputDirectory;
     public SourceCodeFormatter ( Path inputDirectory ) {
@@ -20,7 +21,7 @@ public class SourceCodeFormatter {
     }
     private static Consumer<SourceCodeFile> process(KnownSourceFileType type) {
         return sourceCodeFile -> {
-            System.out.println("Format next: " + sourceCodeFile.getPath());
+            logInfo("Format next: " + sourceCodeFile.getPath());
             List<String> outputLines = createOutputLines(sourceCodeFile, type);
             write(sourceCodeFile, outputLines);
         };
