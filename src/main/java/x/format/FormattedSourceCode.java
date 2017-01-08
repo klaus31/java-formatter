@@ -9,7 +9,7 @@ public class FormattedSourceCode {
     private final List<CodeSnippet> snippets;
     private Map<Object, Object> code;
     public FormattedSourceCode() {
-        this.snippets = new ArrayList < >();
+        this.snippets = new ArrayList<>();
     }
     public void add(CodeSnippet snippet) {
         snippets.add(snippet);

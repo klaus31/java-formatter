@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 public class RulePath {
     private final List<String> rulePathNames;
     protected RulePath() {
-        rulePathNames = new ArrayList < >();
+        rulePathNames = new ArrayList<>();
     }
     public String getRuleNameFromEnd(int stepsBackward) {
         return rulePathNames.get(rulePathNames.size() - 1 - stepsBackward);

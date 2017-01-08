@@ -13,7 +13,7 @@ public class CompilationUnit implements JavaCodeSnippet {
     private Optional<JavaCodeSnippet> currentCodeSnippet;
     private List<JavaCodeSnippet> snippets;
     public CompilationUnit() {
-        snippets = new ArrayList < >();
+        snippets = new ArrayList<>();
         currentCodeSnippet = Optional.empty();
     }
     private void setCurrentCodeSnippet(JavaCodeSnippet javaCodeSnippet) {

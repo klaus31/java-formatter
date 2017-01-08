@@ -2,7 +2,6 @@ package x.java.snippets;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import x.java.NodeWrapper;
-
 import static java.util.Arrays.asList;
 import static x.java.JavaConfig.EOL;
 import static x.java.JavaConfig.getIndentService;
@@ -19,7 +18,6 @@ public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
         }
         return builder.toString();
     }
-
     private boolean requiresSingleBlankAfterNode(NodeWrapper node) {
         if ("}".equals(node.calculateNext().getText())) {
             return false;
@@ -70,8 +68,7 @@ public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
         if (")".equals(node.toSourceString())) {
             return ! asList(".").contains(nextNode.getText());
         }
-        if (node.isInGenericTypeDeclaration())
-        {
+        if (node.isInGenericTypeDeclaration()) {
             if (asList("<", ",", ">").contains(nextNode.getText())) {
                 return false;
             } else if (node.toSourceString().equals(",")) {
@@ -84,7 +81,6 @@ public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
         }
         return true;
     }
-
     private boolean requiresSingleEolAfterNode(NodeWrapper node) {
         if (node.isNextNodeACommentInSameLine()) {
             return false;
