@@ -12,9 +12,9 @@ import static x.java.JavaConfig.getMatchingCodeSnippetFor;
 public class CompilationUnit implements JavaCodeSnippet {
     private Optional<JavaCodeSnippet> currentCodeSnippet;
     private List<JavaCodeSnippet> snippets;
-    public CompilationUnit ( ) {
-        snippets = new ArrayList < > ( ) ;
-        currentCodeSnippet = Optional . empty ( ) ;
+    public CompilationUnit() {
+        snippets = new ArrayList < >();
+        currentCodeSnippet = Optional.empty();
     }
     private void setCurrentCodeSnippet(JavaCodeSnippet javaCodeSnippet) {
         flushCurrentSnippetIfPresent();

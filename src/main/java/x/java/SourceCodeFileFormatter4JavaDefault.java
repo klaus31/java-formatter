@@ -15,10 +15,10 @@ import java.io.IOException;
 import java.util.List;
 public class SourceCodeFileFormatter4JavaDefault implements SourceCodeFileFormatter {
     private final SourceCodeFile file;
-    private static final String GRAMMAR_FILE = SourceCodeFileFormatter4JavaDefault . class . getClassLoader (). getResource ("Java8.g4"). getFile ();
-    private static final Grammar GRAMMAR = Grammar . load (GRAMMAR_FILE);
-    public SourceCodeFileFormatter4JavaDefault ( SourceCodeFile file ) {
-        this . file = file ;
+    private static final String GRAMMAR_FILE = SourceCodeFileFormatter4JavaDefault.class.getClassLoader().getResource("Java8.g4").getFile();
+    private static final Grammar GRAMMAR = Grammar.load(GRAMMAR_FILE);
+    public SourceCodeFileFormatter4JavaDefault(SourceCodeFile file) {
+        this.file = file;
     }
     @Override
     public List<String> createOutputLines() {

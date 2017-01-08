@@ -17,10 +17,10 @@ public class NodeWrapper {
         String nextNodeText = calculateNext().getText();
         return nextNodeText.matches("/\\*.*\\*/") || nextNodeText.matches("//.*");
     }
-    public NodeWrapper ( TerminalNode node , JavaRulePath javaRulePath , NodeWrapper prevNode ) {
-        this . javaRulePath = javaRulePath ;
-        this . node = node ;
-        this . prevNode = prevNode ;
+    public NodeWrapper(TerminalNode node, JavaRulePath javaRulePath, NodeWrapper prevNode) {
+        this.javaRulePath = javaRulePath;
+        this.node = node;
+        this.prevNode = prevNode;
     }
     private boolean occursOnSameLineAs(TerminalNode otherNode) {
         return node.getSymbol().getLine() == otherNode.getSymbol().getLine();

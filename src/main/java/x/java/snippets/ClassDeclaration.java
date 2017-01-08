@@ -17,7 +17,7 @@ public class ClassDeclaration extends SimpleNodesJavaCodeSnippet {
         if (node.isBlockStartOrEnd() || node.isSemicolonAtEnd()) {
             builder.append(EOL);
             builder.append(getIndentService().calculateIndentToAppendTo(node));
-        } else if(getBlankService().requiresSingleBlankAfterNodeInAnyCase(node).orElse(true)) {
+        } else if (getBlankService().requiresSingleBlankAfterNodeInAnyCase(node).orElse(true)) {
             builder.append(" ");
         }
         return builder.toString();

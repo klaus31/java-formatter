@@ -3,7 +3,6 @@ package x.java.snippets;
 import x.java.NodeWrapper;
 import static java.util.Arrays.asList;
 import static x.java.JavaConfig.*;
-
 public class MethodBody extends SimpleNodesJavaCodeSnippet {
     @Override
     protected String toSourceString(NodeWrapper node) {
@@ -23,6 +22,6 @@ public class MethodBody extends SimpleNodesJavaCodeSnippet {
         return node.isBlockEnd() && asList(")", ";").contains(node.calculateNext().getText()) || node.isBlockStart() && node.matchesRulePath("arrayInitializer");
     }
     private boolean requiresSingleBlankAfter(NodeWrapper node) {
-        return getBlankService().requiresSingleBlankAfterNodeInAnyCase(node).orElse(!node.matchesRulePath("methodDeclaration", "classInstanceCreationExpression_lfno_primary"));
+        return getBlankService().requiresSingleBlankAfterNodeInAnyCase(node).orElse(! node.matchesRulePath("methodDeclaration", "classInstanceCreationExpression_lfno_primary"));
     }
 }

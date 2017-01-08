@@ -9,8 +9,8 @@ import static x.ctrl.MiserableLogger.logDebug;
 import static x.java.JavaConfig.getIndentService;
 public abstract class SimpleNodesJavaCodeSnippet implements JavaCodeSnippet {
     private final List<NodeWrapper> nodes;
-    SimpleNodesJavaCodeSnippet ( ) {
-        nodes = new ArrayList < > ( ) ;
+    SimpleNodesJavaCodeSnippet() {
+        nodes = new ArrayList < >();
     }
     String indentCurrent() {
         return getIndentService().getCurrentIndent();

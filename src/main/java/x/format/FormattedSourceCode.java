@@ -8,8 +8,8 @@ import static java.util.stream.Collectors.joining;
 public class FormattedSourceCode {
     private final List<CodeSnippet> snippets;
     private Map<Object, Object> code;
-    public FormattedSourceCode ( ) {
-        this . snippets = new ArrayList < > ( ) ;
+    public FormattedSourceCode() {
+        this.snippets = new ArrayList < >();
     }
     public void add(CodeSnippet snippet) {
         snippets.add(snippet);

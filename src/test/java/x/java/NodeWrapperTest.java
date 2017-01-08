@@ -23,7 +23,7 @@ import static org.mockito.Mockito.mock;
 @RunWith(MockitoJUnitRunner.class)
 public class NodeWrapperTest {
     @Rule
-    public ExpectedException expectedException = ExpectedException . none ();
+    public ExpectedException expectedException = ExpectedException.none();
     @Test
     public void calculateNextShouldDoOn2LevelTree() throws org.antlr.runtime.RecognitionException {
         // given

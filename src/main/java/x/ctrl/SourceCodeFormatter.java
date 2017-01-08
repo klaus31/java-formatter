@@ -10,8 +10,8 @@ import static x.ctrl.KnownSourceFileType.JAVA;
 import static x.ctrl.MiserableLogger.logInfo;
 public class SourceCodeFormatter {
     private final Path inputDirectory;
-    public SourceCodeFormatter ( Path inputDirectory ) {
-        this . inputDirectory = inputDirectory ;
+    public SourceCodeFormatter(Path inputDirectory) {
+        this.inputDirectory = inputDirectory;
     }
     public static CharSequence getEol() {
         return System.getProperty("line.separator");

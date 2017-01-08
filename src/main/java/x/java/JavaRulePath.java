@@ -5,11 +5,11 @@ import x.format.RulePath;
 import java.util.ArrayList;
 import java.util.List;
 public class JavaRulePath extends RulePath {
-    JavaRulePath ( ) {
-        super ( ) ;
+    JavaRulePath() {
+        super();
     }
-    JavaRulePath ( JavaRulePath javaRulePath ) {
-        super ( ) ;
-        javaRulePath . getRulePathNames ( ) . forEach ( this :: enter ) ;
+    JavaRulePath(JavaRulePath javaRulePath) {
+        super();
+        javaRulePath.getRulePathNames().forEach(this::enter);
     }
 }

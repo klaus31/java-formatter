@@ -7,11 +7,11 @@ import java.util.Optional;
 import static x.ctrl.MiserableLogger.logDebug;
 public class JavaConfig {
     public static final String EOL = "\n";
-    private static final IndentService indentService=new IndentService("    ");
-    private static final EolService eolService=new EolService();
-    private static final BlankService blankService= new BlankService(getEolService());
+    private static final IndentService indentService = new IndentService("    ");
+    private static final EolService eolService = new EolService();
+    private static final BlankService blankService = new BlankService(getEolService());
     private static String ruleCurrentJavaCodeSnippetIsFor;
-    private JavaConfig ( ) {
+    private JavaConfig() {
     }
     public static BlankService getBlankService() {
         return blankService;
@@ -28,7 +28,7 @@ public class JavaConfig {
     public static SimpleNodesJavaCodeSnippet createComment() {
         return new Comment();
     }
-    private static final List<String> RULES_HAVING_A_MATCHING_FORMATTER = Arrays . asList ("annotation" , "methodBody" , "methodModifier" , "methodDeclarator" , "packageDeclaration" , "importDeclaration" , "fieldDeclaration" , "methodDeclaration" , "interfaceMethodDeclaration" , "classDeclaration" , "classModifier" , "classBody" , "interfaceDeclaration");
+    private static final List<String> RULES_HAVING_A_MATCHING_FORMATTER = Arrays.asList("annotation", "methodBody", "methodModifier", "methodDeclarator", "packageDeclaration", "importDeclaration", "fieldDeclaration", "methodDeclaration", "interfaceMethodDeclaration", "classDeclaration", "classModifier", "classBody", "interfaceDeclaration");
     public static Optional<JavaCodeSnippet> getMatchingCodeSnippetFor(JavaRulePath rulePath) {
         Optional<String> newRule = rulePath.calculateLastRuleEqualsAnyOf(RULES_HAVING_A_MATCHING_FORMATTER);
         if (! newRule.isPresent() || newRule.get().equals(ruleCurrentJavaCodeSnippetIsFor)) {

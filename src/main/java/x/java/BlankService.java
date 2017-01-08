@@ -1,19 +1,13 @@
 package x.java;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-
 import java.util.Optional;
-
 import static java.util.Arrays.asList;
-
 public class BlankService {
-
     private final EolService eolService;
-
     BlankService(EolService eolService) {
         this.eolService = eolService;
     }
-
     /**
      * Return true or false, if a blank is required (independent from where it is called from).
      * Otherwise return an Optional.empty.
@@ -22,7 +16,7 @@ public class BlankService {
         if ("}".equals(node.calculateNext().getText())) {
             return Optional.of(false);
         }
-        if(node.isNextNodeACommentInSameLine()) {
+        if (node.isNextNodeACommentInSameLine()) {
             return Optional.of(true);
         }
         if (eolService.requiresSingleEolAfterNodeInAnyCase(node).orElse(false)) {

@@ -4,8 +4,8 @@ import x.format.*;
 import x.java.snippets.*;
 class JavaFormatter implements Formatter {
     private final JavaCodeSnippet compilationUnit;
-    JavaFormatter ( ) {
-        compilationUnit = JavaConfig . createCompilationUnit ( ) ;
+    JavaFormatter() {
+        compilationUnit = JavaConfig.createCompilationUnit();
     }
     void add(NodeWrapper node) {
         if (! node.isEOF()) compilationUnit.add(node);

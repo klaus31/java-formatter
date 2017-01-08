@@ -7,9 +7,9 @@ import java.util.List;
 public class IndentService {
     private int indent;
     private final String singleIndent;
-    IndentService ( String singleIndent ) {
-        indent = 0 ;
-        this . singleIndent = singleIndent ;
+    IndentService(String singleIndent) {
+        indent = 0;
+        this.singleIndent = singleIndent;
     }
     public String getCurrentIndent() {
         return StringUtils.repeat(singleIndent, indent);
