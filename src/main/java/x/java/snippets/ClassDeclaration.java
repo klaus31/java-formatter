@@ -1,8 +1,10 @@
 package x.java.snippets;
 
+import x.java.JavaConfig;
 import x.java.NodeWrapper;
 import static java.util.Arrays.asList;
 import static x.java.JavaConfig.EOL;
+import static x.java.JavaConfig.getBlankService;
 import static x.java.JavaConfig.getIndentService;
 public class ClassDeclaration extends SimpleNodesJavaCodeSnippet {
     @Override
@@ -15,7 +17,7 @@ public class ClassDeclaration extends SimpleNodesJavaCodeSnippet {
         if (node.isBlockStartOrEnd() || node.isSemicolonAtEnd()) {
             builder.append(EOL);
             builder.append(getIndentService().calculateIndentToAppendTo(node));
-        } else {
+        } else if(getBlankService().requiresSingleBlankAfterNodeInAnyCase(node).orElse(true)) {
             builder.append(" ");
         }
         return builder.toString();

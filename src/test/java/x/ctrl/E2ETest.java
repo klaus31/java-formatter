@@ -47,7 +47,6 @@ public class E2ETest {
         expectFormatterNotChangingFile("java", 9);
     }
     @Test
-    @Ignore // not implemented yet
     public void example10ShouldHaveExpectedOutput() throws IOException {
         expectFormatterNotChangingFile("java", 10);
     }
