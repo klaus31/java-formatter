@@ -15,9 +15,9 @@ public class IndentService {
         return StringUtils.repeat(singleIndent, indent);
     }
     public String calculateIndentToAppendTo(NodeWrapper node) {
-        if (node.isBlockStart() && ! node.isNextNodeText("}")) {
+        if (node.isBlockStart() && !node.isNextNodeText("}")) {
             return indentPlusOne();
-        } else if (node.isNextNodeText("}") && ! node.isBlockStart()) {
+        } else if (node.isNextNodeText("}") && !node.isBlockStart()) {
             return indentMinusOne();
         } else {
             return getCurrentIndent();

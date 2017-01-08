@@ -20,10 +20,10 @@ public class JavaConfig {
     public static SimpleNodesJavaCodeSnippet createComment() {
         return new Comment();
     }
-    private static final List<String> RULES_HAVING_A_MATCHING_FORMATTER = Arrays.asList("comment","annotation", "packageDeclaration", "importDeclaration", "fieldDeclaration", "methodDeclaration", "interfaceMethodDeclaration", "classDeclaration", "interfaceDeclaration");
+    private static final List<String> RULES_HAVING_A_MATCHING_FORMATTER = Arrays.asList("comment", "annotation", "packageDeclaration", "importDeclaration", "fieldDeclaration", "methodDeclaration", "interfaceMethodDeclaration", "classDeclaration", "interfaceDeclaration");
     public static Optional<JavaCodeSnippet> getMatchingCodeSnippetFor(JavaRulePath rulePath) {
         Optional<String> newRule = rulePath.calculateLastRuleEqualsAnyOf(RULES_HAVING_A_MATCHING_FORMATTER);
-        if (! newRule.isPresent() || newRule.get().equals(ruleCurrentJavaCodeSnippetIsFor)) {
+        if (!newRule.isPresent() || newRule.get().equals(ruleCurrentJavaCodeSnippetIsFor)) {
             return Optional.empty();
         } else {
             ruleCurrentJavaCodeSnippetIsFor = newRule.get();

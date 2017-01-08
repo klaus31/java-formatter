@@ -38,7 +38,7 @@ public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
         if (node.isBlockStart() && node.matchesRulePath("arrayInitializer")) {
             return false;
         }
-        if(node.isNextNodeText("(")) {
+        if (node.isNextNodeText("(")) {
             return node.isNodeTextAnyOf("catch", "switch", "if", "for", "while", "+", "-", "*", "/", "%", ":");
         }
         if (node.isNextNodeTextOneOf(";", "::", ")", ",", ".", "++", "--", "[", "]", "}")) {
@@ -63,9 +63,9 @@ public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
             return false;
         }
         if (")".equals(node.getText())) {
-            return ! node.isNextNodeText(".");
+            return !node.isNextNodeText(".");
         }
-        if(node.isNodeText("!")) {
+        if (node.isNodeText("!")) {
             return false;
         }
         if (node.isInGenericTypeDeclaration()) {

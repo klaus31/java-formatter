@@ -10,7 +10,7 @@ class SourceCodeFiles {
     private final Iterator<Path> files;
     private final KnownSourceFileType type;
     SourceCodeFiles(Path directory, KnownSourceFileType type) throws IOException {
-        if (! directory.toFile().isDirectory()) {
+        if (!directory.toFile().isDirectory()) {
             System.err.println(directory + " is not a directory");
             System.exit(1610121905);
         }

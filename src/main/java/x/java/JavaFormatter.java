@@ -8,7 +8,7 @@ class JavaFormatter implements Formatter {
         compilationUnit = JavaConfig.createCompilationUnit();
     }
     void add(NodeWrapper node) {
-        if (! node.isEOF()) compilationUnit.add(node);
+        if (!node.isEOF()) compilationUnit.add(node);
     }
     @Override
     public FormattedSourceCode getFormattedSourceCode() {
