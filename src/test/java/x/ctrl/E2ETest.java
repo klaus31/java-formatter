@@ -1,5 +1,6 @@
 package x.ctrl;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import x.java.SourceCodeFileFormatter4JavaDefault;
 import java.io.IOException;
@@ -44,6 +45,11 @@ public class E2ETest {
     @Test
     public void example9ShouldHaveExpectedOutput() throws IOException {
         expectFormatterNotChangingFile("java", 9);
+    }
+    @Test
+    @Ignore // not implemented yet
+    public void example10ShouldHaveExpectedOutput() throws IOException {
+        expectFormatterNotChangingFile("java", 10);
     }
     private void expectFormatterNotChangingFile(String language, int fileId) {
         String inputAndOutputFileName = "test-" + fileId + "-input-output";

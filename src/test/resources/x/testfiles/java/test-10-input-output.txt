@@ -1,0 +1,12 @@
+package x.java;
+
+public class Constructor extends Foo {
+    @A
+    public Constructor(B b, C c) {
+        this.b = b;
+        this.d = c.getD();
+        for(G g : getGs()) {
+            g.delete(1, 2, 3);
+        }
+    }
+}

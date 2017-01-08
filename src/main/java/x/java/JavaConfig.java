@@ -7,14 +7,19 @@ import java.util.Optional;
 import static x.ctrl.MiserableLogger.logDebug;
 public class JavaConfig {
     public static final String EOL = "\n";
-    private static IndentService indentService;
+    private static final IndentService indentService=new IndentService("    ");
+    private static final EolService eolService=new EolService();
+    private static final BlankService blankService= new BlankService(getEolService());
     private static String ruleCurrentJavaCodeSnippetIsFor;
     private JavaConfig ( ) {
     }
+    public static BlankService getBlankService() {
+        return blankService;
+    }
+    public static EolService getEolService() {
+        return eolService;
+    }
     public static IndentService getIndentService() {
-        if (indentService == null) {
-            indentService = new IndentService("    ");
-        }
         return indentService;
     }
     static JavaCodeSnippet createCompilationUnit() {
