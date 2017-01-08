@@ -48,7 +48,6 @@ public class JavaConfig {
             case "importDeclaration":
             return new ImportDeclaration();
             case "fieldDeclaration":
-            return new FieldDeclaration();
             case "methodDeclaration":
             case "interfaceMethodDeclaration":
             case "classDeclaration":

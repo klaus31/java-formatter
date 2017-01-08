@@ -194,4 +194,8 @@ public class NodeWrapper {
     public boolean isNextNodeText(String string) {
         return string.equals(calculateNext().getText());
     }
+
+    public boolean isInGenericTypeDeclaration() {
+        return matchesRulePath("unannClassType_lfno_unannClassOrInterfaceType") || matchesRulePath("classInstanceCreationExpression_lfno_primary");
+    }
 }

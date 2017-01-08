@@ -62,7 +62,8 @@ public class BlankService {
         if (")".equals(node.toSourceString())) {
             return Optional.of(! asList(".").contains(nextNode.getText()));
         }
-        if (node.matchesRulePath("unannClassType_lfno_unannClassOrInterfaceType")) {
+        if (node.isInGenericTypeDeclaration())
+        {
             if (asList("<", ",", ">").contains(nextNode.getText())) {
                 return Optional.of(false);
             } else if (node.toSourceString().equals(",")) {
