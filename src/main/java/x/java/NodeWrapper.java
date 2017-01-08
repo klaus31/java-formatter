@@ -213,7 +213,7 @@ public class NodeWrapper {
     }
 
     boolean isLastNodeInSwitchStatement() {
-        return isNextNodeText("}") && isCurrentRuleAnyOf("returnStatement","expressionStatement") && "switchBlockStatementGroup".equals(javaRulePath.getRuleNameFromEnd(5));
+        return isNextNodeText("}") && "switchBlockStatementGroup".equals(javaRulePath.getRuleNameFromEnd(5));
     }
 
     private boolean isCurrentRuleAnyOf(String ... ruleNames) {

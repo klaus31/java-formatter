@@ -7,6 +7,10 @@ public class A {
                 doIt();
         }
         switch (b) {
+            default:
+                throw new AssertionError();
+        }
+        switch (b) {
             case AA:
                 doIt();
                 break;
@@ -19,12 +23,7 @@ public class A {
             default:
                 doNot();
         }
-        // WTF 1
         switch (getText()) {
-        }
-        // WTF 2
-        switch (getText()) {
-            default:;
         }
     }
 }
