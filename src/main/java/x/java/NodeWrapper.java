@@ -7,6 +7,8 @@ import org.apache.commons.lang3.StringUtils;
 import x.format.RulePath;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
+
 import static java.util.Arrays.asList;
 public class NodeWrapper {
     private final JavaRulePath javaRulePath;
@@ -33,7 +35,7 @@ public class NodeWrapper {
             return false;
         }
     }
-    public ParseTree calculateNext() {
+    ParseTree calculateNext() {
         if (nextNode == null) {
             int nodeIndex = getNodeIndex();
             ParseTree parent = node.getParent();
@@ -196,5 +198,9 @@ public class NodeWrapper {
     }
     public boolean isInGenericTypeDeclaration() {
         return matchesRulePath("unannClassType_lfno_unannClassOrInterfaceType") || matchesRulePath("classInstanceCreationExpression_lfno_primary");
+    }
+
+    public boolean isNextNodeTextOneOf(String ... ruleNames) {
+        return Stream.of(ruleNames).anyMatch(this::isNextNodeText);
     }
 }

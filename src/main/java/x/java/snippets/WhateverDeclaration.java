@@ -19,7 +19,7 @@ public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
         return builder.toString();
     }
     private boolean requiresSingleBlankAfterNode(NodeWrapper node) {
-        if ("}".equals(node.calculateNext().getText())) {
+        if (node.isNextNodeText("}")) {
             return false;
         }
         if (node.isNextNodeACommentInSameLine()) {
@@ -40,11 +40,10 @@ public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
         if (node.isBlockStart() && node.matchesRulePath("arrayInitializer")) {
             return false;
         }
-        ParseTree nextNode = node.calculateNext();
-        if ("(".equals(nextNode.getText())) {
+        if(node.isNextNodeText("(")) {
             return asList("catch", "switch", "if", "for", "while", "+", "-", "*", "/", "%").contains(node.toSourceString());
         }
-        if (asList(";", "::", ")", ",", ".", "++", "--", "[", "]", "}").contains(nextNode.getText())) {
+        if (node.isNextNodeTextOneOf(";", "::", ")", ",", ".", "++", "--", "[", "]", "}")) {
             return false;
         }
         if (node.isDoublePointInEnhancedForStatement()) {
@@ -66,10 +65,10 @@ public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
             return false;
         }
         if (")".equals(node.toSourceString())) {
-            return ! asList(".").contains(nextNode.getText());
+            return ! node.isNextNodeText(".");
         }
         if (node.isInGenericTypeDeclaration()) {
-            if (asList("<", ",", ">").contains(nextNode.getText())) {
+            if (node.isNextNodeTextOneOf("<", ",", ">")) {
                 return false;
             } else if (node.toSourceString().equals(",")) {
                 return true;
