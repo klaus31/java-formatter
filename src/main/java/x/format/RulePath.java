@@ -6,13 +6,11 @@ import java.util.Optional;
 import java.util.stream.Stream;
 public class RulePath {
     private final List<String> rulePathNames;
-
     protected RulePath ( ) {
         rulePathNames = new ArrayList < > ( ) ;
     }
-
     public String getRuleNameFromEnd(int stepsBackward) {
-        return rulePathNames.get(rulePathNames.size()-1-stepsBackward);
+        return rulePathNames.get(rulePathNames.size() - 1 - stepsBackward);
     }
     protected List<String> getRulePathNames() {
         return rulePathNames;
@@ -47,8 +45,7 @@ public class RulePath {
     }
     public boolean matches(String ... ruleNames) {
         int index = - 1;
-        for (String ruleName :
-        ruleNames) {
+        for (String ruleName : ruleNames) {
             int currentIndex = rulePathNames.lastIndexOf(ruleName);
             if (currentIndex < 0 || currentIndex <= index) {
                 return false;
@@ -61,8 +58,7 @@ public class RulePath {
     public Optional<String> calculateLastRuleEqualsAnyOf(List<String> rules) {
         Optional<String> winner = Optional.empty();
         int tmp = - 1;
-        for (String rule :
-        rules) {
+        for (String rule : rules) {
             int lastIndex = this.getRulePathNames().lastIndexOf(rule);
             if (tmp < lastIndex) {
                 winner = Optional.of(rule);

@@ -14,8 +14,7 @@ public class ImportDeclaration extends SimpleNodesJavaCodeSnippet {
             result.append(" ");
         }
         if (node.isSemicolonAtEnd()) {
-            result.append(node.isNextNodeACommentInSameLine() ? " " :
-            EOL);
+            result.append(node.isNextNodeACommentInSameLine() ? " " : EOL);
         }
         return result.toString();
     }

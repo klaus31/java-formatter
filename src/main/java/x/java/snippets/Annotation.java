@@ -6,8 +6,7 @@ public class Annotation extends SimpleNodesJavaCodeSnippet {
     private boolean isNextNodeACommentInSameLine;
     @Override
     public String toSourceString() {
-        return super.toSourceString() + (isNextNodeACommentInSameLine ? " " :
-        EOL + indentCurrent());
+        return super.toSourceString() + (isNextNodeACommentInSameLine ? " " : EOL + indentCurrent());
     }
     @Override
     protected String toSourceString(NodeWrapper node) {

@@ -5,7 +5,6 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.lang3.StringUtils;
 import x.format.RulePath;
-
 import java.util.Optional;
 import java.util.function.Predicate;
 import static java.util.Arrays.asList;
@@ -18,10 +17,10 @@ public class NodeWrapper {
         String nextNodeText = calculateNext().getText();
         return nextNodeText.matches("/\\*.*\\*/") || nextNodeText.matches("//.*");
     }
-    public NodeWrapper ( TerminalNode node , JavaRulePath javaRulePath, NodeWrapper prevNode ) {
+    public NodeWrapper ( TerminalNode node , JavaRulePath javaRulePath , NodeWrapper prevNode ) {
         this . javaRulePath = javaRulePath ;
         this . node = node ;
-        this.prevNode=prevNode;
+        this . prevNode = prevNode ;
     }
     private boolean occursOnSameLineAs(TerminalNode otherNode) {
         return node.getSymbol().getLine() == otherNode.getSymbol().getLine();
@@ -35,24 +34,23 @@ public class NodeWrapper {
         }
     }
     public ParseTree calculateNext() {
-        if(nextNode == null) {
-
-        int nodeIndex = getNodeIndex();
-        ParseTree parent = node.getParent();
-        if (nodeIndex == parent.getChildCount() - 1) {
-            // last child at this level
-            while (parent != null && isLastNodeInLevel(parent)) {
-                parent = parent.getParent();
-            }
-            if (parent == null) {
-                throw new AssertionError("Should never been called on <EOF> node");
+        if (nextNode == null) {
+            int nodeIndex = getNodeIndex();
+            ParseTree parent = node.getParent();
+            if (nodeIndex == parent.getChildCount() - 1) {
+                // last child at this level
+                while (parent != null && isLastNodeInLevel(parent)) {
+                    parent = parent.getParent();
+                }
+                if (parent == null) {
+                    throw new AssertionError("Should never been called on <EOF> node");
+                } else {
+                    ParseTree candidate = parent.getParent().getChild(getNodeIndex(parent) + 1);
+                    nextNode = getVeryFirstLeafOf(candidate);
+                }
             } else {
-                ParseTree candidate = parent.getParent().getChild(getNodeIndex(parent) + 1);
-                nextNode= getVeryFirstLeafOf(candidate);
+                nextNode = getVeryFirstLeafOf(parent.getChild(nodeIndex + 1));
             }
-        } else {
-            nextNode= getVeryFirstLeafOf(parent.getChild(nodeIndex + 1));
-        }
         }
         return nextNode;
     }
@@ -150,19 +148,15 @@ public class NodeWrapper {
     public boolean matchesRulePath(String ... ruleNames) {
         return javaRulePath.matches(ruleNames);
     }
-
-
     public boolean isNextADoublePointInEnhancedForStatement() {
         return isNextADoublePoint() && "enhancedForStatement".equals(javaRulePath.getRuleNameFromEnd(1));
     }
     public boolean isNextADoublePointInSwitchStatement() {
-        return isNextADoublePoint() && (javaRulePath.isCurrentRuleA("switchLabel") ||
-                prevNodeMatchesRulePath(jrp -> jrp.isCurrentRuleA("switchLabel")));
+        return isNextADoublePoint() &&(javaRulePath.isCurrentRuleA("switchLabel") || prevNodeMatchesRulePath(jrp -> jrp.isCurrentRuleA("switchLabel")));
     }
     public boolean isNextADoublePointInLabeledStatement() {
         return isNextADoublePoint() && javaRulePath.isCurrentRuleA("labeledStatement");
     }
-
     public boolean isDoublePointInEnhancedForStatement() {
         return isDoublePoint() && javaRulePath.isCurrentRuleA("enhancedForStatement");
     }
@@ -172,14 +166,12 @@ public class NodeWrapper {
     public boolean isDoublePointInLabeledStatement() {
         return isDoublePoint() && javaRulePath.isCurrentRuleA("labeledStatement");
     }
-
     private boolean isNextADoublePoint() {
         return ":".equals(calculateNext().getText());
     }
     private boolean isDoublePoint() {
         return ":".equals(node.getText());
     }
-
     @Override
     public String toString() {
         return StringUtils.rightPad(toSourceString(), 20) + ": " + javaRulePath.toString();

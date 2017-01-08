@@ -4,9 +4,7 @@ import x.java.snippets.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
 import static x.ctrl.MiserableLogger.logDebug;
-
 public class JavaConfig {
     public static final String EOL = "\n";
     private static IndentService indentService;

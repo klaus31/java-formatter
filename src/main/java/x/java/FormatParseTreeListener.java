@@ -10,7 +10,6 @@ class FormatParseTreeListener implements ParseTreeListener {
     private final String [ ] ruleNames;
     private final JavaRulePath javaRulePath;
     private NodeWrapper prevNodeWrapper = null;
-
     FormatParseTreeListener ( JavaFormatter formatter , String [ ] ruleNames ) {
         this . formatter = formatter ;
         this . ruleNames = ruleNames ;

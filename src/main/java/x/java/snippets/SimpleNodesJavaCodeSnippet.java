@@ -5,7 +5,6 @@ import x.java.JavaRulePath;
 import x.java.NodeWrapper;
 import java.util.ArrayList;
 import java.util.List;
-
 import static x.ctrl.MiserableLogger.logDebug;
 import static x.java.JavaConfig.getIndentService;
 public abstract class SimpleNodesJavaCodeSnippet implements JavaCodeSnippet {
@@ -18,12 +17,11 @@ public abstract class SimpleNodesJavaCodeSnippet implements JavaCodeSnippet {
     }
     @Override
     public String toSourceString() {
-        if(nodes.isEmpty()) {
+        if (nodes.isEmpty()) {
             return "";
         }
         final StringBuilder builder = new StringBuilder();
-        for (NodeWrapper node :
-        nodes) {
+        for (NodeWrapper node : nodes) {
             logDebug(node.toString());
             if (node.matchesRulePath(rp -> rp.isCurrentRuleA("comment"))) {
                 builder.append(JavaConfig.createComment().toSourceString(node));

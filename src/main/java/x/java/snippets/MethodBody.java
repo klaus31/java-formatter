@@ -27,7 +27,7 @@ public class MethodBody extends SimpleNodesJavaCodeSnippet {
         return node.isBlockEnd() && asList(")", ";").contains(node.calculateNext().getText()) || node.isBlockStart() && node.matchesRulePath("arrayInitializer");
     }
     private boolean requiresSingleBlankAfter(NodeWrapper node) {
-        if("}".equals(node.calculateNext().getText())) {
+        if ("}".equals(node.calculateNext().getText())) {
             return false;
         }
         if (isAEolCandidate(node)) {
