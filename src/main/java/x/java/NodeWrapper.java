@@ -207,4 +207,12 @@ public class NodeWrapper {
     public boolean isNodeText(String text) {
         return text.equals(getText());
     }
+
+    public boolean isNodeTextAnyOf(String
+                                           ... texts
+    )
+    { return
+        Stream.of(texts).anyMatch(this::isNodeText);
+
+    }
 }

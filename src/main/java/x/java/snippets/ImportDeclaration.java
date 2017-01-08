@@ -5,12 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 import static x.java.JavaConfig.EOL;
 public class ImportDeclaration extends SimpleNodesJavaCodeSnippet {
-    private static final List<String> WHITESPACE_WORDS = Arrays.asList("import", "static");
     @Override
     protected String toSourceString(NodeWrapper node) {
         final StringBuilder result = new StringBuilder();
         result.append(node.getText());
-        if (WHITESPACE_WORDS.contains(node.getText())) {
+        if (node.isNodeTextAnyOf("import", "static")) {
             result.append(" ");
         }
         if (node.isSemicolonAtEnd()) {

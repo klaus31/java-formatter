@@ -1,7 +1,6 @@
 package x.java.snippets;
 
 import x.java.NodeWrapper;
-import static java.util.Arrays.asList;
 import static x.java.JavaConfig.EOL;
 import static x.java.JavaConfig.getIndentService;
 public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
@@ -30,17 +29,17 @@ public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
         if (node.isSemicolonInBasicForStatement()) {
             return true;
         }
-        if (asList(";", "::", "(", ".", "++", "--").contains(node.getText())) {
+        if (node.isNodeTextAnyOf(";", "::", "(", ".", "++", "--")) {
             return false;
         }
-        if (asList("new", ",", "=").contains(node.getText())) {
+        if (node.isNodeTextAnyOf("new", ",", "=")) {
             return true;
         }
         if (node.isBlockStart() && node.matchesRulePath("arrayInitializer")) {
             return false;
         }
         if(node.isNextNodeText("(")) {
-            return asList("catch", "switch", "if", "for", "while", "+", "-", "*", "/", "%", ":").contains(node.getText());
+            return node.isNodeTextAnyOf("catch", "switch", "if", "for", "while", "+", "-", "*", "/", "%", ":");
         }
         if (node.isNextNodeTextOneOf(";", "::", ")", ",", ".", "++", "--", "[", "]", "}")) {
             return false;
