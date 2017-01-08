@@ -31,11 +31,14 @@ public class BlankService {
         if (asList("new", ",", "=").contains(node.toSourceString())) {
             return Optional.of(true);
         }
+        if(node.isBlockStart() && node.matchesRulePath("arrayInitializer")) {
+            return Optional.of(false);
+        }
         ParseTree nextNode = node.calculateNext();
         if ("(".equals(nextNode.getText())) {
             return Optional.of(asList("catch", "switch", "if", "for", "while", "+", "-", "*", "/", "%").contains(node.toSourceString()));
         }
-        if (asList(";", "::", ")", ",", ".", "++", "--", "[", "]").contains(nextNode.getText())) {
+        if (asList(";", "::", ")", ",", ".", "++", "--", "[", "]", "}").contains(nextNode.getText())) {
             return Optional.of(false);
         }
         if (node.isDoublePointInEnhancedForStatement()) {

@@ -28,7 +28,7 @@ public class JavaConfig {
     public static SimpleNodesJavaCodeSnippet createComment() {
         return new Comment();
     }
-    private static final List<String> RULES_HAVING_A_MATCHING_FORMATTER = Arrays.asList("annotation", "methodBody", "methodModifier", "methodDeclarator", "packageDeclaration", "importDeclaration", "fieldDeclaration", "methodDeclaration", "interfaceMethodDeclaration", "classDeclaration", "classModifier", "classBody", "interfaceDeclaration");
+    private static final List<String> RULES_HAVING_A_MATCHING_FORMATTER = Arrays.asList("annotation", "methodModifier", "methodDeclarator", "packageDeclaration", "importDeclaration", "fieldDeclaration", "methodDeclaration", "interfaceMethodDeclaration", "classDeclaration", "classModifier", "classBody", "interfaceDeclaration");
     public static Optional<JavaCodeSnippet> getMatchingCodeSnippetFor(JavaRulePath rulePath) {
         Optional<String> newRule = rulePath.calculateLastRuleEqualsAnyOf(RULES_HAVING_A_MATCHING_FORMATTER);
         if (! newRule.isPresent() || newRule.get().equals(ruleCurrentJavaCodeSnippetIsFor)) {
@@ -44,13 +44,11 @@ public class JavaConfig {
             case "annotation":
             return new Annotation();
             case "methodDeclaration":
-            return new MethodBody();
-            case "methodBody":
-            return new MethodBody();
+            return new MethodBodyOrClassDeclaration();
             case "methodModifier":
-            return new MethodBody();
+            return new MethodBodyOrClassDeclaration();
             case "methodDeclarator":
-            return new MethodBody();
+            return new MethodBodyOrClassDeclaration();
             case "packageDeclaration":
             return new PackageDeclaration();
             case "importDeclaration":
@@ -58,15 +56,15 @@ public class JavaConfig {
             case "fieldDeclaration":
             return new FieldDeclaration();
             case "interfaceMethodDeclaration":
-            return new MethodBody();
+            return new MethodBodyOrClassDeclaration();
             case "classDeclaration":
-            return new ClassDeclaration();
+            return new MethodBodyOrClassDeclaration();
             case "classModifier":
-            return new ClassDeclaration();
+            return new MethodBodyOrClassDeclaration();
             case "classBody":
-            return new ClassDeclaration();
+            return new MethodBodyOrClassDeclaration();
             case "interfaceDeclaration":
-            return new ClassDeclaration();
+            return new MethodBodyOrClassDeclaration();
             default:
             throw new AssertionError(ruleName+" does not have a matching code snippet formatter");
         }

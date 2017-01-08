@@ -5,7 +5,7 @@ import x.java.NodeWrapper;
 import static java.util.Arrays.asList;
 import static x.java.JavaConfig.*;
 
-public class ClassDeclaration extends SimpleNodesJavaCodeSnippet {
+public class MethodBodyOrClassDeclaration extends SimpleNodesJavaCodeSnippet {
     @Override
     protected String toSourceString(NodeWrapper node) {
         StringBuilder builder = new StringBuilder();
