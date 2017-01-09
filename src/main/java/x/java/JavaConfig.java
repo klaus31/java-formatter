@@ -8,7 +8,6 @@ import static x.ctrl.MiserableLogger.logDebug;
 public class JavaConfig {
     public static final String EOL = "\n";
     private static final IndentService indentService = new IndentService("    ");
-    private static String ruleCurrentJavaCodeSnippetIsFor;
     private JavaConfig() {
     }
     public static IndentService getIndentService() {
@@ -17,20 +16,8 @@ public class JavaConfig {
     static JavaCodeSnippet createCompilationUnit() {
         return new CompilationUnit();
     }
-    public static SimpleNodesJavaCodeSnippet createComment() {
-        return new Comment();
-    }
-    private static final List<String> RULES_HAVING_A_MATCHING_FORMATTER = Arrays.asList("comment", "annotation", "packageDeclaration", "importDeclaration", "fieldDeclaration", "methodDeclaration", "interfaceMethodDeclaration", "classDeclaration", "interfaceDeclaration");
-    public static Optional<JavaCodeSnippet> getMatchingCodeSnippetFor(JavaRulePath rulePath) {
-        Optional<String> newRule = rulePath.calculateLastRuleEqualsAnyOf(RULES_HAVING_A_MATCHING_FORMATTER);
-        if (!newRule.isPresent() || newRule.get().equals(ruleCurrentJavaCodeSnippetIsFor)) {
-            return Optional.empty();
-        } else {
-            ruleCurrentJavaCodeSnippetIsFor = newRule.get();
-            return Optional.of(getMatchingCodeSnippetFor(ruleCurrentJavaCodeSnippetIsFor));
-        }
-    }
-    private static JavaCodeSnippet getMatchingCodeSnippetFor(String ruleName) {
+    public static final List<String> RULES_HAVING_A_MATCHING_FORMATTER = Arrays.asList("comment", "annotation", "packageDeclaration", "importDeclaration", "fieldDeclaration", "methodDeclaration", "interfaceMethodDeclaration", "classDeclaration", "interfaceDeclaration");
+    public static JavaCodeSnippet getMatchingCodeSnippetFor(String ruleName) {
         logDebug("Using new CodeSnippet for " + ruleName);
         switch (ruleName) {
             case "annotation":

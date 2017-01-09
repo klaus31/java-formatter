@@ -1,6 +1,7 @@
 package x.java.snippets;
 
 import x.format.CodeSnippet;
+import x.java.JavaConfig;
 import x.java.JavaRulePath;
 import x.java.NodeWrapper;
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import static java.util.stream.Collectors.joining;
-import static x.java.JavaConfig.getMatchingCodeSnippetFor;
+import static x.java.JavaConfig.RULES_HAVING_A_MATCHING_FORMATTER;
 public class CompilationUnit implements JavaCodeSnippet {
     private Optional<JavaCodeSnippet> currentCodeSnippet;
     private List<JavaCodeSnippet> snippets;
@@ -39,5 +40,15 @@ public class CompilationUnit implements JavaCodeSnippet {
     public void enterRule(JavaRulePath rulePath) {
         getMatchingCodeSnippetFor(rulePath).ifPresent(this::setCurrentCodeSnippet);
         withCurrentSnippetIfPresent(s -> s.enterRule(rulePath));
+    }
+    private static String ruleCurrentJavaCodeSnippetIsFor;
+    private static Optional<JavaCodeSnippet> getMatchingCodeSnippetFor(JavaRulePath rulePath) {
+        Optional<String> newRule = rulePath.calculateLastRuleEqualsAnyOf(RULES_HAVING_A_MATCHING_FORMATTER);
+        if (!newRule.isPresent() || newRule.get().equals(ruleCurrentJavaCodeSnippetIsFor)) {
+            return Optional.empty();
+        } else {
+            ruleCurrentJavaCodeSnippetIsFor = newRule.get();
+            return Optional.of(JavaConfig.getMatchingCodeSnippetFor(ruleCurrentJavaCodeSnippetIsFor));
+        }
     }
 }
