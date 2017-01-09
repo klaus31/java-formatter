@@ -1,0 +1,9 @@
+package x.java;
+
+public class A {
+    int i = -1;
+    int j = 1 - 1;
+    int k = +1;
+    int l = 1 + 1;
+    int m = (1 + (4 - 2) * 5) % 2 / (4 / 3);
+}

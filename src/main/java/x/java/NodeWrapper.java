@@ -71,7 +71,7 @@ public class NodeWrapper {
     }
     private int getNodeIndex(ParseTree node) {
         if (node == null || isRoot(node)) {
-            return - 1;
+            return -1;
         }
         ParseTree parent = node.getParent();
         for (int i = 0; i < parent.getChildCount(); i++) {
@@ -79,7 +79,7 @@ public class NodeWrapper {
                 return i;
             }
         }
-        return - 1;
+        return -1;
     }
     private Optional<ParseTree> getRightSibling(ParseTree node) {
         int index = getNodeIndex();

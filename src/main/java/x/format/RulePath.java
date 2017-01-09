@@ -50,7 +50,7 @@ public class RulePath {
         return rulePathNames.size() - 1 - rulePathNames.lastIndexOf(ruleName);
     }
     public boolean matches(String ... ruleNames) {
-        int index = - 1;
+        int index = -1;
         for (String ruleName : ruleNames) {
             int currentIndex = rulePathNames.lastIndexOf(ruleName);
             if (currentIndex < 0 || currentIndex <= index) {
@@ -63,7 +63,7 @@ public class RulePath {
     }
     public Optional<String> calculateLastRuleEqualsAnyOf(List<String> rules) {
         Optional<String> winner = Optional.empty();
-        int tmp = - 1;
+        int tmp = -1;
         for (String rule : rules) {
             int lastIndex = this.getRulePathNames().lastIndexOf(rule);
             if (tmp < lastIndex) {
