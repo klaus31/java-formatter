@@ -6,11 +6,11 @@ class SourceCodeFileFormatterFactory {
     public static SourceCodeFileFormatter get(KnownSourceFileType type, SourceCodeFile file) {
         switch (type) {
             case JAVA:
-            return new SourceCodeFileFormatter4JavaDefault(file);
+                return new SourceCodeFileFormatter4JavaDefault(file);
             case XML:
-            return new SourceCodeFileFormatter4XmlDefault();
+                return new SourceCodeFileFormatter4XmlDefault();
             default:
-            throw new AssertionError("201612170736");
+                throw new AssertionError("201612170736");
         }
     }
 }

@@ -8,7 +8,6 @@ import java.util.function.Consumer;
 import static java.util.stream.Collectors.joining;
 import static x.ctrl.KnownSourceFileType.JAVA;
 import static x.ctrl.MiserableLogger.*;
-
 public class SourceCodeFormatter {
     private final Path inputDirectory;
     public SourceCodeFormatter(Path inputDirectory) {

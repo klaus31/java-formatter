@@ -34,21 +34,21 @@ public class JavaConfig {
         logDebug("Using new CodeSnippet for " + ruleName);
         switch (ruleName) {
             case "annotation":
-            return new Annotation();
+                return new Annotation();
             case "packageDeclaration":
-            return new PackageDeclaration();
+                return new PackageDeclaration();
             case "importDeclaration":
-            return new ImportDeclaration();
+                return new ImportDeclaration();
             case "comment":
-            return new Comment();
+                return new Comment();
             case "fieldDeclaration":
             case "methodDeclaration":
             case "interfaceMethodDeclaration":
             case "classDeclaration":
             case "interfaceDeclaration":
-            return new WhateverDeclaration();
+                return new WhateverDeclaration();
             default:
-            throw new AssertionError(ruleName + " does not have a matching code snippet formatter");
+                throw new AssertionError(ruleName + " does not have a matching code snippet formatter");
         }
     }
 }

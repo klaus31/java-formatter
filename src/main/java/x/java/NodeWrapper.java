@@ -211,11 +211,9 @@ public class NodeWrapper {
     public boolean isNodeTextAnyOf(String ... texts) {
         return Stream.of(texts).anyMatch(this::isNodeText);
     }
-
     boolean isLastNodeInSwitchStatement() {
-        return isNextNodeText("}") && javaRulePath.ruleNameFromEndEquals(5,"switchBlockStatementGroup");
+        return isNextNodeText("}") && javaRulePath.ruleNameFromEndEquals(5, "switchBlockStatementGroup");
     }
-
     private boolean isCurrentRuleAnyOf(String ... ruleNames) {
         return Stream.of(ruleNames).anyMatch(this::isCurrentRuleA);
     }
