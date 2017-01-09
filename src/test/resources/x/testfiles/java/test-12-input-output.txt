@@ -1,0 +1,4 @@
+package x.java;
+
+public class YouLittlePieceOfEmptyClass {
+}

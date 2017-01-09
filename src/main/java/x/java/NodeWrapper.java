@@ -151,7 +151,7 @@ public class NodeWrapper {
         return javaRulePath.matches(ruleNames);
     }
     public boolean isNextADoublePointInEnhancedForStatement() {
-        return isNextADoublePoint() && "enhancedForStatement".equals(javaRulePath.getRuleNameFromEnd(1));
+        return isNextADoublePoint() && javaRulePath.ruleNameFromEndEquals(1, "enhancedForStatement");
     }
     public boolean isNextADoublePointInSwitchStatement() {
         return isNextADoublePoint() &&(isCurrentRuleA("switchLabel") || prevNodeMatchesRulePath(jrp -> jrp.isCurrentRuleA("switchLabel")));
@@ -213,7 +213,7 @@ public class NodeWrapper {
     }
 
     boolean isLastNodeInSwitchStatement() {
-        return isNextNodeText("}") && "switchBlockStatementGroup".equals(javaRulePath.getRuleNameFromEnd(5));
+        return isNextNodeText("}") && javaRulePath.ruleNameFromEndEquals(5,"switchBlockStatementGroup");
     }
 
     private boolean isCurrentRuleAnyOf(String ... ruleNames) {

@@ -54,6 +54,10 @@ public class E2ETest {
     public void example11ShouldHaveExpectedOutput() throws IOException {
         expectFormatterNotChangingFile("java", 11);
     }
+    @Test
+    public void example12ShouldHaveExpectedOutput() throws IOException {
+        expectFormatterNotChangingFile("java", 12);
+    }
     private void expectFormatterNotChangingFile(String language, int fileId) {
         String inputAndOutputFileName = "test-" + fileId + "-input-output";
         expectInputFileEqualsOutputFile(language, inputAndOutputFileName, inputAndOutputFileName);

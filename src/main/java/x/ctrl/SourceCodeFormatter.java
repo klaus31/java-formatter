@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.function.Consumer;
 import static java.util.stream.Collectors.joining;
 import static x.ctrl.KnownSourceFileType.JAVA;
-import static x.ctrl.MiserableLogger.logInfo;
+import static x.ctrl.MiserableLogger.*;
+
 public class SourceCodeFormatter {
     private final Path inputDirectory;
     public SourceCodeFormatter(Path inputDirectory) {
@@ -17,7 +18,9 @@ public class SourceCodeFormatter {
         return System.getProperty("line.separator");
     }
     public void start() throws IOException {
+        logInfoStopWatchStart("Format all JAVA-Files");
         new SourceCodeFiles(inputDirectory, JAVA).forEach(process(JAVA));
+        logInfoStopWatchStop("Format all JAVA-Files");
     }
     private static Consumer<SourceCodeFile> process(KnownSourceFileType type) {
         return sourceCodeFile -> {
