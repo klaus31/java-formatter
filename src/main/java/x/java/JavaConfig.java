@@ -2,6 +2,7 @@ package x.java;
 
 import x.java.snippets.*;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import static x.ctrl.MiserableLogger.logDebug;
@@ -37,5 +38,9 @@ public class JavaConfig {
             default:
                 throw new AssertionError(ruleName + " does not have a matching code snippet formatter");
         }
+    }
+
+    public static Comparator<JavaCodeSnippet> getSnippetComparator() {
+        return new SnippetComparator();
     }
 }
