@@ -58,7 +58,7 @@ public class A1 {
     @AnnotationA
     // Wolln Schneemann baun
     @AnnotationB /* huhu */
-    @AnnotationC("a1612201340") //blue
+    @AnnotationC("a1612201340") // blue
     /*Zwei einsame Menschen im Schnee wolln nicht nur Schneemann baun*/
     public void a2() throws A3 {
         a4("a5", "a6");

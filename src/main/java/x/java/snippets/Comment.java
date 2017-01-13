@@ -8,6 +8,8 @@ import static x.java.JavaConfig.getIndentService;
 public class Comment extends SimpleNodesJavaCodeSnippet {
     @Override
     protected String toSourceString(NodeWrapper node, SourceCodeFile file) {
-        return node.getText() + EOL + getIndentService(file).calculateIndentToAppendTo(node);
+        String result = node.getText().trim();
+        result = result.replaceAll("^//\\s*", "// ");
+        return result + EOL + getIndentService(file).calculateIndentToAppendTo(node);
     }
 }

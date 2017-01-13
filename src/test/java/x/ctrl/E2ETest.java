@@ -70,6 +70,16 @@ public class E2ETest {
     public void example15ShouldHaveExpectedOutput() throws IOException {
         expectFormatterNotChangingFile("java", 15);
     }
+    @Test
+    public void example16ShouldHaveExpectedOutput() throws IOException {
+        expectInputFileEqualsOutputFile("java", 16);
+    }
+    @Test
+    @Ignore // FIXME not working yet: a class only having a package declaration, destroys everything
+    public void example17ShouldNotDestroy18() throws IOException {
+        expectFormatterNotChangingFile("java", 17);
+        expectFormatterNotChangingFile("java", 18);
+    }
     private void expectFormatterNotChangingFile(String language, int fileId) {
         String inputAndOutputFileName = "test-" + fileId + "-input-output";
         expectInputFileEqualsOutputFile(language, inputAndOutputFileName, inputAndOutputFileName);

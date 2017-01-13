@@ -1,0 +1,6 @@
+//foo bar // bar foo // bla
+//      foo bar // bar foo
+// foo bar // bar foo
+package x.ctrl;
+class A {
+}

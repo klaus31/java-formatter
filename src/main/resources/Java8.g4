@@ -236,7 +236,7 @@ comment
 	;
 
 compilationUnit
-	:	packageDeclaration? importDeclaration* comment* typeDeclaration* EOF
+	:	comment* packageDeclaration? importDeclaration* comment* typeDeclaration* EOF
 	;
 
 packageDeclaration
