@@ -200,7 +200,7 @@ public class NodeWrapper {
         return string.equals(calculateNext().getText());
     }
     public boolean isInGenericTypeDeclaration() {
-        return matchesRulePath("unannClassType_lfno_unannClassOrInterfaceType") || matchesRulePath("classInstanceCreationExpression_lfno_primary");
+        return matchesRulePath("unannClassType_lfno_unannClassOrInterfaceType") || matchesRulePath("classInstanceCreationExpression_lfno_primary") || matchesRulePath("typeArguments") || javaRulePath.isCurrentRuleA("classType") && calculateNext().getText().equals("<");
     }
     public boolean isNextNodeTextOneOf(String ... ruleNames) {
         return Stream.of(ruleNames).anyMatch(this::isNextNodeText);
