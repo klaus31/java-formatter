@@ -1,18 +1,23 @@
 package x.java;
 
+import x.ctrl.SourceCodeFile;
 import x.java.snippets.*;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.nio.file.Path;
+import java.util.*;
 import static x.ctrl.MiserableLogger.logDebug;
 public class JavaConfig {
     public static final String EOL = "\n";
-    private static final IndentService indentService = new IndentService("    ");
+    private static Map<SourceCodeFile, IndentService> indentServices = new HashMap<>();
     private JavaConfig() {
     }
-    public static IndentService getIndentService() {
-        return indentService;
+    public static IndentService getIndentService(SourceCodeFile file) {
+        if (!indentServices.containsKey(file)) {
+            indentServices.put(file, createIndentService());
+        }
+        return indentServices.get(file);
+    }
+    private static IndentService createIndentService() {
+        return new IndentService("    ");
     }
     static JavaCodeSnippet createCompilationUnit() {
         return new CompilationUnit();
@@ -39,7 +44,6 @@ public class JavaConfig {
                 throw new AssertionError(ruleName + " does not have a matching code snippet formatter");
         }
     }
-
     public static Comparator<JavaCodeSnippet> getSnippetComparator() {
         return new SnippetComparator();
     }

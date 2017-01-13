@@ -35,6 +35,6 @@ public class SourceCodeFileFormatter4JavaDefault implements SourceCodeFileFormat
         JavaFormatter formatter = new JavaFormatter();
         ParseTreeListener listener = new FormatParseTreeListener(formatter, parser.getRuleNames());
         walker.walk(listener, t);
-        return formatter.getFormattedSourceCode().getCode(JavaConfig.EOL);
+        return formatter.getFormattedSourceCode().getCode(JavaConfig.EOL, file);
     }
 }

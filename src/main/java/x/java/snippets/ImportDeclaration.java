@@ -1,12 +1,12 @@
 package x.java.snippets;
 
+import x.ctrl.SourceCodeFile;
 import x.java.NodeWrapper;
-import java.util.Arrays;
-import java.util.List;
+import java.nio.file.Path;
 import static x.java.JavaConfig.EOL;
 public class ImportDeclaration extends SimpleNodesJavaCodeSnippet {
     @Override
-    protected String toSourceString(NodeWrapper node) {
+    protected String toSourceString(NodeWrapper node, SourceCodeFile file) {
         final StringBuilder result = new StringBuilder();
         result.append(node.getText());
         if (node.isNodeTextAnyOf("import", "static")) {

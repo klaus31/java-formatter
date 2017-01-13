@@ -1,16 +1,18 @@
 package x.java.snippets;
 
+import x.ctrl.SourceCodeFile;
 import x.java.NodeWrapper;
+import java.nio.file.Path;
 import static x.java.JavaConfig.EOL;
 import static x.java.JavaConfig.getIndentService;
 public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
     @Override
-    protected String toSourceString(NodeWrapper node) {
+    protected String toSourceString(NodeWrapper node, SourceCodeFile file) {
         StringBuilder builder = new StringBuilder();
         builder.append(node.getText());
         if (requiresSingleEolAfterNode(node)) {
             builder.append(EOL);
-            builder.append(getIndentService().calculateIndentToAppendTo(node));
+            builder.append(getIndentService(file).calculateIndentToAppendTo(node));
         } else if (requiresSingleBlankAfterNode(node)) {
             builder.append(" ");
         }

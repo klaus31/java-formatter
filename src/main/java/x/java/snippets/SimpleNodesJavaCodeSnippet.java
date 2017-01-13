@@ -1,7 +1,9 @@
 package x.java.snippets;
 
+import x.ctrl.SourceCodeFile;
 import x.java.JavaRulePath;
 import x.java.NodeWrapper;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import static x.ctrl.MiserableLogger.logDebug;
@@ -11,22 +13,22 @@ public abstract class SimpleNodesJavaCodeSnippet implements JavaCodeSnippet {
     SimpleNodesJavaCodeSnippet() {
         nodes = new ArrayList<>();
     }
-    String indentCurrent() {
-        return getIndentService().getCurrentIndent();
+    String indentCurrent(SourceCodeFile file) {
+        return getIndentService(file).getCurrentIndent();
     }
     @Override
-    public String toSourceString() {
+    public String toSourceString(SourceCodeFile file) {
         if (nodes.isEmpty()) {
             return "";
         }
         final StringBuilder builder = new StringBuilder();
         for (NodeWrapper node : nodes) {
             logDebug(node.toString());
-            builder.append(toSourceString(node));
+            builder.append(toSourceString(node, file));
         }
         return builder.toString();
     }
-    protected abstract String toSourceString(NodeWrapper node);
+    protected abstract String toSourceString(NodeWrapper node, SourceCodeFile file);
     @Override
     public void add(NodeWrapper node) {
         nodes.add(node);
