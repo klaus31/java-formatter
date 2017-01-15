@@ -12,14 +12,14 @@ import java.util.function.Consumer;
 import static x.java.JavaConfig.EOL;
 import static x.java.JavaConfig.RULES_HAVING_A_MATCHING_FORMATTER;
 public class CompilationUnit implements JavaCodeSnippet {
-    private static String ruleCurrentJavaCodeSnippetIsFor;
+    private String ruleCurrentJavaCodeSnippetIsFor;
     private Optional<JavaCodeSnippet> currentCodeSnippet;
     private List<JavaCodeSnippet> snippets;
     public CompilationUnit() {
         snippets = new ArrayList<>();
         currentCodeSnippet = Optional.empty();
     }
-    private static Optional<JavaCodeSnippet> getMatchingCodeSnippetFor(JavaRulePath rulePath) {
+    private Optional<JavaCodeSnippet> getMatchingCodeSnippetFor(JavaRulePath rulePath) {
         Optional<String> newRule = rulePath.calculateLastRuleEqualsAnyOf(RULES_HAVING_A_MATCHING_FORMATTER);
         if (!newRule.isPresent() || newRule.get().equals(ruleCurrentJavaCodeSnippetIsFor)) {
             return Optional.empty();

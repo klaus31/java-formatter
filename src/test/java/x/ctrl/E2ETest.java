@@ -75,8 +75,7 @@ public class E2ETest {
         expectInputFileEqualsOutputFile("java", 16);
     }
     @Test
-    @Ignore // FIXME not working yet: a class only having a package declaration, destroys everything
-    public void example17ShouldNotDestroy18() throws IOException {
+    public void example17AndShouldNotDestroy18() throws IOException {
         expectFormatterNotChangingFile("java", 17);
         expectFormatterNotChangingFile("java", 18);
     }

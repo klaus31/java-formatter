@@ -65,7 +65,7 @@ public class RulePath {
         Optional<String> winner = Optional.empty();
         int tmp = -1;
         for (String rule : rules) {
-            int lastIndex = this.getRulePathNames().lastIndexOf(rule);
+            int lastIndex = getRulePathNames().lastIndexOf(rule);
             if (tmp < lastIndex) {
                 winner = Optional.of(rule);
                 tmp = lastIndex;
