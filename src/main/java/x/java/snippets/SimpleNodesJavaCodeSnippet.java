@@ -26,7 +26,7 @@ public abstract class SimpleNodesJavaCodeSnippet implements JavaCodeSnippet {
         }
         return builder.toString();
     }
-    protected List<NodeWrapper> getAllNodesInCompilationUnit() {
+    List<NodeWrapper> getAllNodesInCompilationUnit() {
         return allNodesInCompilationUnit;
     }
     protected abstract String toSourceString(NodeWrapper node, SourceCodeFile file);

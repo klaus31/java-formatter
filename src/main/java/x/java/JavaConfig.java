@@ -22,7 +22,7 @@ public class JavaConfig {
         return new CompilationUnit();
     }
     public static final List<String> RULES_HAVING_A_MATCHING_FORMATTER = Arrays.asList("comment", "annotation", "packageDeclaration", "importDeclaration", "fieldDeclaration", "methodDeclaration", "interfaceMethodDeclaration", "classDeclaration", "interfaceDeclaration");
-    public static Optional<JavaCodeSnippet> getMatchingCodeSnippetFor(String ruleName) {
+    static Optional<JavaCodeSnippet> getMatchingCodeSnippetFor(String ruleName) {
         logDebug("Using new CodeSnippet for " + ruleName);
         switch (ruleName) {
             case "annotation":
