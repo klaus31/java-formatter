@@ -1,7 +1,6 @@
 package x.java.snippets;
 import x.ctrl.SourceCodeFile;
 import x.java.NodeWrapper;
-import java.util.List;
 import static x.java.JavaConfig.EOL;
 public class Annotation extends SimpleNodesJavaCodeSnippet {
     private boolean isNextNodeACommentInSameLine;
@@ -23,8 +22,7 @@ public class Annotation extends SimpleNodesJavaCodeSnippet {
         return result.toString();
     }
     private boolean nextNodeIsANewAnnotation(NodeWrapper node) {
-        List<NodeWrapper> allNodesInCompilationUnit = getAllNodesInCompilationUnit();
-        NodeWrapper nextNode = allNodesInCompilationUnit.get(allNodesInCompilationUnit.indexOf(node) + 1);
+        NodeWrapper nextNode = node.calculateNextNode(getAllNodesInCompilationUnit());
         return "@".equals(nextNode.getText());
     }
 }

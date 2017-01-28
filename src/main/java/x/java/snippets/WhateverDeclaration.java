@@ -63,7 +63,7 @@ public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
         if (node.isDoublePointInSwitchStatement()) {
             return true;
         }
-        if (node.isNextADoublePointInSwitchStatement()) {
+        if (node.isNextADoublePointInSwitchStatement(getAllNodesInCompilationUnit())) {
             return false;
         }
         if (")".equals(node.getText())) {

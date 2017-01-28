@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.lang3.StringUtils;
 import x.format.RulePath;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -11,7 +12,6 @@ import static java.util.Arrays.asList;
 public class NodeWrapper {
     private final JavaRulePath javaRulePath;
     private final TerminalNode node;
-    private final NodeWrapper prevNode;
     private ParseTree nextNode;
     public boolean isNextNodeAComment() {
         String nextNodeText = calculateNext().getText();
@@ -20,11 +20,9 @@ public class NodeWrapper {
     public JavaRulePath getJavaRulePath() {
         return javaRulePath;
     }
-    // TODO prevNode makes it very slow. Try to find a more efficient solution for what it is used for.
-    public NodeWrapper(TerminalNode node, JavaRulePath javaRulePath, NodeWrapper prevNode) {
+    public NodeWrapper(TerminalNode node, JavaRulePath javaRulePath) {
         this.javaRulePath = javaRulePath;
         this.node = node;
-        this.prevNode = prevNode;
     }
     private boolean occursOnSameLineAs(TerminalNode otherNode) {
         return node.getSymbol().getLine() == otherNode.getSymbol().getLine();
@@ -138,17 +136,14 @@ public class NodeWrapper {
     public boolean matchesRulePath(Predicate<RulePath> predicate) {
         return predicate.test(javaRulePath);
     }
-    public boolean prevNodeMatchesRulePath(Predicate<RulePath> predicate) {
-        return prevNode != null && predicate.test(prevNode.javaRulePath);
-    }
     public boolean matchesRulePath(String ... ruleNames) {
         return javaRulePath.matches(ruleNames);
     }
     public boolean isNextADoublePointInEnhancedForStatement() {
         return isNextADoublePoint() && javaRulePath.ruleNameFromEndEquals(1, "enhancedForStatement");
     }
-    public boolean isNextADoublePointInSwitchStatement() {
-        return isNextADoublePoint() &&(isCurrentRuleA("switchLabel") || prevNodeMatchesRulePath(jrp -> jrp.isCurrentRuleA("switchLabel")));
+    public boolean isNextADoublePointInSwitchStatement(List<NodeWrapper> allNodesInCompilationUnit) {
+        return isNextADoublePoint() &&(isCurrentRuleA("switchLabel") || prevNodeMatchesRulePath(jrp -> jrp.isCurrentRuleA("switchLabel"), allNodesInCompilationUnit));
     }
     public boolean isNextADoublePointInLabeledStatement() {
         return isNextADoublePoint() && isCurrentRuleA("labeledStatement");
@@ -219,5 +214,15 @@ public class NodeWrapper {
     @Override
     public int hashCode() {
         return node.hashCode();
+    }
+    public NodeWrapper calculateNextNode(List<NodeWrapper> allNodesInCompilationUnit) {
+        return allNodesInCompilationUnit.get(allNodesInCompilationUnit.indexOf(this) + 1);
+    }
+    private NodeWrapper calculatePrevNode(List<NodeWrapper> allNodesInCompilationUnit) {
+        return allNodesInCompilationUnit.get(allNodesInCompilationUnit.indexOf(this) - 1);
+    }
+    private boolean prevNodeMatchesRulePath(Predicate<RulePath> predicate, List<NodeWrapper> allNodesInCompilationUnit) {
+        NodeWrapper prevNode = calculatePrevNode(allNodesInCompilationUnit);
+        return prevNode != null && predicate.test(prevNode.javaRulePath);
     }
 }
