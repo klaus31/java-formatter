@@ -1,5 +1,4 @@
 package x.java.snippets;
-
 import x.ctrl.SourceCodeFile;
 import x.java.NodeWrapper;
 import java.nio.file.Path;

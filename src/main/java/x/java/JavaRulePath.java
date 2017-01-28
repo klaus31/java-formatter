@@ -1,5 +1,4 @@
 package x.java;
-
 import x.ctrl.MiserableLogger;
 import x.format.RulePath;
 import java.util.ArrayList;

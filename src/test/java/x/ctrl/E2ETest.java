@@ -1,5 +1,4 @@
 package x.ctrl;
-
 import org.junit.Ignore;
 import org.junit.Test;
 import x.java.SourceCodeFileFormatter4JavaDefault;
@@ -95,7 +94,7 @@ public class E2ETest {
         // when
         List<String> actualOutputLines = formatter.createOutputLines();
         actualOutputLines.forEach(System.out::println);
-        //then
+        // then
         List<String> expectedOutputLines = read(language, outputFileName);
         for (int i = 0; i < expectedOutputLines.size(); i++) {
             String debugMessage = outputFileName + " at line " + (i + 1) + ":\nActual: \"" + actualOutputLines.get(i) + "\"\nShould: \"" + expectedOutputLines.get(i);

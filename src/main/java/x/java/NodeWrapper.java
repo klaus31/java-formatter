@@ -1,5 +1,4 @@
 package x.java;
-
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -17,6 +16,9 @@ public class NodeWrapper {
     public boolean isNextNodeAComment() {
         String nextNodeText = calculateNext().getText();
         return nextNodeText.matches("/\\*.*\\*/") || nextNodeText.matches("//.*");
+    }
+    public JavaRulePath getJavaRulePath() {
+        return javaRulePath;
     }
     // TODO prevNode makes it very slow. Try to find a more efficient solution for what it is used for.
     public NodeWrapper(TerminalNode node, JavaRulePath javaRulePath, NodeWrapper prevNode) {
@@ -121,14 +123,6 @@ public class NodeWrapper {
         if (node.getChildCount() == 0) return node;
         else return getVeryLastChildOf(node.getChild(node.getChildCount() - 1));
     }
-    @Override
-    public boolean equals(Object obj) {
-        return node.equals(obj);
-    }
-    @Override
-    public int hashCode() {
-        return node.hashCode();
-    }
     public boolean isSemicolonAtEnd() {
         return node.getSymbol().getType() == 63 && !isCurrentRuleA("basicForStatement");
     }
@@ -214,7 +208,16 @@ public class NodeWrapper {
     boolean isLastNodeInSwitchStatement() {
         return isNextNodeText("}") && javaRulePath.ruleNameFromEndEquals(5, "switchBlockStatementGroup");
     }
-    private boolean isCurrentRuleAnyOf(String ... ruleNames) {
-        return Stream.of(ruleNames).anyMatch(this::isCurrentRuleA);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NodeWrapper that = (NodeWrapper) o;
+        if (!node.equals(that.node)) return false;
+        return true;
+    }
+    @Override
+    public int hashCode() {
+        return node.hashCode();
     }
 }

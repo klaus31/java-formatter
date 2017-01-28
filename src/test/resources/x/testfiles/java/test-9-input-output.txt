@@ -1,5 +1,4 @@
 package x.java;
-
 public class FieldWithAnnotation {
     @A
     public B b;

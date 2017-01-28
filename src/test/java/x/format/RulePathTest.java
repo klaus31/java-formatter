@@ -1,5 +1,4 @@
 package x.format;
-
 import org.junit.Test;
 import x.java.JavaRulePath;
 import static org.hamcrest.Matchers.is;

@@ -1,4 +1,3 @@
 package x.java.snippets;
-
 public class SnippetComparator extends HashMap<List<? extends String>, String> implements Comparator<JavaCodeSnippet> {
 }

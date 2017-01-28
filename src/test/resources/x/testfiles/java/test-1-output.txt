@@ -1,5 +1,4 @@
 package x.ctrl;
-
 import org.junit.Test; // wow
 import x.java.SourceCodeFileFormatter4JavaDefault;
 import java.io.IOException;

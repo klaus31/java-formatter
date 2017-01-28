@@ -1,5 +1,4 @@
 package x.java;
-
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -28,7 +27,6 @@ class FormatParseTreeListener implements ParseTreeListener {
     @Override
     public void enterEveryRule(ParserRuleContext ctx) {
         javaRulePath.enter(getRuleName(ctx));
-        formatter.setNewCurrentRule(javaRulePath);
     }
     private String getRuleName(ParserRuleContext ctx) {
         return ruleNames[ ctx.getRuleIndex()];
@@ -36,6 +34,5 @@ class FormatParseTreeListener implements ParseTreeListener {
     @Override
     public void exitEveryRule(ParserRuleContext ctx) {
         javaRulePath.exit(getRuleName(ctx));
-        formatter.setNewCurrentRule(javaRulePath);
     }
 }

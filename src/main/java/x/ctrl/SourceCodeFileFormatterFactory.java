@@ -1,5 +1,4 @@
 package x.ctrl;
-
 import x.java.SourceCodeFileFormatter4JavaDefault;
 import x.xml.SourceCodeFileFormatter4XmlDefault;
 class SourceCodeFileFormatterFactory {

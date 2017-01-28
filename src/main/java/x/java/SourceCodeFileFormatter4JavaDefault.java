@@ -1,5 +1,4 @@
 package x.java;
-
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.LexerInterpreter;
@@ -13,6 +12,7 @@ import x.ctrl.SourceCodeFile;
 import x.ctrl.SourceCodeFileFormatter;
 import java.io.IOException;
 import java.util.List;
+import static x.java.JavaConfig.EOL;
 public class SourceCodeFileFormatter4JavaDefault implements SourceCodeFileFormatter {
     private final SourceCodeFile file;
     private static final String GRAMMAR_FILE = SourceCodeFileFormatter4JavaDefault.class.getClassLoader().getResource("Java8.g4").getFile();
@@ -35,6 +35,6 @@ public class SourceCodeFileFormatter4JavaDefault implements SourceCodeFileFormat
         JavaFormatter formatter = new JavaFormatter();
         ParseTreeListener listener = new FormatParseTreeListener(formatter, parser.getRuleNames());
         walker.walk(listener, t);
-        return formatter.getFormattedSourceCode().getCode(JavaConfig.EOL, file);
+        return formatter.getFormattedSourceCode().getCode(EOL, file);
     }
 }

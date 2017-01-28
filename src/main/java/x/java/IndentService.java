@@ -1,5 +1,4 @@
 package x.java;
-
 import org.apache.commons.lang3.StringUtils;
 public class IndentService {
     private final String singleIndent;

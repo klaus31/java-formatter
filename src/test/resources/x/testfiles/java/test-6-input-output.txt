@@ -1,5 +1,4 @@
 package x.ctrl;
-
 class Test {
     int a = 1; // b
 }

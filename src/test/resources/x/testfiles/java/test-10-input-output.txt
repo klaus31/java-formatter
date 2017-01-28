@@ -1,5 +1,4 @@
 package x.java;
-
 public class Constructor extends Foo {
     @A
     public Constructor(B b, C c) {

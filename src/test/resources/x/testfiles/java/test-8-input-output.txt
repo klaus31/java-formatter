@@ -1,5 +1,4 @@
 package x.ctrl;
-
 class TestDoublePoints {
     void c() {
         String[] strs = {"a", "b"};

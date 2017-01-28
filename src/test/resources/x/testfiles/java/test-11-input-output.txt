@@ -1,5 +1,4 @@
 package x.java;
-
 public class A {
     public A() {
         switch (b) {
