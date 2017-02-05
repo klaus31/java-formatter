@@ -579,10 +579,11 @@ enumBodyDeclarations
 interfaceDeclaration
 	:	normalInterfaceDeclaration
 	|	annotationTypeDeclaration
+	|   comment
 	;
 
 normalInterfaceDeclaration
-	:	interfaceModifier* 'interface' Identifier typeParameters? extendsInterfaces? interfaceBody
+	:	comment* interfaceModifier* 'interface' Identifier typeParameters? extendsInterfaces? interfaceBody
 	;
 
 interfaceModifier
@@ -636,7 +637,7 @@ interfaceMethodModifier
 	;
 
 annotationTypeDeclaration
-	:	interfaceModifier* '@' 'interface' Identifier annotationTypeBody
+	:	comment* interfaceModifier* '@' 'interface' Identifier annotationTypeBody
 	;
 
 annotationTypeBody
@@ -648,6 +649,7 @@ annotationTypeMemberDeclaration
 	|	constantDeclaration
 	|	classDeclaration
 	|	interfaceDeclaration
+	|	comment
 	|	';'
 	;
 

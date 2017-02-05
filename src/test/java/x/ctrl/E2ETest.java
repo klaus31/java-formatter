@@ -1,5 +1,6 @@
 package x.ctrl;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import x.java.SourceCodeFileFormatter4JavaDefault;
 import java.io.IOException;
@@ -123,7 +124,16 @@ public class E2ETest {
         expectFormatterNotChangingFile("java", 22);
     }
 
-    // TODO test case for annotation declarations
+    @Test
+    public void example23ShouldHaveExpectedOutput() throws IOException {
+        expectFormatterNotChangingFile("java", 23);
+    }
+
+    @Test
+    public void example24ShouldHaveExpectedOutput() throws IOException {
+        expectFormatterNotChangingFile("java", 24);
+    }
+
     // TODO test case for annotation on params
     private void expectFormatterNotChangingFile(String language, int fileId) {
         String inputAndOutputFileName = "test-" + fileId + "-input-output";
