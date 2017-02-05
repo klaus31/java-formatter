@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import java.util.Arrays;
+
 class FormatParseTreeListener implements ParseTreeListener {
 
     private final JavaFormatter formatter;

@@ -10,12 +10,12 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import static java.util.Arrays.asList;
+
 public class NodeWrapper {
 
     private final JavaRulePath javaRulePath;
     private final TerminalNode node;
     private ParseTree nextNode;
-
 
     public boolean isNextNodeAComment() {
         String nextNodeText = calculateNext().getText();

@@ -6,6 +6,7 @@ import x.java.NodeWrapper;
 import java.util.List;
 import static x.java.JavaConfig.EOL;
 import static x.java.JavaConfig.getIndentService;
+
 public class Comment extends SimpleNodesJavaCodeSnippet {
 
     @Override

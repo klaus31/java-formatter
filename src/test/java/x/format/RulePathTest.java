@@ -4,6 +4,7 @@ import org.junit.Test;
 import x.java.JavaRulePath;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
+
 public class RulePathTest {
 
     @Test

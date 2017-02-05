@@ -5,6 +5,7 @@ import x.java.snippets.*;
 import java.nio.file.Path;
 import java.util.*;
 import static x.ctrl.MiserableLogger.logDebug;
+
 public class JavaConfig {
 
     public static final String EOL = "\n";

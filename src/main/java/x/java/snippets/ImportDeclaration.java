@@ -3,9 +3,7 @@ package x.java.snippets;
 import x.ctrl.SourceCodeFile;
 import x.java.IndentService;
 import x.java.NodeWrapper;
-
 import java.util.List;
-
 import static x.java.JavaConfig.EOL;
 
 public class ImportDeclaration extends SimpleNodesJavaCodeSnippet {
@@ -29,7 +27,7 @@ public class ImportDeclaration extends SimpleNodesJavaCodeSnippet {
         if (lastNodeInSnippet.isNextNodeACommentInSameLine()) {
             return "";
         }
-        if(lastNodeInSnippet.isNextNodeAComment()) {
+        if (lastNodeInSnippet.isNextNodeAComment()) {
             return EOL + indentService.getCurrentIndent();
         }
         NodeWrapper nextNode = allNodesInCompilationUnit.get(allNodesInCompilationUnit.indexOf(lastNodeInSnippet) + 1);

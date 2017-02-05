@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.List;
 import static java.util.stream.Collectors.toList;
 import static x.java.JavaConfig.EOL;
+
 public class SourceCodeFileFormatter4JavaDefault implements SourceCodeFileFormatter {
 
     private static final String GRAMMAR_FILE = SourceCodeFileFormatter4JavaDefault.class.getClassLoader().getResource("Java8.g4").getFile();

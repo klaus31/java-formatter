@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import static java.util.stream.Collectors.joining;
+
 public class FormattedSourceCode {
 
     private final CompilationUnit compilationUnit;

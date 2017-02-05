@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import static x.ctrl.MiserableLogger.logDebug;
 import static x.java.JavaConfig.getIndentService;
+
 public abstract class SimpleNodesJavaCodeSnippet implements JavaCodeSnippet {
 
     private final List<NodeWrapper> nodesInSnippet;

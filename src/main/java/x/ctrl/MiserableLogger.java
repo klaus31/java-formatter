@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 import static org.apache.commons.lang3.time.DurationFormatUtils.formatDurationHMS;
+
 public class MiserableLogger {
 
     private static final boolean LOG_INFO = true;

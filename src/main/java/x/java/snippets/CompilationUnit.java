@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import static x.java.JavaConfig.EOL;
 import static x.java.JavaConfig.RULES_HAVING_A_MATCHING_FORMATTER;
+
 public class CompilationUnit {
 
     private List<JavaCodeSnippet> snippets;

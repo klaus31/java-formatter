@@ -7,6 +7,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Iterator;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
+
 class SourceCodeFiles {
 
     private final Stream<Path> files;

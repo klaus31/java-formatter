@@ -5,6 +5,7 @@ import x.java.IndentService;
 import x.java.NodeWrapper;
 import java.util.List;
 import static x.java.JavaConfig.EOL;
+
 public class Annotation extends SimpleNodesJavaCodeSnippet {
 
     private boolean isNextNodeACommentInSameLine;

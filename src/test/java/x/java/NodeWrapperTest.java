@@ -19,6 +19,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+
 // TODO "do mock behaviour, not data". I could not found an easy way.
 @RunWith(MockitoJUnitRunner.class)
 public class NodeWrapperTest {
