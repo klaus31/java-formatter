@@ -69,7 +69,7 @@ class JavaFormatter implements Formatter {
     @Override
     public FormattedSourceCode getFormattedSourceCode() {
         for (NodeWrapper node : nodes) {
-            if (node.isEOF()) continue;
+            if (node.isEOF()) break;
             setMatchingCodeSnippetFor(node);
             currentCodeSnippet.add(node, nodes);
         }

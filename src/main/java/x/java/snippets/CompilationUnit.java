@@ -29,7 +29,6 @@ public class CompilationUnit {
         for (JavaCodeSnippet snippet : snippets) {
             result.append(snippet.toSourceString(file));
         }
-        result.append(JavaConfig.END_OF_FILE);
         return result.toString();
     }
 }

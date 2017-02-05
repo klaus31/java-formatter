@@ -9,7 +9,6 @@ import static x.ctrl.MiserableLogger.logDebug;
 public class JavaConfig {
 
     public static final String EOL = "\n";
-    public static final String END_OF_FILE = EOL;
     private static Map<SourceCodeFile, IndentService> indentServices = new HashMap<>();
 
     private JavaConfig() {
