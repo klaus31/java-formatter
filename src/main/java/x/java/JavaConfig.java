@@ -6,6 +6,7 @@ import java.util.*;
 import static x.ctrl.MiserableLogger.logDebug;
 public class JavaConfig {
     public static final String EOL = "\n";
+    public static final String END_OF_FILE = EOL;
     private static Map<SourceCodeFile, IndentService> indentServices = new HashMap<>();
     private JavaConfig() {
     }
@@ -21,7 +22,7 @@ public class JavaConfig {
     static CompilationUnit createCompilationUnit() {
         return new CompilationUnit();
     }
-    public static final List<String> RULES_HAVING_A_MATCHING_FORMATTER = Arrays.asList("comment", "annotation", "packageDeclaration", "importDeclaration", "fieldDeclaration", "methodDeclaration", "interfaceMethodDeclaration", "classDeclaration", "interfaceDeclaration");
+    public static final List<String> RULES_HAVING_A_MATCHING_FORMATTER = Arrays.asList("constructorDeclaration","comment", "annotation", "packageDeclaration", "importDeclaration", "fieldDeclaration", "methodDeclaration", "interfaceMethodDeclaration", "classDeclaration", "interfaceDeclaration");
     static Optional<JavaCodeSnippet> getMatchingCodeSnippetFor(String ruleName) {
         logDebug("Using new CodeSnippet for " + ruleName);
         switch (ruleName) {
@@ -37,6 +38,7 @@ public class JavaConfig {
             case "methodDeclaration":
             case "interfaceMethodDeclaration":
             case "classDeclaration":
+            case "constructorDeclaration":
             case "interfaceDeclaration":
                 return Optional.of(new WhateverDeclaration());
             default:

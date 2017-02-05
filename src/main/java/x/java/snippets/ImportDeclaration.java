@@ -1,7 +1,10 @@
 package x.java.snippets;
 import x.ctrl.SourceCodeFile;
+import x.java.IndentService;
 import x.java.NodeWrapper;
-import java.nio.file.Path;
+
+import java.util.List;
+
 import static x.java.JavaConfig.EOL;
 public class ImportDeclaration extends SimpleNodesJavaCodeSnippet {
     @Override
@@ -15,5 +18,9 @@ public class ImportDeclaration extends SimpleNodesJavaCodeSnippet {
             result.append(node.isNextNodeACommentInSameLine() ? " " : EOL);
         }
         return result.toString();
+    }
+    @Override
+    protected String afterSnippet(List<NodeWrapper> nodesInSnippet, List<NodeWrapper> allNodesInCompilationUnit, IndentService indentService) {
+        return "";
     }
 }

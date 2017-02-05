@@ -1,7 +1,9 @@
 package x.ctrl;
 
 public class Test {
+
     void foo() {
     }
+
     int b = 2;
 }

@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+
+import static x.java.JavaConfig.EOL;
 import static x.java.JavaConfig.RULES_HAVING_A_MATCHING_FORMATTER;
 public class CompilationUnit {
     private List<JavaCodeSnippet> snippets;
@@ -22,6 +24,7 @@ public class CompilationUnit {
         for (JavaCodeSnippet snippet : snippets) {
             result.append(snippet.toSourceString(file));
         }
+        result.append(JavaConfig.END_OF_FILE);
         return result.toString();
     }
 }

@@ -1,9 +1,11 @@
 package x.ctrl;
-import org.junit.Ignore;
+
 import org.junit.Test;
 import x.java.SourceCodeFileFormatter4JavaDefault;
+
 import java.io.IOException;
 import java.util.List;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static x.TestFileReadIn.calcPath;
@@ -19,10 +21,12 @@ public class E2ETest {
     }
     @Test
     public void example3ShouldHaveExpectedOutput() throws IOException {
+        // TODO EOL between methods
         expectFormatterNotChangingFile("java", 3);
     }
     @Test
     public void example4ShouldHaveExpectedOutput() throws IOException {
+        // TODO strange blank lines here
         expectFormatterNotChangingFile("java", 4);
     }
     @Test
@@ -63,6 +67,7 @@ public class E2ETest {
     }
     @Test
     public void example14ShouldHaveExpectedOutput() throws IOException {
+        // TODO blank line before JAVA("java"), XML("xml");
         expectFormatterNotChangingFile("java", 14);
     }
     @Test
@@ -78,6 +83,8 @@ public class E2ETest {
         expectFormatterNotChangingFile("java", 17);
         expectFormatterNotChangingFile("java", 18);
     }
+    // TODO test case for annotation declarations
+    // TODO test case for annotation on params
     private void expectFormatterNotChangingFile(String language, int fileId) {
         String inputAndOutputFileName = "test-" + fileId + "-input-output";
         expectInputFileEqualsOutputFile(language, inputAndOutputFileName, inputAndOutputFileName);

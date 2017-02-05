@@ -1,10 +1,26 @@
 package x.java.snippets;
+
 import x.ctrl.SourceCodeFile;
+import x.java.IndentService;
 import x.java.NodeWrapper;
-import java.nio.file.Path;
+
+import java.util.List;
+
 import static x.java.JavaConfig.EOL;
 import static x.java.JavaConfig.getIndentService;
+
 public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
+    @Override
+    protected String afterSnippet(List<NodeWrapper> nodesInSnippet, List<NodeWrapper> allNodesInCompilationUnit, IndentService indentService) {
+        NodeWrapper lastNodeInSnippet = nodesInSnippet.get(nodesInSnippet.size() - 1);
+        if(lastNodeInSnippet.isNextNodeACommentInSameLine()) {
+            return "";
+        }
+        int indexOfLastNode = allNodesInCompilationUnit.indexOf(lastNodeInSnippet);
+        NodeWrapper nextNode = allNodesInCompilationUnit.get(indexOfLastNode + 1);
+        return "}".equals(nextNode.getText()) ? "" : EOL + indentService.getCurrentIndent();
+    }
+
     @Override
     protected String toSourceString(NodeWrapper node, SourceCodeFile file) {
         StringBuilder builder = new StringBuilder();
@@ -17,6 +33,7 @@ public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
         }
         return builder.toString();
     }
+
     private boolean requiresSingleBlankAfterNode(NodeWrapper node) {
         if (node.isNodeTextAnyOf("-", "+")) {
             return node.isCurrentRuleA("additiveExpression");
@@ -85,6 +102,7 @@ public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
         }
         return true;
     }
+
     private boolean requiresSingleEolAfterNode(NodeWrapper node) {
         if (node.isNextNodeACommentInSameLine()) {
             return false;

@@ -21,13 +21,18 @@ import static x.TestFileReadIn.read;
 @ClassAnnotationA
 @WebFault(faultBean="", messageName="")
 public class A1 {
+
     private List<String> a201612201919;
+
     // this is b
     private final List<String> b201612201919;
+
     // c
     private final static List<String> c201612201919;
+
     /* d */
     private static final List<String> d201612201919;
+
     /**
     e
     */
@@ -54,6 +59,7 @@ public class A1 {
     List<?> y201612201919 = new HashMap<>(7);
     String str = (5 - 1 < 6) ? "hi" : ho;
     List<Foo<Bar>, Bar<Foo<?>>> plump;
+
     // Zwei einsame Menschen im Schnee
     @AnnotationA
     // Wolln Schneemann baun
@@ -68,6 +74,7 @@ public class A1 {
         String expectedOutputFileName = fileNameKey + "-expected-output"; // _
         SourceCodeFile sourceCodeFile = new SourceCodeFile(calcPath(language, inputFileName));
         SourceCodeFileFormatter formatter = new SourceCodeFileFormatter4JavaDefault(sourceCodeFile);
+
         // such a great line of code
         /* <3 */
         List<String> actualOutputLines = formatter.createOutputLines();

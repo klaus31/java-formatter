@@ -17,6 +17,7 @@ class JavaFormatter implements Formatter {
     }
     private void setMatchingCodeSnippetFor(JavaRulePath rulePath) {
         Optional<String> newRule = rulePath.calculateLastRuleEqualsAnyOf(RULES_HAVING_A_MATCHING_FORMATTER);
+        // TODO maybe, it is not the current rule, but a new block with same rule
         if (newRule.isPresent() && !newRule.get().equals(ruleCurrentJavaCodeSnippetIsFor)) {
             ruleCurrentJavaCodeSnippetIsFor = newRule.get();
             Optional<JavaCodeSnippet> matchingCodeSnippetFor = getMatchingCodeSnippetFor(ruleCurrentJavaCodeSnippetIsFor);

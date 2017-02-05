@@ -1,5 +1,6 @@
 package x.java.snippets;
 import x.ctrl.SourceCodeFile;
+import x.java.IndentService;
 import x.java.NodeWrapper;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,12 @@ public abstract class SimpleNodesJavaCodeSnippet implements JavaCodeSnippet {
             logDebug(node.toString());
             builder.append(toSourceString(node, file));
         }
+        builder.append(afterSnippet(nodesInSnippet, allNodesInCompilationUnit, getIndentService(file)));
         return builder.toString();
     }
+
+    protected abstract String afterSnippet(List<NodeWrapper> nodesInSnippet, List<NodeWrapper> allNodesInCompilationUnit, IndentService indentService);
+
     List<NodeWrapper> getAllNodesInCompilationUnit() {
         return allNodesInCompilationUnit;
     }

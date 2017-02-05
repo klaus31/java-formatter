@@ -1,6 +1,7 @@
 package x.java;
 
 public class A {
+
     int i = -1;
     int j = 1 - 1;
     int k = +1;

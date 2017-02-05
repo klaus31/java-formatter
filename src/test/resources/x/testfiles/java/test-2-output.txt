@@ -1,6 +1,7 @@
 package x.ctrl;
 
 public class TestBlockReopen {
+
     void testIfElse() {
         if (a) {
             doThis();
