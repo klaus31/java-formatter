@@ -102,6 +102,11 @@ public class E2ETest {
         expectFormatterNotChangingFile("java", 18);
     }
 
+    @Test
+    public void example19ShouldHaveExpectedOutput() throws IOException {
+        expectFormatterNotChangingFile("java", 19);
+    }
+
     // TODO test case for annotation declarations
     // TODO test case for annotation on params
     private void expectFormatterNotChangingFile(String language, int fileId) {

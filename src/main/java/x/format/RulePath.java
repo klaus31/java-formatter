@@ -69,12 +69,16 @@ public class RulePath {
         Optional<String> winner = Optional.empty();
         int tmp = -1;
         for (String rule : rules) {
-            int lastIndex = getRulePathNames().lastIndexOf(rule);
+            int lastIndex = lastIndexOf(rule);
             if (tmp < lastIndex) {
                 winner = Optional.of(rule);
                 tmp = lastIndex;
             }
         }
         return winner;
+    }
+
+    public int lastIndexOf(String rule) {
+        return getRulePathNames().lastIndexOf(rule);
     }
 }

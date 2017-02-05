@@ -1,0 +1,36 @@
+package x.java.snippets;
+
+public class A {
+
+    A() {
+        System.out.print(1);
+    }
+
+    public A(int a) {
+        System.out.print(1);
+    }
+
+    public void a(int a) {
+        System.out.print(1);
+    }
+
+    public void b(int b) {
+        System.out.print(1);
+    }
+
+    void c(int c) {
+        System.out.print(1);
+    }
+
+    void c(String c) {
+        System.out.print(1);
+    }
+
+    abstract void d(int d) {
+        System.out.print(1);
+    }
+
+    abstract void d(String d) {
+        System.out.print(1);
+    }
+}

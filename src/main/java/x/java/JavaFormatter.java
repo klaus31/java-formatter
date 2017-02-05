@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static x.java.JavaConfig.RULES_HAVING_A_MATCHING_FORMATTER;
-import static x.java.JavaConfig.RULES_FORCE_STARTING_A_NEW_BLOCK;
 import static x.java.JavaConfig.getMatchingCodeSnippetFor;
 
 class JavaFormatter implements Formatter {
@@ -25,13 +24,12 @@ class JavaFormatter implements Formatter {
         nodes = new ArrayList<>();
     }
 
-    private void setMatchingCodeSnippetFor(JavaRulePath rulePath) {
+    private void setMatchingCodeSnippetFor(NodeWrapper node) {
+        JavaRulePath rulePath = node.getJavaRulePath();
         Optional<String> newRule = rulePath.calculateLastRuleEqualsAnyOf(RULES_HAVING_A_MATCHING_FORMATTER);
 
         // TODO maybe, it is not the current rule, but a new block with same rule
-        System.out.println("biete: " + rulePath);
-        if (newRule.isPresent() && newRuleRequiresNewCodeSnippet(newRule.get(), rulePath)) {
-            System.out.println("nehme: " + newRule.get());
+        if (newRule.isPresent() && newRuleRequiresNewCodeSnippet(newRule.get(), node)) {
             ruleCurrentJavaCodeSnippetIsFor = newRule.get();
             Optional<JavaCodeSnippet> matchingCodeSnippetFor = getMatchingCodeSnippetFor(ruleCurrentJavaCodeSnippetIsFor);
             if (matchingCodeSnippetFor.isPresent()) {
@@ -41,9 +39,29 @@ class JavaFormatter implements Formatter {
         }
     }
 
-    private boolean newRuleRequiresNewCodeSnippet(String newRule, JavaRulePath rulePath) {
-        return !newRule.equals(ruleCurrentJavaCodeSnippetIsFor)
-                || RULES_FORCE_STARTING_A_NEW_BLOCK.stream().anyMatch(rulePath::isCurrentRuleA);
+    private boolean newRuleRequiresNewCodeSnippet(String newRule, NodeWrapper node) {
+        if (!newRule.equals(ruleCurrentJavaCodeSnippetIsFor)) {
+            return true;
+        } else if (node.getJavaRulePath().isCurrentRuleA("interfaceMethodModifier")) {
+            return true;
+        } else if (node.getJavaRulePath().isCurrentRuleA("methodModifier")) {
+            return true;
+        } else if (node.getJavaRulePath().isCurrentRuleA("constructorModifier")) {
+            return true;
+        } else if (isStartOfANewMethod(newRule, node)) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isStartOfANewMethod(String newRule, NodeWrapper node) {
+        if ("methodDeclaration".equals(newRule) && "methodDeclaration".equals(ruleCurrentJavaCodeSnippetIsFor)) {
+            NodeWrapper previousNode = nodes.get(nodes.indexOf(node) - 1);
+            int lastIndexMethodHeader = node.getJavaRulePath().lastIndexOf("methodHeader");
+            return lastIndexMethodHeader > 0 && previousNode.getJavaRulePath().lastIndexOf("methodHeader") != lastIndexMethodHeader && previousNode.getJavaRulePath().lastIndexOf("methodModifier") != lastIndexMethodHeader;
+        } else {
+            return false;
+        }
     }
 
     void add(NodeWrapper node) {
@@ -54,7 +72,7 @@ class JavaFormatter implements Formatter {
     public FormattedSourceCode getFormattedSourceCode() {
         for (NodeWrapper node : nodes) {
             if (node.isEOF()) continue;
-            setMatchingCodeSnippetFor(node.getJavaRulePath());
+            setMatchingCodeSnippetFor(node);
             currentCodeSnippet.add(node, nodes);
         }
         if (currentCodeSnippet != null) compilationUnit.add(currentCodeSnippet);

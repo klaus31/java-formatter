@@ -13,4 +13,5 @@ public class JavaRulePath extends RulePath {
         super();
         javaRulePath.getRulePathNames().forEach(this::enter);
     }
+
 }

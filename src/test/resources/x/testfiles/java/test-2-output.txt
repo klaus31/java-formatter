@@ -9,6 +9,7 @@ public class TestBlockReopen {
             doThat();
         }
     }
+
     void testTryCatch() {
         try {
             doThis();
@@ -16,11 +17,13 @@ public class TestBlockReopen {
             doThat();
         }
     }
+
     void doWhile() {
         do {
             doThis();
         } while (bar());
     }
+
     void switchCase() {
         switch (FOO) {
             case 1:

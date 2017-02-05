@@ -28,7 +28,6 @@ public class JavaConfig {
     }
 
     public static final List<String> RULES_HAVING_A_MATCHING_FORMATTER = Arrays.asList("constructorDeclaration", "comment", "annotation", "packageDeclaration", "importDeclaration", "fieldDeclaration", "methodDeclaration", "interfaceMethodDeclaration", "classDeclaration", "interfaceDeclaration");
-    public static final List<String> RULES_FORCE_STARTING_A_NEW_BLOCK = Arrays.asList("interfaceMethodModifier");
 
     static Optional<JavaCodeSnippet> getMatchingCodeSnippetFor(String ruleName) {
         logDebug("Using new CodeSnippet for " + ruleName);
