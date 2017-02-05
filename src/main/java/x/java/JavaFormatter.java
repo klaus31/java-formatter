@@ -1,12 +1,18 @@
 package x.java;
 
-import x.format.*;
-import x.java.snippets.*;
+import x.format.FormattedSourceCode;
+import x.format.Formatter;
+import x.java.snippets.CompilationUnit;
+import x.java.snippets.JavaCodeSnippet;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import static x.java.JavaConfig.RULES_HAVING_A_MATCHING_FORMATTER;
+import static x.java.JavaConfig.RULES_FORCE_STARTING_A_NEW_BLOCK;
 import static x.java.JavaConfig.getMatchingCodeSnippetFor;
+
 class JavaFormatter implements Formatter {
 
     private final CompilationUnit compilationUnit;
@@ -23,7 +29,9 @@ class JavaFormatter implements Formatter {
         Optional<String> newRule = rulePath.calculateLastRuleEqualsAnyOf(RULES_HAVING_A_MATCHING_FORMATTER);
 
         // TODO maybe, it is not the current rule, but a new block with same rule
-        if (newRule.isPresent() && !newRule.get().equals(ruleCurrentJavaCodeSnippetIsFor)) {
+        System.out.println("biete: " + rulePath);
+        if (newRule.isPresent() && newRuleRequiresNewCodeSnippet(newRule.get(), rulePath)) {
+            System.out.println("nehme: " + newRule.get());
             ruleCurrentJavaCodeSnippetIsFor = newRule.get();
             Optional<JavaCodeSnippet> matchingCodeSnippetFor = getMatchingCodeSnippetFor(ruleCurrentJavaCodeSnippetIsFor);
             if (matchingCodeSnippetFor.isPresent()) {
@@ -32,6 +40,12 @@ class JavaFormatter implements Formatter {
             }
         }
     }
+
+    private boolean newRuleRequiresNewCodeSnippet(String newRule, JavaRulePath rulePath) {
+        return !newRule.equals(ruleCurrentJavaCodeSnippetIsFor)
+                || RULES_FORCE_STARTING_A_NEW_BLOCK.stream().anyMatch(rulePath::isCurrentRuleA);
+    }
+
     void add(NodeWrapper node) {
         nodes.add(node);
     }
