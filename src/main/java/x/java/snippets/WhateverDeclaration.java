@@ -24,7 +24,7 @@ public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
     protected String toSourceString(NodeWrapper node, SourceCodeFile file) {
         StringBuilder builder = new StringBuilder();
         builder.append(node.getText());
-        if("@".equals(node.getText()) && node.getJavaRulePath().isCurrentRuleA("annotationTypeDeclaration")) {
+        if ("@".equals(node.getText()) && node.getJavaRulePath().isCurrentRuleA("annotationTypeDeclaration")) {
             return builder.toString();
         }
         if (requiresSingleEolAfterNode(node)) {
