@@ -16,6 +16,7 @@ public class SourceCodeFile {
     public List<String> readContentLines() throws IOException {
         return Files.readAllLines(path, StandardCharsets.UTF_8);
     }
+
     public Path getPath() {
         return path;
     }

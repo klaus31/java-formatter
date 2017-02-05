@@ -24,6 +24,7 @@ class SourceCodeFiles {
     private boolean isFileOfInterest(Path path, BasicFileAttributes basicFileAttributes) {
         return basicFileAttributes.isRegularFile() && path.getFileName().toString().matches("^.+\\." + type.getSuffix() + "$") && path.toFile().canRead() && path.toFile().canWrite();
     }
+
     void forEach(Consumer<SourceCodeFile> consumer) throws IOException {
         files.parallel().forEach(f -> consumer.accept(new SourceCodeFile(f)));
     }

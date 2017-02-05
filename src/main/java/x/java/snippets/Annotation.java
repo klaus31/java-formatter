@@ -32,6 +32,7 @@ public class Annotation extends SimpleNodesJavaCodeSnippet {
         isNextNodeACommentInSameLine = node.isNextNodeACommentInSameLine();
         return result.toString();
     }
+
     private boolean nextNodeIsANewAnnotation(NodeWrapper node) {
         NodeWrapper nextNode = node.calculateNextNode(getAllNodesInCompilationUnit());
         return "@".equals(nextNode.getText());

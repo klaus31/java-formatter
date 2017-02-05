@@ -10,13 +10,16 @@ public class CrashStrategy {
         System.err.println("\uD83D\uDEAA \uD83C\uDFC3 \uD83D\uDCA8 Exit now");
         System.exit(id);
     }
+
     public static void reportToUserAndExit(IOException e, int id) {
         reportToUserAndExit(e, id, "");
     }
+
     public static void reportToUserAndExit(IOException e, int id, String additionalMessage) {
         reportToUser(e, id, additionalMessage);
         exit(id);
     }
+
     public static void reportToUser(IOException e, int id, String additionalMessage) {
         e.printStackTrace();
         System.err.println("");

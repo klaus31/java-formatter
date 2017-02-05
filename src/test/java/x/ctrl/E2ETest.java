@@ -113,6 +113,7 @@ public class E2ETest {
         String inputAndOutputFileName = "test-" + fileId + "-input-output";
         expectInputFileEqualsOutputFile(language, inputAndOutputFileName, inputAndOutputFileName);
     }
+
     private void expectInputFileEqualsOutputFile(String language, int fileId) throws IOException {
 
         // given
@@ -120,6 +121,7 @@ public class E2ETest {
         String outputFileName = "test-" + fileId + "-output";
         expectInputFileEqualsOutputFile(language, inputFileName, outputFileName);
     }
+
     private void expectInputFileEqualsOutputFile(String language, String inputFileName, String outputFileName) {
         SourceCodeFile sourceCodeFile = new SourceCodeFile(calcPath(language, inputFileName));
         SourceCodeFileFormatter formatter = new SourceCodeFileFormatter4JavaDefault(sourceCodeFile);

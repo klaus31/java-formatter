@@ -21,21 +21,27 @@ public class RulePath {
             return false;
         }
     }
+
     protected List<String> getRulePathNames() {
         return rulePathNames;
     }
+
     public void enter(String ruleName) {
         rulePathNames.add(ruleName);
     }
+
     public void exit(String ruleName) {
         rulePathNames.remove(rulePathNames.size() - 1);
     }
+
     protected String getCurrentRule() {
         return rulePathNames.isEmpty() ? null : rulePathNames.get(rulePathNames.size() - 1);
     }
+
     public boolean isCurrentRuleA(String ruleName) {
         return ruleName.equals(getCurrentRule());
     }
+
     public boolean isPartOf(String ruleName) {
         return rulePathNames.contains(ruleName);
     }
@@ -44,15 +50,19 @@ public class RulePath {
     public String toString() {
         return rulePathNames.toString();
     }
+
     public boolean isPartOfAnyOf(String ... ruleNames) {
         return Stream.of(ruleNames).anyMatch(rulePathNames::contains);
     }
+
     public boolean isCurrentRuleAnyOf(String ... ruleNames) {
         return Stream.of(ruleNames).anyMatch(this::isCurrentRuleA);
     }
+
     public int stepsAwayFrom(String ruleName) {
         return rulePathNames.size() - 1 - rulePathNames.lastIndexOf(ruleName);
     }
+
     public boolean matches(String ... ruleNames) {
         int index = -1;
         for (String ruleName : ruleNames) {
@@ -65,6 +75,7 @@ public class RulePath {
         }
         return true;
     }
+
     public Optional<String> calculateLastRuleEqualsAnyOf(List<String> rules) {
         Optional<String> winner = Optional.empty();
         int tmp = -1;

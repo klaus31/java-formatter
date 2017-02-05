@@ -22,6 +22,7 @@ public class CompilationUnit {
     public void add(JavaCodeSnippet snippet) {
         snippets.add(snippet);
     }
+
     public String toSourceString(SourceCodeFile file) {
         StringBuilder result = new StringBuilder();
         for (JavaCodeSnippet snippet : snippets) {

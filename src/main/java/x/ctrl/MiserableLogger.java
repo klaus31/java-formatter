@@ -17,9 +17,11 @@ public class MiserableLogger {
     public static void logDebug(String message) {
         if (LOG_DEBUG) OUT.println(message);
     }
+
     public static void logInfo(String message) {
         if (LOG_INFO) OUT.println(message);
     }
+
     public static void logInfoStopWatchStart(String name) {
         if (LOG_INFO) {
             StopWatch stopWatch = new StopWatch();
@@ -27,6 +29,7 @@ public class MiserableLogger {
             stopWatches.put(name, stopWatch);
         }
     }
+
     public static void logInfoStopWatchStop(String name) {
         Validate.isTrue(stopWatches.containsKey(name));
         if (LOG_INFO) {

@@ -32,6 +32,7 @@ class FormatParseTreeListener implements ParseTreeListener {
     public void enterEveryRule(ParserRuleContext ctx) {
         javaRulePath.enter(getRuleName(ctx));
     }
+
     private String getRuleName(ParserRuleContext ctx) {
         return ruleNames[ ctx.getRuleIndex()];
     }

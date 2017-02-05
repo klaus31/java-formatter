@@ -4,14 +4,11 @@ import x.format.FormattedSourceCode;
 import x.format.Formatter;
 import x.java.snippets.CompilationUnit;
 import x.java.snippets.JavaCodeSnippet;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import static x.java.JavaConfig.RULES_HAVING_A_MATCHING_FORMATTER;
 import static x.java.JavaConfig.getMatchingCodeSnippetFor;
-
 class JavaFormatter implements Formatter {
 
     private final CompilationUnit compilationUnit;

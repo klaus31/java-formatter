@@ -20,6 +20,7 @@ public class TestFileReadIn {
         }
         return null;
     }
+
     public static List<String> read(String lang, String fileName) {
         try {
             Path path = calcPath(lang, fileName);

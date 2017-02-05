@@ -33,10 +33,13 @@ public abstract class SimpleNodesJavaCodeSnippet implements JavaCodeSnippet {
         builder.append(afterSnippet(nodesInSnippet, allNodesInCompilationUnit, getIndentService(file)));
         return builder.toString();
     }
+
     protected abstract String afterSnippet(List<NodeWrapper> nodesInSnippet, List<NodeWrapper> allNodesInCompilationUnit, IndentService indentService);
+
     List<NodeWrapper> getAllNodesInCompilationUnit() {
         return allNodesInCompilationUnit;
     }
+
     protected abstract String toSourceString(NodeWrapper node, SourceCodeFile file);
 
     @Override

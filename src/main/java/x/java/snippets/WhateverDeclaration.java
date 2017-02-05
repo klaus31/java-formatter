@@ -31,6 +31,7 @@ public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
         }
         return builder.toString();
     }
+
     private boolean requiresSingleBlankAfterNode(NodeWrapper node) {
         if (node.isNodeTextAnyOf("-", "+")) {
             return node.isCurrentRuleA("additiveExpression");
@@ -99,6 +100,7 @@ public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
         }
         return true;
     }
+
     private boolean requiresSingleEolAfterNode(NodeWrapper node) {
         if (node.isNextNodeACommentInSameLine()) {
             return false;

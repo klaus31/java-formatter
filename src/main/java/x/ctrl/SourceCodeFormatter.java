@@ -19,11 +19,13 @@ public class SourceCodeFormatter {
     public static CharSequence getEol() {
         return System.getProperty("line.separator");
     }
+
     public void start() throws IOException {
         logInfoStopWatchStart("Format all JAVA-Files");
         new SourceCodeFiles(inputDirectory, JAVA).forEach(process(JAVA));
         logInfoStopWatchStop("Format all JAVA-Files");
     }
+
     private static Consumer<SourceCodeFile> process(KnownSourceFileType type) {
         return sourceCodeFile -> {
             logInfo("Format next: " + sourceCodeFile.getPath());
@@ -31,6 +33,7 @@ public class SourceCodeFormatter {
             write(sourceCodeFile, outputLines);
         };
     }
+
     private static void write(SourceCodeFile sourceCodeFile, List<String> outputLines) {
         try {
             FileUtils.writeStringToFile(sourceCodeFile.getPath().toFile(), outputLines.stream().collect(joining(getEol())));
@@ -38,6 +41,7 @@ public class SourceCodeFormatter {
             CrashStrategy.reportToUserAndExit(e, 1610142042, "Error while writing");
         }
     }
+
     private static List<String> createOutputLines(SourceCodeFile sourceCodeFile, KnownSourceFileType type) {
         SourceCodeFileFormatter formatter = SourceCodeFileFormatterFactory.get(type, sourceCodeFile);
         return formatter.createOutputLines();

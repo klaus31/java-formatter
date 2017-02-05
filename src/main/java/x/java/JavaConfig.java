@@ -20,9 +20,11 @@ public class JavaConfig {
         }
         return indentServices.get(file);
     }
+
     private static IndentService createIndentService() {
         return new IndentService("    ");
     }
+
     static CompilationUnit createCompilationUnit() {
         return new CompilationUnit();
     }
