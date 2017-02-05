@@ -38,7 +38,10 @@ class JavaFormatter implements Formatter {
     }
 
     private boolean newRuleRequiresNewCodeSnippet(String newRule, NodeWrapper node) {
-        if (!newRule.equals(ruleCurrentJavaCodeSnippetIsFor)) {
+        if(newRule.equals("annotation") && "methodDeclaration".equals(ruleCurrentJavaCodeSnippetIsFor)) {
+            return false;
+
+        } else if (!newRule.equals(ruleCurrentJavaCodeSnippetIsFor)) {
             return true;
         } else if (node.getJavaRulePath().isCurrentRuleA("interfaceMethodModifier")) {
             return true;

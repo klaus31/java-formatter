@@ -1,0 +1,12 @@
+package org.junit;
+
+class Test {
+
+    String get(@Param("honey") Honey honey, @Param("bee") Bee bee) {
+        return bee.sum().sum();
+    }
+
+    String get(@Param(value = "honey") Honey honey, @Param(value = "bee", size = 4.2F) Bee bee) {
+        return bee.sum().sum();
+    }
+}
