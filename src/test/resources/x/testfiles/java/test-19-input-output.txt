@@ -30,7 +30,23 @@ public class A {
         System.out.print(1);
     }
 
-    abstract void d(String d) {
+    abstract void e(String d) {
+        System.out.print(1);
+    }
+
+    static void f(String d) {
+        System.out.print(1);
+    }
+
+    public static void g(String d) {
+        System.out.print(1);
+    }
+
+    public static final void h(String d) {
+        System.out.print(1);
+    }
+
+    public static final synchronized native strictfp void i(String d) {
         System.out.print(1);
     }
 }

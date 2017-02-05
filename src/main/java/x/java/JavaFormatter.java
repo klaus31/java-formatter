@@ -44,8 +44,6 @@ class JavaFormatter implements Formatter {
             return true;
         } else if (node.getJavaRulePath().isCurrentRuleA("interfaceMethodModifier")) {
             return true;
-        } else if (node.getJavaRulePath().isCurrentRuleA("methodModifier")) {
-            return true;
         } else if (node.getJavaRulePath().isCurrentRuleA("constructorModifier")) {
             return true;
         } else if (isStartOfANewMethod(newRule, node)) {
@@ -55,7 +53,9 @@ class JavaFormatter implements Formatter {
     }
 
     private boolean isStartOfANewMethod(String newRule, NodeWrapper node) {
-        if ("methodDeclaration".equals(newRule) && "methodDeclaration".equals(ruleCurrentJavaCodeSnippetIsFor)) {
+        if (node.getJavaRulePath().isCurrentRuleA("methodModifier")) {
+            return !nodes.get(nodes.indexOf(node) - 1).getJavaRulePath().isCurrentRuleA("methodModifier");
+        } else if ("methodDeclaration".equals(newRule) && "methodDeclaration".equals(ruleCurrentJavaCodeSnippetIsFor)) {
             NodeWrapper previousNode = nodes.get(nodes.indexOf(node) - 1);
             int lastIndexMethodHeader = node.getJavaRulePath().lastIndexOf("methodHeader");
             return lastIndexMethodHeader > 0 && previousNode.getJavaRulePath().lastIndexOf("methodHeader") != lastIndexMethodHeader && previousNode.getJavaRulePath().lastIndexOf("methodModifier") != lastIndexMethodHeader;
