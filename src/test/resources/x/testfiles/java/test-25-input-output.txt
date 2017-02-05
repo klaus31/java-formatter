@@ -9,4 +9,10 @@ class Test {
     String get(@Param(value = "honey") Honey honey, @Param(value = "bee", size = 4.2F) Bee bee) {
         return bee.sum().sum();
     }
+
+    @ManEy11
+    @ManEy12
+    String get(@Param(value = "honey") Honey honey, @Param(value = "bee", size = 4.2F) Bee bee) {
+        return bee.sum().sum();
+    }
 }

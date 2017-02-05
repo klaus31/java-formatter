@@ -26,6 +26,7 @@ public class Annotation extends SimpleNodesJavaCodeSnippet {
         result.append(node.getText());
         if (nextNodeIsANewAnnotation(node)) {
             result.append(EOL);
+            result.append(indentCurrent(file));
         }
         if (node.getText().equals(",")) {
             result.append(" ");

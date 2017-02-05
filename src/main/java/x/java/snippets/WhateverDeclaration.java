@@ -40,7 +40,7 @@ public class WhateverDeclaration extends SimpleNodesJavaCodeSnippet {
         if (node.isNodeTextAnyOf("-", "+")) {
             return node.isCurrentRuleA("additiveExpression");
         }
-        if("@".equals(node.getText())) {
+        if ("@".equals(node.getText())) {
             return false;
         }
         if (node.isNextNodeText("}")) {

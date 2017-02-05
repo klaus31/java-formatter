@@ -38,16 +38,16 @@ class JavaFormatter implements Formatter {
     }
 
     private boolean newRuleRequiresNewCodeSnippet(String newRule, NodeWrapper node) {
-        if(newRule.equals("annotation") && "methodDeclaration".equals(ruleCurrentJavaCodeSnippetIsFor)) {
-            return false;
-
-        } else if (!newRule.equals(ruleCurrentJavaCodeSnippetIsFor)) {
+        if (!newRule.equals(ruleCurrentJavaCodeSnippetIsFor)) {
+            if (newRule.equals("annotation") && node.getJavaRulePath().isPartOfAnyOf("methodHeader")) {
+                return false;
+            }
+            return true;
+        } else if (isStartOfANewMethod(newRule, node)) {
             return true;
         } else if (node.getJavaRulePath().isCurrentRuleA("interfaceMethodModifier")) {
             return true;
         } else if (node.getJavaRulePath().isCurrentRuleA("constructorModifier")) {
-            return true;
-        } else if (isStartOfANewMethod(newRule, node)) {
             return true;
         }
         return false;
