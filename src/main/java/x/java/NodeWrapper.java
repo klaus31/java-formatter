@@ -1,4 +1,5 @@
 package x.java;
+
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -10,9 +11,11 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import static java.util.Arrays.asList;
 public class NodeWrapper {
+
     private final JavaRulePath javaRulePath;
     private final TerminalNode node;
     private ParseTree nextNode;
+
     public boolean isNextNodeAComment() {
         String nextNodeText = calculateNext().getText();
         return nextNodeText.matches("/\\*.*\\*/") || nextNodeText.matches("//.*");
@@ -20,10 +23,12 @@ public class NodeWrapper {
     public JavaRulePath getJavaRulePath() {
         return javaRulePath;
     }
+
     public NodeWrapper(TerminalNode node, JavaRulePath javaRulePath) {
         this.javaRulePath = javaRulePath;
         this.node = node;
     }
+
     private boolean occursOnSameLineAs(TerminalNode otherNode) {
         return node.getSymbol().getLine() == otherNode.getSymbol().getLine();
     }
@@ -40,6 +45,7 @@ public class NodeWrapper {
             int nodeIndex = getNodeIndex();
             ParseTree parent = node.getParent();
             if (nodeIndex == parent.getChildCount() - 1) {
+
                 // last child at this level
                 while (parent != null && isLastNodeInLevel(parent)) {
                     parent = parent.getParent();
@@ -166,6 +172,7 @@ public class NodeWrapper {
     private boolean isDoublePoint() {
         return ":".equals(node.getText());
     }
+
     @Override
     public String toString() {
         return StringUtils.rightPad(getText(), 20) + ": " + javaRulePath.toString();
@@ -203,6 +210,7 @@ public class NodeWrapper {
     boolean isLastNodeInSwitchStatement() {
         return isNextNodeText("}") && javaRulePath.ruleNameFromEndEquals(5, "switchBlockStatementGroup");
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -211,6 +219,7 @@ public class NodeWrapper {
         if (!node.equals(that.node)) return false;
         return true;
     }
+
     @Override
     public int hashCode() {
         return node.hashCode();

@@ -1,7 +1,9 @@
 package x.ctrl;
+
 import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 public class CrashStrategy {
+
     private static void exit(int id) {
         System.err.println("");
         System.err.println(StringUtils.repeat("\uD83D\uDCA3", 20));

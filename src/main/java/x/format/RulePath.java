@@ -1,14 +1,18 @@
 package x.format;
+
 import org.apache.commons.lang3.Validate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 public class RulePath {
+
     private final List<String> rulePathNames;
+
     protected RulePath() {
         rulePathNames = new ArrayList<>();
     }
+
     public boolean ruleNameFromEndEquals(int stepsBackward, String ruleName) {
         Validate.notNull(ruleName);
         if (rulePathNames.size() - stepsBackward > 0) {
@@ -35,6 +39,7 @@ public class RulePath {
     public boolean isPartOf(String ruleName) {
         return rulePathNames.contains(ruleName);
     }
+
     @Override
     public String toString() {
         return rulePathNames.toString();

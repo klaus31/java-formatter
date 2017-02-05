@@ -11,14 +11,12 @@ import org.antlr.v4.tool.Grammar;
 import x.ctrl.CrashStrategy;
 import x.ctrl.SourceCodeFile;
 import x.ctrl.SourceCodeFileFormatter;
-
 import java.io.IOException;
 import java.util.List;
-
 import static java.util.stream.Collectors.toList;
 import static x.java.JavaConfig.EOL;
-
 public class SourceCodeFileFormatter4JavaDefault implements SourceCodeFileFormatter {
+
     private static final String GRAMMAR_FILE = SourceCodeFileFormatter4JavaDefault.class.getClassLoader().getResource("Java8.g4").getFile();
     private static final Grammar GRAMMAR = Grammar.load(GRAMMAR_FILE);
     private final SourceCodeFile file;
@@ -42,6 +40,7 @@ public class SourceCodeFileFormatter4JavaDefault implements SourceCodeFileFormat
         JavaFormatter formatter = new JavaFormatter();
         ParseTreeListener listener = new FormatParseTreeListener(formatter, parser.getRuleNames());
         walker.walk(listener, t);
+
         // TODO the post processing part ("   " > "") is ugly and breaks with the concept
         return formatter.getFormattedSourceCode().getCode(EOL, file).stream().map(s -> s.trim().isEmpty() ? "" : s).collect(toList());
     }

@@ -1,12 +1,16 @@
 package x.java;
+
 import org.apache.commons.lang3.StringUtils;
 public class IndentService {
+
     private final String singleIndent;
     private int indent;
+
     IndentService(String singleIndent) {
         indent = 0;
         this.singleIndent = singleIndent;
     }
+
     public String getCurrentIndent() {
         return StringUtils.repeat(singleIndent, indent);
     }

@@ -1,4 +1,5 @@
 package x.java;
+
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
@@ -21,10 +22,13 @@ import static org.mockito.Mockito.mock;
 // TODO "do mock behaviour, not data". I could not found an easy way.
 @RunWith(MockitoJUnitRunner.class)
 public class NodeWrapperTest {
+
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+
     @Test
     public void calculateNextShouldDoOn2LevelTree() throws org.antlr.runtime.RecognitionException {
+
         // given
         TerminalNodeImpl root = mock(TerminalNodeImpl.class);
         TerminalNodeImpl leaf1 = mock(TerminalNodeImpl.class);
@@ -34,13 +38,16 @@ public class NodeWrapperTest {
         given(root.getChild(0)).willReturn(leaf1);
         given(root.getChild(1)).willReturn(leaf2);
         given(root.getChildCount()).willReturn(2);
+
         // when / then
         assertThat(new NodeWrapper(leaf1, null).calculateNext(), is(leaf2));
         expectedException.expect(AssertionError.class);
         new NodeWrapper(leaf2, null).calculateNext();
     }
+
     @Test
     public void calculateNextShouldDoOn3LevelTree() throws org.antlr.runtime.RecognitionException {
+
         // given
         TerminalNodeImpl root = mock(TerminalNodeImpl.class);
         TerminalNodeImpl node1 = mock(TerminalNodeImpl.class);
@@ -67,14 +74,17 @@ public class NodeWrapperTest {
         given(node1.getChild(0)).willReturn(leaf1);
         given(node1.getChild(1)).willReturn(leaf2);
         given(node2.getChild(0)).willReturn(leaf3);
+
         // when / then
         assertThat(new NodeWrapper(leaf1, null).calculateNext(), is(leaf2));
         assertThat(new NodeWrapper(leaf2, null).calculateNext(), is(leaf3));
         expectedException.expect(AssertionError.class);
         new NodeWrapper(leaf3, null).calculateNext();
     }
+
     @Test
     public void calculateNextShouldDoOnMixedLevelTree() throws org.antlr.runtime.RecognitionException {
+
         // given
         TerminalNodeImpl root = mock(TerminalNodeImpl.class);
         TerminalNodeImpl node = mock(TerminalNodeImpl.class);
@@ -96,6 +106,7 @@ public class NodeWrapperTest {
         given(root.getChild(1)).willReturn(leaf3);
         given(node.getChild(0)).willReturn(leaf1);
         given(node.getChild(1)).willReturn(leaf2);
+
         // when / then
         assertThat(new NodeWrapper(leaf1, null).calculateNext(), is(leaf2));
         assertThat(new NodeWrapper(leaf2, null).calculateNext(), is(leaf3));

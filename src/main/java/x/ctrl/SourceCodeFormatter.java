@@ -1,4 +1,5 @@
 package x.ctrl;
+
 import org.apache.commons.io.FileUtils;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -8,10 +9,13 @@ import static java.util.stream.Collectors.joining;
 import static x.ctrl.KnownSourceFileType.JAVA;
 import static x.ctrl.MiserableLogger.*;
 public class SourceCodeFormatter {
+
     private final Path inputDirectory;
+
     public SourceCodeFormatter(Path inputDirectory) {
         this.inputDirectory = inputDirectory;
     }
+
     public static CharSequence getEol() {
         return System.getProperty("line.separator");
     }

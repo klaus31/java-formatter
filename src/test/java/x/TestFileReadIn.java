@@ -1,4 +1,5 @@
 package x;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -8,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 public class TestFileReadIn {
+
     public static Path calcPath(String lang, String fileName) {
         try {
             String resourceStr = String.format("testfiles/%s/%s.txt", lang, fileName);
