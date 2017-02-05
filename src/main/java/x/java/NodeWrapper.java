@@ -16,9 +16,10 @@ public class NodeWrapper {
     private final TerminalNode node;
     private ParseTree nextNode;
 
+
     public boolean isNextNodeAComment() {
         String nextNodeText = calculateNext().getText();
-        return nextNodeText.matches("/\\*.*\\*/") || nextNodeText.matches("//.*");
+        return nextNodeText.replaceAll("\\r?\\n", "").matches("/\\*.*") || nextNodeText.matches("//.*");
     }
 
     public JavaRulePath getJavaRulePath() {

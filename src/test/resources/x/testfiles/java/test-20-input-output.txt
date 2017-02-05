@@ -1,0 +1,8 @@
+package x.java.snippets;
+
+import a.A;
+import b.B;
+import c.C;
+
+public class A {
+}

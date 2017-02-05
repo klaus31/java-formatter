@@ -1,0 +1,24 @@
+package x.java.snippets;
+
+import a.A;
+
+// hi!
+import b.B;
+import c.C;
+
+/* hi! */
+import d.D;
+import e.E;
+
+/** hi! */
+import f.F;
+import g.G;
+
+/*
+hi!
+*/
+import h.H;
+import i.I;
+
+public class A {
+}
